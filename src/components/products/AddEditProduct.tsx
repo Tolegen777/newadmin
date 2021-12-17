@@ -5,10 +5,12 @@ import { useNavigate, useParams } from 'react-router';
 import { ICategory, IProductNew, IProduct } from '../../redux/types/types';
 import { postProduct, useCreateProductMutation, useGetProductByIdQuery } from '../../redux/services/product';
 import { useFormik } from 'formik';
-import ImageInput from '../admin/ImageInput';
+// import ImageInput from '../admin/ImageInput';
 import { styled } from '@mui/material/styles';
 import { useGetCategoriesQuery } from '../../redux/services/filters';
 import SelectSpecs from './SelectSpecs';
+import ImageContainer from '../image-input/ImageContainer';
+import ImageInput from '../image-input/ImageInput';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   [`&.${textFieldClasses.root}`]: {
@@ -50,6 +52,38 @@ const AddEditProduct: React.FC = () => {
   const { data: categories, isLoading: isCategoryLoading } = useGetCategoriesQuery('categories');
   const [createProduct, { }] = useCreateProductMutation();
 
+  const [images, setImages] = React.useState<any[]>([]);
+  const [cover, setCover] = React.useState<any | null>(null);
+
+  const handleAddImage = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const file = input.files[0];
+    setImages((images) => [...images, file]);
+  }
+
+  const handleImageChange = (event: Event, id: number) => {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const image = input.files[0];
+    let current = [...images];
+    current[id] = image;
+    setImages(current);
+  }
+
+  const handleCoverChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) {
+      return;
+    }
+    const image = input.files[0];
+    setCover(image);
+  }
+
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
@@ -79,7 +113,27 @@ const AddEditProduct: React.FC = () => {
       }
       <form>
         <StyledSubHeader>Фотография</StyledSubHeader>
-        <ImageInput onChange={setFieldValue} image={values.image} />
+        {/* <ImageInput onChange={setFieldValue} image={values.image} /> */}
+        {cover ?
+          <ImageContainer
+            image={URL.createObjectURL(cover)}
+            handleChange={handleCoverChange}
+            handleDelete={() => setCover(null)}
+          />
+          :
+          <ImageInput title="Добавить заставку" value={cover} handleChange={handleCoverChange} height="100px" width="100px" />
+        }
+        <ImageInput title="Добавить картинки" value={images} handleChange={handleAddImage} height="100px" width="100px" />
+        {images.map((image, ind) => {
+          return (
+            <ImageContainer
+              key={ind}
+              image={URL.createObjectURL(image)}
+              handleChange={(event) => handleImageChange(event, ind)}
+              handleDelete={() => setImages(prev => prev.filter((value) => value !== image))}
+            />
+          )
+        })}
         <Grid container spacing={2}>
           <Grid item sm={6} xs={6} lg={6}>
             <StyledSubHeader>Название товара</StyledSubHeader>

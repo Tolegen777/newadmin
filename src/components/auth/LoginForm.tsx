@@ -23,12 +23,6 @@ const LoginForm = () => {
     }
   })
 
-  React.useEffect(() => {
-    if (isAuth) {
-      navigate('/app/profile');
-    }
-  }, [isAuth])
-
   const { values, handleChange, handleSubmit } = formik;
   const { email, password } = values;
 
