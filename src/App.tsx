@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import AdminPage from './pages/AdminPage';
 import AuthPage from './pages/AuthPage';
 import React from 'react';
-import { useTypedSelector } from './redux/store'
+import { useTypedSelector } from './store/index'
 
 function App() {
   const { isAuth } = useTypedSelector(state => state.auth);

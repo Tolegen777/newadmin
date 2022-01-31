@@ -1,4 +1,4 @@
-import { ICategory, ISpec } from "../types/types";
+import { ICategory, ISpec } from "../../types/types";
 import { baseApi } from "./baseApi";
 
 export const filtersApi = baseApi.injectEndpoints({

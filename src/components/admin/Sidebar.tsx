@@ -1,12 +1,11 @@
-import { Typography, Drawer, Box, List, ListItem, ListItemText, Toolbar, SvgIcon, ListItemButton, ListItemIcon, Divider } from '@mui/material';
-import * as React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { menuRoutes } from '../../route';
-import styles from '../../assets/styles/sidebar.module.css';
 import LogoutIcon from '@mui/icons-material/Logout';
-import logo from '../../assets/logo.svg';
-import { loggedOut } from '../../redux/slices/authSlice';
+import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { NavLink, useLocation } from 'react-router-dom';
+import logo from '../../assets/logo.svg';
+import { menuRoutes } from '../../route';
+import { logout } from '../../store/auth/auth.action';
 
 const drawerWidth = 240;
 
@@ -14,7 +13,7 @@ export default function ResponsiveDrawer() {
   const location = useLocation();
   const dispatch = useDispatch();
   const handleLogout = () => {
-    dispatch(loggedOut());
+    dispatch(logout());
   }
 
   const drawer = (

@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import { store } from './store/index';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material/styles';
 
@@ -32,7 +32,7 @@ ReactDOM.render(
         <App />
       </BrowserRouter>
     </ThemeProvider>
-  </Provider >,
+  </Provider>,
   document.getElementById('root')
 );
 

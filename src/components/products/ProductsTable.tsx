@@ -2,8 +2,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Chip, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useGetProductsQuery } from '../../redux/services/product';
+import { useTypedSelector } from '../../store';
+import { fetchProducts } from '../../store/product/product.action';
 import Filters from './Filters';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -25,14 +28,15 @@ const mapping = {
   'id': 'Артикул',
   'image': 'Фото',
   'title': 'Название',
-  'smallDesc': 'Описание',
+  // 'smallDesc': 'Описание',
   'price': 'Цена',
   'discount': 'Скидка',
 }
 
 const ProductsTable: React.FC = () => {
   const navigate = useNavigate();
-  const { data: products, isLoading, isError } = useGetProductsQuery(`products`);
+  const dispatch = useDispatch();
+  const { products } = useTypedSelector(state => state.product);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -44,6 +48,10 @@ const ProductsTable: React.FC = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  React.useEffect(() => {
+    dispatch(fetchProducts({ limit: rowsPerPage, page: page + 1 }));
+  }, [])
 
   return (
     <>
@@ -70,7 +78,7 @@ const ProductsTable: React.FC = () => {
                 <StyledTableCell>{row.id}</StyledTableCell>
                 <StyledTableCell><img style={{ borderRadius: '5px' }} src={`https://file.adu24.com/${row.image}`} height="50px" alt="product-image" /></StyledTableCell>
                 <StyledTableCell>{row.title}</StyledTableCell>
-                <StyledTableCell>{row.smallDesc.slice(0, 10)}...</StyledTableCell>
+                {/* <StyledTableCell>{(Math.round(row.rating * 100) / 100).toFixed(2)}</StyledTableCell> */}
                 <StyledTableCell><Chip label={`${row.price} KZT`} variant="outlined" color="info" /></StyledTableCell>
                 <StyledTableCell><Chip label={`${row.discount}%`} /></StyledTableCell>
                 <StyledTableCell>

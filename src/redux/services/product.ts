@@ -1,4 +1,4 @@
-import { IProduct, IProductNew, IProductResponse } from '../types/types';
+import { IProduct, IProductNew, IProductResponse } from '../../types/IProduct';
 import { baseApi } from './baseApi';
 import axios from 'axios';
 

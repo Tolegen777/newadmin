@@ -3,10 +3,10 @@ import React from 'react';
 
 type Props = {
   title: string,
-  value: string[],
-  handleChange: (value: any) => void,
+  handleChange?: (value: any) => void,
   width: string,
   height: string,
+  disabled?: boolean
 };
 
 const ImageInput: React.FC<Props> = (props) => {
@@ -18,8 +18,9 @@ const ImageInput: React.FC<Props> = (props) => {
       variant="outlined"
       component="label"
       style={{ height: height, width: width, marginRight: "10px" }}
+      disabled={props?.disabled}
     >
-      <span style={{ fontSize: "12px", fontWeight: "lighter", color: "grey" }}>
+      <span style={{ fontSize: "12px", fontWeight: "lighter", color: "grey", textAlign: "center" }}>
         {props.title}
       </span>
       <input
@@ -27,7 +28,7 @@ const ImageInput: React.FC<Props> = (props) => {
         hidden
         accept="image/png, image/gif, image/jpeg"
         name="images"
-        onChange={props.handleChange}
+        onChange={props?.handleChange}
       />
     </Button>
   )

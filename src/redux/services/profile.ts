@@ -1,9 +1,10 @@
-import { IUser, IUserResponse } from "../types/types";
+import { IUser } from "../../types/IProfile";
+import { IClientsResponse } from "../../types/types";
 import { baseApi } from "./baseApi";
 
 export const profileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProfiles: builder.query<IUserResponse, string>({
+    getProfiles: builder.query<IClientsResponse, string>({
       query: () => ({
         url: `/profile`
       })

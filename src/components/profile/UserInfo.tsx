@@ -1,9 +1,17 @@
-import { Grid, Typography, Skeleton, Table, TableCell, TableRow, TableBody, Paper } from '@mui/material';
+import { Button, Grid, Skeleton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 import React from 'react';
-import { useGetMyProfileQuery } from '../../redux/services/auth';
+import { IUser } from '../../types/IProfile';
+import ImageInput from '../image-input/ImageInput';
 
-const UserInfo: React.FC = () => {
-  const { data: profile, isLoading, isError } = useGetMyProfileQuery('user');
+type Props = {
+  profile: IUser,
+  avatar: File | null,
+  isLoading: boolean
+  onChange: (value: Event) => void
+  onDelete: () => void
+}
+
+const UserInfo: React.FC<Props> = ({ profile, avatar, isLoading, onChange, onDelete }) => {
 
   return (
     <>
@@ -12,13 +20,20 @@ const UserInfo: React.FC = () => {
         <Skeleton variant="rectangular" animation="wave" width={210} height={118} />
         :
         <Table>
-          {profile?.avatar ?
-            <img src={profile.avatar} width="50%" height="50%" />
-            :
-            <Paper sx={{ backgroundColor: '#C3C3C3', width: '100px', height: '100px', display: 'flex', textAlign: 'center', alignItems: 'center' }}>
-              <Typography variant="caption" sx={{ fontSize: '10px' }}>Аватар пользователя</Typography>
-            </Paper>
-          }
+          <Grid container direction="column" spacing={1}>
+            <Grid item>
+              {avatar ?
+                <img src={URL.createObjectURL(avatar)} width="100px" height="100px" />
+                :
+                <ImageInput title="Добавить аватарку" handleChange={onChange} height="100px" width="100px" />
+              }
+            </Grid>
+            <Grid item>
+              {avatar &&
+                <Button variant="outlined" size="small" onClick={onDelete}>Удалить</Button>
+              }
+            </Grid>
+          </Grid>
           <TableBody>
             <TableRow>
               <TableCell>ФИО</TableCell>

@@ -1,6 +1,5 @@
-import { createApi, fetchBaseQuery, FetchArgs, BaseQueryFn, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { ILoginResponse } from "../types/types";
 
 export const BASE_URL = 'http://dev.adu24.com/';
 

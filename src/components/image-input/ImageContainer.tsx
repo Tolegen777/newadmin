@@ -7,12 +7,9 @@ const useStyles = makeStyles({
   imageContainer: {
     width: "100px",
     height: "100px",
-    marginRight: "10px",
-    marginBottom: "10px",
+    marginBottom: "2rem",
     position: "relative",
     textAlign: "center",
-    // backgroundColor: "grey",
-
     "&>:nth-child(1)": {
       height: "100px",
       width: "100px",
@@ -36,21 +33,16 @@ const useStyles = makeStyles({
 
 type Props = {
   image: any,
-  whiteBackground?: boolean,
   handleChange: (input: any) => void,
   handleDelete: () => void
 }
 
-const ImageContainer: React.FC<Props> = ({ image, whiteBackground, handleChange, handleDelete }) => {
+const ImageContainer: React.FC<Props> = ({ image, handleChange, handleDelete }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.imageContainer}>
-      {whiteBackground ?
-        <img src={image} alt={image} style={{ filter: "brightness(1)", borderRadius: "6px", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover" }} />
-        :
-        <img src={image} alt={image} style={{ borderRadius: "6px", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover" }} />
-      }
+      <img src={image} alt={image} style={{ filter: "brightness(1)", borderRadius: "6px", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover", width: "100px", height: "100px", objectFit: "contain" }} />
       <IconButton component="label">
         <EditIcon />
         {/* <img src={EditIcon} alt="icon" /> */}

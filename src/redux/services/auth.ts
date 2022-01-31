@@ -1,5 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ILogin, ILoginResponse, IShop, IUser } from '../types/types';
+import { ILogin, ILoginResponse } from '../../types/ILogin';
+import { IUser } from '../../types/IProfile';
+import { IShop } from '../../types/IShop';
 import { baseApi } from './baseApi';
 
 export const authApi = baseApi.injectEndpoints({

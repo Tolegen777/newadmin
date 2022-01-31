@@ -1,16 +1,19 @@
-import React from 'react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Box, Button, Grid, MenuItem, Select, TextField, textFieldClasses, Divider, Typography } from '@mui/material';
-import { useNavigate, useParams } from 'react-router';
-import { ICategory, IProductNew, IProduct } from '../../redux/types/types';
-import { postProduct, useCreateProductMutation, useGetProductByIdQuery } from '../../redux/services/product';
-import { useFormik } from 'formik';
+import { Box, Button, Grid, MenuItem, Select, TextField, textFieldClasses, Typography } from '@mui/material';
 // import ImageInput from '../admin/ImageInput';
 import { styled } from '@mui/material/styles';
-import { useGetCategoriesQuery } from '../../redux/services/filters';
-import SelectSpecs from './SelectSpecs';
+import { useFormik } from 'formik';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
+import { ProductService } from '../../service/product/product.service';
+import { useTypedSelector } from '../../store';
+import { ActionsEnum } from '../../store/enum';
+import { createProduct, fetchCategories, fetchSpecs, updateProduct } from '../../store/product/product.action';
+import { IProductNew } from '../../types/IProduct';
 import ImageContainer from '../image-input/ImageContainer';
 import ImageInput from '../image-input/ImageInput';
+import SelectSpecs from './SelectSpecs';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   [`&.${textFieldClasses.root}`]: {
@@ -44,16 +47,23 @@ const initialValues: IProductNew = {
   shopId: 7
 }
 
-const AddEditProduct: React.FC = () => {
-  const navigate = useNavigate();
+const CreateProduct: React.FC = () => {
   const { productId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { categories, status } = useTypedSelector(state => state.product);
 
-  const { data: product } = useGetProductByIdQuery(Number(productId));
-  const { data: categories, isLoading: isCategoryLoading } = useGetCategoriesQuery('categories');
-  const [createProduct, { }] = useCreateProductMutation();
-
-  const [images, setImages] = React.useState<any[]>([]);
-  const [cover, setCover] = React.useState<any | null>(null);
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: async (values) => {
+      if(!productId) {
+        dispatch(createProduct(values));
+      } else {
+        dispatch(updateProduct(values));
+      }
+    }
+  })
+  const { values, setFieldValue, setValues, handleChange, handleSubmit } = formik;
 
   const handleAddImage = (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -61,7 +71,9 @@ const AddEditProduct: React.FC = () => {
       return;
     }
     const file = input.files[0];
-    setImages((images) => [...images, file]);
+    let images = [...values.photos];
+    images.push(file);
+    setFieldValue('photos', images);
   }
 
   const handleImageChange = (event: Event, id: number) => {
@@ -69,71 +81,76 @@ const AddEditProduct: React.FC = () => {
     if (!input.files?.length) {
       return;
     }
-    const image = input.files[0];
-    let current = [...images];
-    current[id] = image;
-    setImages(current);
+    const file = input.files[0];
+    let images = [...values.photos];
+    images[id] = file;
+    setFieldValue('photos', images);
   }
 
-  const handleCoverChange = (event: Event) => {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) {
-      return;
-    }
-    const image = input.files[0];
-    setCover(image);
+  const handleImageDelete = (id: number) => {
+    let images = [...values.photos].filter((img, ind) => ind !== id);
+    setFieldValue('photos', images);
   }
-
-  const formik = useFormik({
-    initialValues: initialValues,
-    onSubmit: async (values) => {
-      if (!productId) {
-        const result = await postProduct(values);
-        navigate('/app/products/list');
-      }
-    }
-  })
-
-  const { values, setFieldValue, setValues, handleChange, handleSubmit } = formik;
-  const { category } = values;
 
   React.useEffect(() => {
-    if (product) {
-      setValues({ ...product, category: product.category.id.toString(), shopId: 1 });
+    if (!categories.length) {
+      dispatch(fetchCategories());
     }
-  }, [product])
+    async function fetch() {
+      if (productId) {
+        const result = await ProductService.fetchOneProduct(productId);
+        const {title, smallDesc, fullDesc, category, discount, id, image, photos, price, specs} = result.data.product;
+        const productData: IProductNew = {
+          id,
+          title,
+          smallDesc,
+          fullDesc, 
+          category: String(category.id),
+          discount,
+          image: null,
+          photos: [],
+          price,
+          specs: [],
+          shopId: 7
+        }
+        setValues(productData);
+      }
+    }
+    fetch()
+  }, [])
+
+
+  React.useEffect(() => {
+    if (values.category.length) {
+      dispatch(fetchSpecs(values.category))
+    }
+  }, [values.category])
 
   return (
     <Box>
       <Button variant="contained" sx={{ backgroundColor: '#EFF3F9', color: 'black' }} startIcon={<ArrowBackIosNewIcon />} onClick={() => navigate('/app/products/list')}>Назад</Button>
-      {productId ?
-        <Typography variant="caption" style={{ fontSize: "20px", marginBottom: '25px' }}>Редактировать товар</Typography>
-        :
-        <Typography sx={{ fontSize: "20px", marginTop: '20px', marginBottom: '25px' }}>Добавить товар</Typography>
-      }
+      <Typography sx={{ fontSize: "20px", marginTop: '20px', marginBottom: '25px' }}>Добавить товар</Typography>
       <form>
         <StyledSubHeader>Фотография</StyledSubHeader>
-        {/* <ImageInput onChange={setFieldValue} image={values.image} /> */}
-        {cover ?
-          <ImageContainer
-            image={URL.createObjectURL(cover)}
-            handleChange={handleCoverChange}
-            handleDelete={() => setCover(null)}
-          />
-          :
-          <ImageInput title="Добавить заставку" value={cover} handleChange={handleCoverChange} height="100px" width="100px" />
-        }
-        <ImageInput title="Добавить картинки" value={images} handleChange={handleAddImage} height="100px" width="100px" />
-        {images.map((image, ind) => {
-          return (
-            <ImageContainer
-              key={ind}
-              image={URL.createObjectURL(image)}
-              handleChange={(event) => handleImageChange(event, ind)}
-              handleDelete={() => setImages(prev => prev.filter((value) => value !== image))}
-            />
-          )
-        })}
+        <Typography variant="caption" color="gray">Первая фотография будет отображаться на карточке товара</Typography>
+        <div style={{ display: 'flex' }}>
+          <Grid container spacing={1}>
+            <Grid item xs={2}>
+              <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px" width="100px" />
+            </Grid>
+            {values.photos.map((image, ind) => {
+              return (
+                <Grid item xs={2} key={ind}>
+                  <ImageContainer
+                    image={URL.createObjectURL(image)}
+                    handleChange={(event) => handleImageChange(event, ind)}
+                    handleDelete={() => handleImageDelete(ind)}
+                  />
+                </Grid>
+              )
+            })}
+          </Grid>
+        </div>
         <Grid container spacing={2}>
           <Grid item sm={6} xs={6} lg={6}>
             <StyledSubHeader>Название товара</StyledSubHeader>
@@ -186,10 +203,9 @@ const AddEditProduct: React.FC = () => {
               {categories?.map((category) => (
                 <MenuItem value={category.id}>{category.name}</MenuItem>
               ))}
-              {isCategoryLoading && <div>Загрузка...</div>}
             </StyledSelect>
             <StyledSubHeader>Цена, ₸</StyledSubHeader>
-            {category && <div style={{ borderLeft: '1px solid #8A3FFC', marginTop: '15px', paddingLeft: '10px', display: 'flex', alignItems: 'center' }}>
+            <div style={{ borderLeft: '1px solid #8A3FFC', marginTop: '15px', paddingLeft: '10px' }}>
               <TextField
                 label="Напишите цену"
                 name="price"
@@ -197,11 +213,10 @@ const AddEditProduct: React.FC = () => {
                 onChange={handleChange}
                 type="number"
               />
-              <Typography variant="caption" sx={{ fontSize: '14px', color: '#C3C3C3', marginLeft: '10px' }}>Средняя цена на похожие товары 12 000 ₸</Typography>
-            </div>}
+            </div>
             <StyledSubHeader>Характеристики товара</StyledSubHeader>
             <div style={{ width: '100%', backgroundColor: '#EFF3F9', borderRadius: '8px', paddingLeft: '10px', paddingBottom: '10px' }}>
-              {category && <SelectSpecs categoryId={category} />}
+              {values.category && <SelectSpecs categoryId={values.category} />}
             </div>
             <StyledSubHeader>Дополнительная информация</StyledSubHeader>
             <div style={{ width: '100%', borderRadius: '8px' }}>
@@ -221,6 +236,7 @@ const AddEditProduct: React.FC = () => {
           size="large"
           onClick={() => handleSubmit()}
           sx={{ marginTop: '15px' }}
+          disabled={status === ActionsEnum.LOADING}
         >
           Сохранить
         </Button>
@@ -229,4 +245,4 @@ const AddEditProduct: React.FC = () => {
   )
 }
 
-export default AddEditProduct
+export default CreateProduct

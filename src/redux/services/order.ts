@@ -1,4 +1,4 @@
-import { IOrdersResponse } from "../types/types";
+import { IOrdersResponse } from "../../types/types";
 import { baseApi } from "./baseApi";
 
 export const orderApi = baseApi.injectEndpoints({

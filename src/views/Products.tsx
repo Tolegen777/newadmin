@@ -1,8 +1,9 @@
-import { Box, Paper, Typography, Button } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import React, { Suspense } from 'react';
-import { Routes, Route, Navigate } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
+import CreateProduct from '../components/products/CreateProduct';
 const ProductsTable = React.lazy(() => import('../components/products/ProductsTable'));
-const AddEditProduct = React.lazy(() => import('../components/products/AddEditProduct'));
+const AddEditProduct = React.lazy(() => import('../components/products/CreateProduct'));
 
 const ProductsView = () => {
 
@@ -14,8 +15,8 @@ const ProductsView = () => {
           <Routes>
             <Route path="list" element={<ProductsTable />} />
             <Route path="one">
-              <Route path="new" element={<AddEditProduct />} />
-              <Route path=":productId" element={<AddEditProduct />} />
+              <Route path="new" element={<CreateProduct />} />
+              <Route path=":productId" element={<CreateProduct />} />
             </Route>
             <Route
               path="*"
