@@ -9,11 +9,11 @@ interface IInitState {
     categories: ICategory[]
     specs: ISpec[]
     error: unknown
-    status: ActionsEnum
+    isLoading: boolean
 }
 
 const initialState: IInitState = {
-    status: ActionsEnum.IDLE,
+    isLoading: false,
     error: null,
     products: {count: 0, products: []},
     categories: [],
@@ -26,24 +26,24 @@ const productSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(fetchProducts.pending, ((state) => {
-                state.status = ActionsEnum.LOADING
+                state.isLoading = true
             }))
             .addCase(fetchProducts.fulfilled, ((state, {payload}) => {
-                state.status = ActionsEnum.SUCCESS
+                state.isLoading = false
                 state.products = payload
             }))
             .addCase(fetchProducts.rejected, ((state, {error}) => {
-                state.status = ActionsEnum.ERROR
+                state.isLoading = false
                 state.error = error
             }))
             .addCase(createProduct.pending, ((state) => {
-                state.status = ActionsEnum.LOADING
+                state.isLoading = true
             }))
             // .addCase(createProduct.fulfilled, ((state) => {
             //     state.status = ActionsEnum.SUCCESS
             // }))
             .addCase(createProduct.rejected, ((state, {error}) => {
-                state.status = ActionsEnum.ERROR
+                state.isLoading = false
                 state.error = error
             }))
             .addCase(fetchCategories.fulfilled, ((state, {payload}) => {

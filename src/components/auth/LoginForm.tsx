@@ -9,7 +9,7 @@ import { useTypedSelector } from '../../store/index';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { error, status } = useTypedSelector(state => state.auth);
+  const { error, isLoading } = useTypedSelector(state => state.auth);
 
   const formik = useFormik({
     initialValues: {
@@ -26,12 +26,48 @@ const LoginForm = () => {
 
   return (
     <div className={styles.formContainer}>
-      <Typography variant="h4" color="primary" gutterBottom>Добро пожаловать!</Typography>
-      <Typography variant="h5" gutterBottom>Войдите чтобы продолжить!</Typography>
+      <Typography
+        variant="h4"
+        color="primary"
+        gutterBottom>
+        Добро пожаловать!
+      </Typography>
+      <Typography
+        variant="h5"
+        gutterBottom>
+        Войдите чтобы продолжить!
+      </Typography>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <TextField name="email" label="Email" variant="standard" value={email} onChange={handleChange} fullWidth margin="normal" required />
-        <TextField name="password" type="password" label="Password" variant="standard" value={password} onChange={handleChange} fullWidth margin="normal" required />
-        <Button variant="outlined" type="submit" fullWidth color="primary" size="large" disabled={status === ActionsEnum.LOADING}>Войти</Button>
+        <TextField
+          name="email"
+          label="Email"
+          variant="standard"
+          value={email}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required
+        />
+        <TextField
+          name="password"
+          type="password"
+          label="Пароль"
+          variant="standard"
+          value={password}
+          onChange={handleChange}
+          fullWidth
+          margin="normal"
+          required />
+        <Button
+          variant="outlined"
+          type="submit"
+          fullWidth
+          color="primary"
+          size="large"
+          disabled={isLoading}
+        >
+          Войти
+        </Button>
         {error && <Typography variant="caption" gutterBottom>Возникла ошибка. Попробуйте позже!</Typography>}
       </form>
     </div>

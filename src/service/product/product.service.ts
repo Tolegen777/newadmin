@@ -1,16 +1,12 @@
 import { $api } from "../../api";
 import { AxiosResponse } from "axios";
-import { IProductNew, IProductOneResponse, IProductResponse, ISpec } from "../../types/IProduct";
-import { IPagination } from "../../types/types";
+import { IProductNew, IProductOneResponse, IProductQuery, IProductResponse, ISpec } from "../../types/IProduct";
 import { ICategory } from "../../types/ICategory";
 import { useTypedSelector } from "../../store";
 
 export class ProductService {
-    static async fetchProducts(pagination?: IPagination): Promise<AxiosResponse<IProductResponse>> {
-        let limit = pagination?.limit || 5;
-        let page = pagination?.page || 1;
-
-        return $api.get<IProductResponse>(`product?limit=${limit}&page=${page}`)
+    static async fetchProducts(query: IProductQuery): Promise<AxiosResponse<IProductResponse>> {
+        return $api.get<IProductResponse>(`product`, { params: query })
     }
     static async fetchOneProduct(id: string): Promise<AxiosResponse<IProductOneResponse>> {
         return $api.get<IProductOneResponse>(`product/get-one/${id}`)

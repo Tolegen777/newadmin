@@ -2,12 +2,14 @@ import React from 'react'
 import { Box, Button, Grid, Paper, Typography } from '@mui/material';
 import ColumnTitle from './ColumnTitle';
 import OrderCard from './OrderCard';
-import { useGetMyShopQuery } from '../../redux/services/auth';
-import { useGetOrdersQuery } from '../../redux/services/order';
+import { useTypedSelector } from '../../store';
+import { useGetOrdersQuery } from '../../store/rtk-api/baseEndpoints';
 
 const OrderColumnsView: React.FC = () => {
-  const { data: shop } = useGetMyShopQuery('shop');
-  const { data: orders, isLoading } = useGetOrdersQuery(shop ? shop[0].id : 7)
+  const { user: profile } = useTypedSelector(state => state.auth);
+
+  // test
+  const { data: orders, isLoading } = useGetOrdersQuery(7)
 
   React.useEffect(() => {
     console.log(orders);

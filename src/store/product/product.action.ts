@@ -1,15 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import { ProductService } from "../../service/product/product.service";
 import { ICategory } from "../../types/ICategory";
-import { IProductNew, IProductOneResponse, IProductResponse, ISpec } from "../../types/IProduct";
-import { IPagination } from "../../types/types";
+import { IProductNew, IProductOneResponse, IProductQuery, IProductResponse, ISpec } from "../../types/IProduct";
 
-export const fetchProducts = createAsyncThunk<IProductResponse, IPagination>(
+export const fetchProducts = createAsyncThunk<IProductResponse, IProductQuery>(
     'product/fetch',
-    async function ({ limit, page }, { rejectWithValue }) {
+    async function (query, { getState, rejectWithValue }) {
         try {
-            const response = await ProductService.fetchProducts({ limit, page })
-            return response.data
+            const { auth } = getState() as RootState;
+            if (auth.user?.shops) {
+                const response = await ProductService.fetchProducts({ ...query, shopId: auth.user?.shops[0].id })
+                return response.data
+            }
+            throw Error('Нет магазина')
         } catch (e) {
             return rejectWithValue(e)
         }

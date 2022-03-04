@@ -1,4 +1,4 @@
-import { Button, Grid, Skeleton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
+import { Button, Grid, Paper, Skeleton, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 import React from 'react';
 import { IUser } from '../../types/IProfile';
 import ImageInput from '../image-input/ImageInput';
@@ -25,12 +25,10 @@ const UserInfo: React.FC<Props> = ({ profile, avatar, isLoading, onChange, onDel
               {avatar ?
                 <img src={URL.createObjectURL(avatar)} width="100px" height="100px" />
                 :
-                <ImageInput title="Добавить аватарку" handleChange={onChange} height="100px" width="100px" />
-              }
-            </Grid>
-            <Grid item>
-              {avatar &&
-                <Button variant="outlined" size="small" onClick={onDelete}>Удалить</Button>
+                <Paper elevation={0} sx={{ height: "100px", width: "100px", border: '1px dashed #999999', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#999999' }}>
+                  Нет аватарки
+                </Paper>
+                // <ImageInput title="Добавить аватарку" handleChange={onChange} height="100px" width="100px" />
               }
             </Grid>
           </Grid>

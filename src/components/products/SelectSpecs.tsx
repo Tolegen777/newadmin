@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { MenuItem, Select, Typography } from '@mui/material';
-import { useGetSpecsQuery } from '../../redux/services/filters';
 import React from 'react';
 import { useFormik } from 'formik';
+import { useGetSpecsQuery } from '../../store/rtk-api/baseEndpoints';
 
 
 const StyledSubHeader = styled(Typography)(({ theme }) => ({

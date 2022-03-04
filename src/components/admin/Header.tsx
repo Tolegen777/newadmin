@@ -1,16 +1,10 @@
 import { AppBar, Avatar, IconButton, Toolbar, Typography } from '@mui/material'
 import React from 'react'
-import { authApi } from '../../redux/services/auth';
-import { useTypedSelector } from '../../redux/store';
 import notification from '../../assets/icons/notifications.png';
+import { useTypedSelector } from '../../store';
 
 const Header = () => {
-  const { data: profile, isLoading, isError } = authApi.useGetMyProfileQuery('user');
-  const { auth } = useTypedSelector(state => state.baseApi.provided)
-
-  React.useEffect(() => {
-    console.log(auth)
-  }, [auth])
+  const { user: profile, isLoading, error } = useTypedSelector(state => state.auth)
 
   return (
     <AppBar
@@ -24,7 +18,7 @@ const Header = () => {
     >
       <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         {isLoading && <Typography variant="caption">Loading...</Typography>}
-        {isError && <Typography variant="caption" color="secondary">Возникла ошибка с загрузкой провиля!</Typography>}
+        {error && <Typography variant="caption" color="secondary">Возникла ошибка с загрузкой провиля!</Typography>}
         {profile &&
           <div style={{ width: '25%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <IconButton aria-label="delete" size="small">

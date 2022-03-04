@@ -1,8 +1,5 @@
-import React from 'react'
-import { Grid, Typography, Paper, Skeleton, Table, TableCell, TableRow, TableBody } from '@mui/material';
-import { useGetMyShopQuery } from '../../redux/services/auth';
-import ImageInput from '../image-input/ImageInput';
-import { IShop } from '../../types/IShop';
+import { Paper, Table, TableBody, TableCell, TableRow, Typography } from '@mui/material';
+import React from 'react';
 import { useTypedSelector } from '../../store';
 
 const ShopInfo: React.FC = () => {
@@ -15,7 +12,10 @@ const ShopInfo: React.FC = () => {
         {user?.shops[0].logo ?
           <img src={user.shops[0].logo} width="50%" height="50%" />
           :
-          <ImageInput disabled title="Нет лого магазина" height="100px" width="100px" />
+          <Paper elevation={0} sx={{ height: "100px", width: "100px", border: '1px dashed #999999', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#999999' }}>
+            Нет лого магазина
+          </Paper>
+          // <ImageInput disabled title="Нет лого магазина" height="100px" width="100px" />
         }
         <TableBody>
           <TableRow>

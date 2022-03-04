@@ -8,7 +8,7 @@ import { updateUserAvatar } from '../store/auth/auth.action';
 import { ActionsEnum } from '../store/enum';
 
 const ProfileView = () => {
-  const { user: profile, error, status } = useTypedSelector(state => state.auth);
+  const { user: profile, error, isLoading } = useTypedSelector(state => state.auth);
   const [avatar, setAvatar] = React.useState<File | null>(null);
   const dispatch = useDispatch();
 
@@ -38,14 +38,14 @@ const ProfileView = () => {
         <Grid container>
           <Grid item sm={6} xs={6} lg={6}>
             {profile &&
-              <UserInfo profile={profile} avatar={avatar} isLoading={status === ActionsEnum.LOADING} onChange={handleAvatarChange} onDelete={handleDelete} />
+              <UserInfo profile={profile} avatar={avatar} isLoading={isLoading} onChange={handleAvatarChange} onDelete={handleDelete} />
             }
           </Grid>
           <Grid item sm={6} xs={6} lg={6}>
             <ShopInfo />
           </Grid>
         </Grid>
-        <Button variant="contained" size="large" color="primary" onClick={handleSubmit}>Сохранить</Button>
+        {/* <Button variant="contained" size="large" color="primary" onClick={handleSubmit}>Сохранить</Button> */}
         {error && <Typography color="error">Ошибка! Попробуйте позже.</Typography>}
       </Paper>
     </Box >

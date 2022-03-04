@@ -1,28 +1,16 @@
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Chip, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Button, Chip, Skeleton, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TablePagination, TableRow, Typography } from '@mui/material';
+import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { useGetProductsQuery } from '../../redux/services/product';
 import { useTypedSelector } from '../../store';
-import { fetchProducts } from '../../store/product/product.action';
+import { fetchCategories, fetchProducts } from '../../store/product/product.action';
+import { IProductQuery } from '../../types/IProduct';
+import StyledTableCell from '../table/StyledTableCell';
+import StyledTableRow from '../table/StyledTableRow';
+import TableLoadingMockup from '../table/TableLoadingMockup';
 import Filters from './Filters';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    // backgroundColor: '#E1E1E1',
-    color: '#AAAAAA'
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14
-  }
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  background: 'transparent',
-  borderTopColor: '#AAAAAA'
-}));
 
 const mapping = {
   'id': 'Артикул',
@@ -36,22 +24,45 @@ const mapping = {
 const ProductsTable: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { products } = useTypedSelector(state => state.product);
+
+  const { products, isLoading } = useTypedSelector(state => state.product);
+
+  // Filter states
+  const formik = useFormik<IProductQuery>({
+    initialValues: {
+      categoryId: '',
+      brandId: '',
+      bestseller: false,
+      almostFree: false,
+      search: '',
+      tagId: '',
+      priceFrom: '',
+      priceTo: '',
+      block: false,
+      confirm: true
+    },
+    onSubmit: (values) => {
+      const query = {} as IProductQuery;
+      dispatch(fetchProducts({ ...values, limit: rowsPerPage, page: page + 1 }));
+    }
+  })
+  const { values, handleSubmit, handleChange } = formik;
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  // Pagination actions
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   React.useEffect(() => {
-    dispatch(fetchProducts({ limit: rowsPerPage, page: page + 1 }));
-  }, [])
+    dispatch(fetchProducts({ ...values, limit: rowsPerPage, page: page + 1 }));
+  }, [page, rowsPerPage])
 
   return (
     <>
@@ -60,7 +71,13 @@ const ProductsTable: React.FC = () => {
           <Typography style={{ fontSize: "20px", marginBottom: '25px' }}>Инвентарь товаров</Typography>
           <Button variant="contained" startIcon={<AddIcon />} onClick={() => navigate('/app/products/one/new')}>Создать товар</Button>
         </div>
-        <Filters />
+        <FormikProvider value={formik}>
+          <Filters
+            filters={values}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
+        </FormikProvider>
         <Table>
           <TableHead>
             <StyledTableRow>
@@ -73,21 +90,24 @@ const ProductsTable: React.FC = () => {
             </StyledTableRow>
           </TableHead>
           <TableBody>
-            {products?.products?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-              <StyledTableRow key={row.id}>
-                <StyledTableCell>{row.id}</StyledTableCell>
-                <StyledTableCell><img style={{ borderRadius: '5px' }} src={`https://file.adu24.com/${row.image}`} height="50px" alt="product-image" /></StyledTableCell>
-                <StyledTableCell>{row.title}</StyledTableCell>
-                {/* <StyledTableCell>{(Math.round(row.rating * 100) / 100).toFixed(2)}</StyledTableCell> */}
-                <StyledTableCell><Chip label={`${row.price} KZT`} variant="outlined" color="info" /></StyledTableCell>
-                <StyledTableCell><Chip label={`${row.discount}%`} /></StyledTableCell>
-                <StyledTableCell>
-                  <Button variant='outlined' color='primary' sx={{ borderWidth: '2px', fontWeight: 600 }} onClick={() => navigate(`/app/products/one/${row.id}`)}>
-                    Подробнее
-                  </Button>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {isLoading ?
+              <TableLoadingMockup cellCount={6} rowCount={rowsPerPage} />
+              :
+              products?.products
+                .map((row) => (
+                  <StyledTableRow key={row.id}>
+                    <StyledTableCell>{row.id}</StyledTableCell>
+                    <StyledTableCell><img style={{ borderRadius: '5px' }} src={`https://file.adu24.com/${row.image}`} height="50px" alt="product-image" /></StyledTableCell>
+                    <StyledTableCell>{row.title}</StyledTableCell>
+                    <StyledTableCell><Chip label={`${row.price} KZT`} variant="outlined" color="info" /></StyledTableCell>
+                    <StyledTableCell><Chip label={`${row.discount}%`} /></StyledTableCell>
+                    <StyledTableCell>
+                      <Button variant='outlined' color='primary' sx={{ borderWidth: '2px', fontWeight: 600 }} onClick={() => navigate(`/app/products/one/${row.id}`)}>
+                        Подробнее
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
           </TableBody>
         </Table>
       </TableContainer>

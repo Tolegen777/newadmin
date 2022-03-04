@@ -3,27 +3,26 @@ import AdminPage from './pages/AdminPage';
 import AuthPage from './pages/AuthPage';
 import React from 'react';
 import { useTypedSelector } from './store/index'
+import { useDispatch } from 'react-redux';
+import { refresh } from './store/auth/auth.action';
 
 function App() {
   const { isAuth } = useTypedSelector(state => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (isAuth) {
-      navigate('/app')
-    }
-  }, [isAuth])
+    dispatch(refresh())
+  }, [])
 
   return (
     <Routes>
-      {!isAuth ?
-        <Route path={`/auth/*`} element={<AuthPage />} />
-        :
-        <Route path={`/app/*`} element={<AdminPage />} />
-      }
+      <Route path={`/auth/*`} element={<AuthPage />} />
+      
+      <Route path={`/app/*`}  element={isAuth ? <AdminPage /> : <Navigate to="/auth" />} />
       <Route
         path="*"
-        element={<Navigate to='/auth' />}
+        element={<Navigate to='/app' />}
       />
     </Routes>
   );

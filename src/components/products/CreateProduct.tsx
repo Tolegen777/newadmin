@@ -3,16 +3,18 @@ import { Box, Button, Grid, MenuItem, Select, TextField, textFieldClasses, Typog
 // import ImageInput from '../admin/ImageInput';
 import { styled } from '@mui/material/styles';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
+import { $imageApi } from '../../api';
 import { ProductService } from '../../service/product/product.service';
 import { useTypedSelector } from '../../store';
 import { ActionsEnum } from '../../store/enum';
 import { createProduct, fetchCategories, fetchSpecs, updateProduct } from '../../store/product/product.action';
-import { IProductNew } from '../../types/IProduct';
+import { IProductNew, IProductOneResponse } from '../../types/IProduct';
 import ImageContainer from '../image-input/ImageContainer';
 import ImageInput from '../image-input/ImageInput';
+import SelectCategory from '../select-category/SelectCategory';
 import SelectSpecs from './SelectSpecs';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
@@ -51,12 +53,12 @@ const CreateProduct: React.FC = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { categories, status } = useTypedSelector(state => state.product);
+  const [product, setProduct] = useState<IProductOneResponse | null>(null)
 
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      if(!productId) {
+      if (!productId) {
         dispatch(createProduct(values));
       } else {
         dispatch(updateProduct(values));
@@ -93,18 +95,16 @@ const CreateProduct: React.FC = () => {
   }
 
   React.useEffect(() => {
-    if (!categories.length) {
-      dispatch(fetchCategories());
-    }
     async function fetch() {
       if (productId) {
         const result = await ProductService.fetchOneProduct(productId);
-        const {title, smallDesc, fullDesc, category, discount, id, image, photos, price, specs} = result.data.product;
+        setProduct(result.data);
+        const { title, smallDesc, fullDesc, category, discount, id, image, photos, price, specs } = result.data.product;
         const productData: IProductNew = {
           id,
           title,
           smallDesc,
-          fullDesc, 
+          fullDesc,
           category: String(category.id),
           discount,
           image: null,
@@ -149,6 +149,16 @@ const CreateProduct: React.FC = () => {
                 </Grid>
               )
             })}
+            {productId &&
+              product?.product.photos.map((photo) => (
+                <ImageContainer
+                  image={`${$imageApi}/${photo.image}`}
+                // handleChange={(event) => handleImageChange(event, ind)}
+                // handleDelete={() => handleImageDelete(ind)}
+                />
+                // <img src={`${$imageApi}/${photo.image}`} />
+              ))
+            }
           </Grid>
         </div>
         <Grid container spacing={2}>
@@ -190,7 +200,8 @@ const CreateProduct: React.FC = () => {
           </Grid>
           <Grid item sm={6} xs={6} lg={6}>
             <StyledSubHeader>Категория</StyledSubHeader>
-            <StyledSelect
+            <SelectCategory />
+            {/* <StyledSelect
               value={values.category}
               name="category"
               onChange={handleChange}
@@ -203,7 +214,7 @@ const CreateProduct: React.FC = () => {
               {categories?.map((category) => (
                 <MenuItem value={category.id}>{category.name}</MenuItem>
               ))}
-            </StyledSelect>
+            </StyledSelect> */}
             <StyledSubHeader>Цена, ₸</StyledSubHeader>
             <div style={{ borderLeft: '1px solid #8A3FFC', marginTop: '15px', paddingLeft: '10px' }}>
               <TextField
@@ -236,7 +247,7 @@ const CreateProduct: React.FC = () => {
           size="large"
           onClick={() => handleSubmit()}
           sx={{ marginTop: '15px' }}
-          disabled={status === ActionsEnum.LOADING}
+        // disabled={isLoading}
         >
           Сохранить
         </Button>

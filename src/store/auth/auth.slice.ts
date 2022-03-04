@@ -7,11 +7,11 @@ interface IInitState {
     isAuth: boolean;
     user: IUser | null;
     error: unknown;
-    status: ActionsEnum
+    isLoading: boolean
 }
 
 const initialState: IInitState = {
-    status: ActionsEnum.IDLE,
+    isLoading: false,
     error: null,
     user: null,
     isAuth: false
@@ -20,26 +20,26 @@ const initialState: IInitState = {
 const authReducer = createSlice({
     name: 'auth',
     reducers: {
-        
+
     },
     initialState,
     extraReducers: builder => {
         builder
             .addCase(login.pending, ((state) => {
-                state.status = ActionsEnum.LOADING
+                state.isLoading = true
             }))
-            .addCase(login.fulfilled, ((state, {payload}) => {
-                state.status = ActionsEnum.SUCCESS
+            .addCase(login.fulfilled, ((state, { payload }) => {
+                state.isLoading = false
                 state.isAuth = true
                 state.user = payload.user
             }))
-            .addCase(login.rejected, ((state, {error}) => {
-                state.status = ActionsEnum.ERROR
+            .addCase(login.rejected, ((state, { error }) => {
+                state.isLoading = false
                 state.error = error
             }))
             .addCase(logout, () => {
                 return initialState
-              })
+            })
     }
 })
 export default authReducer.reducer

@@ -11,7 +11,7 @@ import ProfileView from '../views/Profile';
 const AdminPage: React.FC = () => {
 
   return (
-    <Box sx={{ display: 'flex', backgroundColor: '#F2F4F5' }}>
+    <Box sx={{ display: 'flex', backgroundColor: '#F2F4F5', minHeight: '100vh' }}>
       <CssBaseline />
       <Sidebar />
       <Box

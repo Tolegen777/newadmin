@@ -67,3 +67,19 @@ export interface IProductResponse {
     products: IProducts[]
     count: number
 }
+
+export interface IProductQuery {
+    shopId?: number
+    categoryId?: string
+    brandId?: string
+    bestseller?: boolean
+    almostFree?: boolean
+    search: string
+    tagId?: string
+    priceFrom?: string
+    priceTo?: string
+    page?: number
+    limit?: number
+    block?: boolean
+    confirm?: boolean
+}

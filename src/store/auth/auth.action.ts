@@ -15,6 +15,20 @@ export const login = createAsyncThunk<ILoginResponse, ILogin>(
     }
 )
 
+export const refresh = createAsyncThunk<ILoginResponse>(
+    'auth/refresh',
+    async function (_, { rejectWithValue }) {
+        try {
+            const response = await AuthService.refresh();
+            localStorage.setItem('access_token', response.data.access_token);
+            return response.data;
+        } catch (e) {
+            return rejectWithValue(e);
+        }
+    }
+)
+
+
 export const fetchUser = createAsyncThunk<IUser>(
     'profile/fetch',
     async function (_, { rejectWithValue }) {
