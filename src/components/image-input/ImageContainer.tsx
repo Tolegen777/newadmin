@@ -33,8 +33,8 @@ const useStyles = makeStyles({
 
 type Props = {
   image: any,
-  handleChange?: (input: any) => void,
-  handleDelete?: () => void
+  handleChange: (input: any) => void,
+  handleDelete: () => void
 }
 
 const ImageContainer: React.FC<Props> = ({ image, handleChange, handleDelete }) => {
@@ -42,10 +42,9 @@ const ImageContainer: React.FC<Props> = ({ image, handleChange, handleDelete }) 
 
   return (
     <div className={classes.imageContainer}>
-      <img src={image} alt={image} style={{ filter: "brightness(1)", borderRadius: "6px", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover", width: "100px", height: "100px", objectFit: "contain" }} />
-      {handleChange && handleDelete && <IconButton component="label">
+      <img src={image} alt={image} style={{ filter: "brightness(1)", borderRadius: "6px", backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover", width: "90px", height: "90px", objectFit: "contain" }} />
+      <IconButton component="label">
         <EditIcon />
-        {/* <img src={EditIcon} alt="icon" /> */}
         <input
           type="file"
           hidden
@@ -54,7 +53,6 @@ const ImageContainer: React.FC<Props> = ({ image, handleChange, handleDelete }) 
           onChange={handleChange}
         />
       </IconButton>
-      }
       <Button variant="outlined" size="small" onClick={handleDelete}>Удалить</Button>
     </div>
   )

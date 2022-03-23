@@ -19,7 +19,7 @@ export const getEnvApi = (): string => {
 
 export const $api = axios.create({
     baseURL: getEnvApi(),
-    withCredentials: true
+    withCredentials: true,
 })
 
 $api.interceptors.request.use((config) => {

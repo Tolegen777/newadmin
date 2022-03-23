@@ -2,13 +2,16 @@ import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import { ILogin, ILoginResponse } from "../../types/ILogin";
 import { AuthService } from "../../service/auth/auth.service";
 import { IProfileUpdate, IUser } from "../../types/IProfile";
+import { IShop } from "../../types/IShop";
 
-export const login = createAsyncThunk<ILoginResponse, ILogin>(
+export const login = createAsyncThunk<{ user: IUser, shop: IShop }, ILogin>(
     'auth/login',
     async function (creds, { rejectWithValue }) {
         try {
             const response = await AuthService.login(creds)
-            return response.data
+            const { user } = response.data;
+            const shop = user.shops[0] as IShop;
+            return { user, shop }
         } catch (e) {
             return rejectWithValue(e)
         }

@@ -26,7 +26,7 @@ const Filters: FC<Props> = ({ filters, handleChange, handleSubmit }) => {
     <Grid container spacing={2}>
       <Grid item xs={10}>
         <Grid container spacing={1} alignItems="center">
-          <Grid item xs>
+          <Grid item>
             <TextField
               variant="outlined"
               size="small"
@@ -44,7 +44,7 @@ const Filters: FC<Props> = ({ filters, handleChange, handleSubmit }) => {
               }}
             />
           </Grid>
-          <Grid item xs>
+          {/* <Grid item xs>
             <FormControl fullWidth size='small'>
               <InputLabel id="categoryLabel">Категория</InputLabel>
               <Select
@@ -59,8 +59,8 @@ const Filters: FC<Props> = ({ filters, handleChange, handleSubmit }) => {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs>
+          </Grid> */}
+          <Grid item>
             <Stack direction={'row'} alignItems={'center'} spacing={2}>
               <Typography>Цена:</Typography>
               <TextField
@@ -88,15 +88,9 @@ const Filters: FC<Props> = ({ filters, handleChange, handleSubmit }) => {
             <FormControlLabel
                 label="Бестселлеры"
                 style={{margin: '4px'}}
+                onChange={handleChange}
                 control={
                   <Field type="checkbox" name="bestseller" />
-                }
-              />
-              <FormControlLabel
-                label="Почти даром"
-                style={{margin: '4px'}}
-                control={
-                  <Field type="checkbox" name="almostFree" />
                 }
               />
               <FormControlLabel

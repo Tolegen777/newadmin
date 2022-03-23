@@ -25,6 +25,5 @@ export class AuthService {
             accept: "multipart/form-data"
         }
         return $api.put<IUser>(`profile/${profile.id}`, formData, { headers })
-
     }
 }

@@ -53,7 +53,8 @@ const CreateProduct: React.FC = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [product, setProduct] = useState<IProductOneResponse | null>(null)
+  const [product, setProduct] = useState<IProductOneResponse | null>(null);
+  const { user } = useTypedSelector(state => state.auth);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -111,7 +112,7 @@ const CreateProduct: React.FC = () => {
           photos: [],
           price,
           specs: [],
-          shopId: 7
+          shopId: user?.shops[0].id as number
         }
         setValues(productData);
       }
@@ -138,7 +139,19 @@ const CreateProduct: React.FC = () => {
             <Grid item xs={2}>
               <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px" width="100px" />
             </Grid>
-            {values.photos.map((image, ind) => {
+            {productId &&
+              product?.product.photos.map((photo, ind) => (
+                <Grid item xs={2} key={ind}>
+                  <ImageContainer
+                    image={`${$imageApi}/${photo.image}`}
+                    handleChange={(event) => handleImageChange(event, ind)}
+                    handleDelete={() => handleImageDelete(ind)}
+                  />
+                </Grid>
+                // <img src={`${$imageApi}/${photo.image}`} />
+              ))
+            }
+            {/* {values.photos.map((image, ind) => {
               return (
                 <Grid item xs={2} key={ind}>
                   <ImageContainer
@@ -148,17 +161,7 @@ const CreateProduct: React.FC = () => {
                   />
                 </Grid>
               )
-            })}
-            {productId &&
-              product?.product.photos.map((photo) => (
-                <ImageContainer
-                  image={`${$imageApi}/${photo.image}`}
-                // handleChange={(event) => handleImageChange(event, ind)}
-                // handleDelete={() => handleImageDelete(ind)}
-                />
-                // <img src={`${$imageApi}/${photo.image}`} />
-              ))
-            }
+            })} */}
           </Grid>
         </div>
         <Grid container spacing={2}>
