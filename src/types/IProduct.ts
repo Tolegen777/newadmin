@@ -28,6 +28,7 @@ export interface IProduct {
     specs: IValue[]
     image: string
     photos: Photo[]
+    quantity?:number
 }
 export interface IProductOneResponse {
     product:IProduct;

@@ -4,3 +4,13 @@ export enum ActionsEnum {
     ERROR="ERROR",
     LOADING="LOADING"
 }
+
+export enum StatusOfOrder {
+    CREATED="CREATED",
+    PAYMENT="PAYMENT",
+    READYFORDELIVERY="READYFORDELIVERY",
+    DELIVERY="DELIVERY",
+    SUCCESS = "SUCCESS",
+    CANCELED = "CANCELED",
+    ERROR="ERROR",
+}

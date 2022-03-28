@@ -10,6 +10,8 @@ export const login = createAsyncThunk<{ user: IUser, shop: IShop }, ILogin>(
         try {
             const response = await AuthService.login(creds)
             const { user } = response.data;
+            //token
+            localStorage.setItem('access_token',response.data.access_token)
             const shop = user.shops[0] as IShop;
             return { user, shop }
         } catch (e) {
