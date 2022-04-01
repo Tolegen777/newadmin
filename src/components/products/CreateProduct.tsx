@@ -151,7 +151,7 @@ const CreateProduct: React.FC = () => {
                 // <img src={`${$imageApi}/${photo.image}`} />
               ))
             }
-            {/* {values.photos.map((image, ind) => {
+            {values.photos.map((image, ind) => {
               return (
                 <Grid item xs={2} key={ind}>
                   <ImageContainer
@@ -161,7 +161,7 @@ const CreateProduct: React.FC = () => {
                   />
                 </Grid>
               )
-            })} */}
+            })}
           </Grid>
         </div>
         <Grid container spacing={2}>
@@ -195,11 +195,11 @@ const CreateProduct: React.FC = () => {
               maxRows={8}
               fullWidth
             />
-            <StyledSubHeader>Артикул товара</StyledSubHeader>
-            <StyledTextField
-              label="Артикул"
-              name="article"
-            />
+            {/*<StyledSubHeader>Артикул товара</StyledSubHeader>*/}
+            {/*<StyledTextField*/}
+            {/*  label="Артикул"*/}
+            {/*  name="article"*/}
+            {/*/>*/}
           </Grid>
           <Grid item sm={6} xs={6} lg={6}>
             <StyledSubHeader>Категория</StyledSubHeader>
