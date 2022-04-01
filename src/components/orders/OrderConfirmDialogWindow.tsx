@@ -1,14 +1,5 @@
-import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    Typography
-} from "@mui/material";
+import React from 'react';
+import {Box, Button, Dialog, DialogContent, DialogTitle, Paper, Typography} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from "react-router-dom";
 
@@ -29,17 +20,19 @@ const OrderConfirmDialogWindow:React.FC<PropsType> = ({buttonTypeText,title,hand
         } else if (handleCancelOrder){
             handleCancelOrder()
         }
-        //isWindowOpen = false
+
         navigate('/app/orders')
     }
 
 
     return (
         <Dialog
-                open={isWindowOpen}
+            open={isWindowOpen}
+
         >
+            <Paper sx = {{borderRadius:1}}>
                 <DialogTitle id="alert-dialog-title" sx={{}}>
-                    <CloseIcon onClick={handleClickClose} sx={{float:'right'}}></CloseIcon>
+                    <CloseIcon onClick={handleClickClose} sx={{float:'right',cursor:'pointer'}}></CloseIcon>
                 </DialogTitle>
 
                 <DialogContent sx = {{width:'500px',textAlign:'center'}}>
@@ -59,6 +52,8 @@ const OrderConfirmDialogWindow:React.FC<PropsType> = ({buttonTypeText,title,hand
                         {buttonTypeText}
                     </Button>
                 </Box>
+            </Paper>
+
             </Dialog>
 
     );

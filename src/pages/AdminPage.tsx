@@ -7,6 +7,9 @@ import CustomersView from '../views/Customers';
 import OrdersView from '../views/Orders';
 import ProductsView from '../views/Products';
 import ProfileView from '../views/Profile';
+import Employees from "../views/Employees";
+
+
 
 const AdminPage: React.FC = () => {
 
@@ -23,6 +26,7 @@ const AdminPage: React.FC = () => {
           <Route path={"customers"} element={<CustomersView />} />
           <Route path={"products/*"} element={<ProductsView />} />
           <Route path={"orders/*"} element={<OrdersView />} />
+          <Route path={"employees/*"} element={<Employees />} />
           <Route
             path="//*"
             element={<Navigate to="/app/profile" />}
