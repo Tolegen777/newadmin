@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import { IProductNew, IProductOneResponse, IProductQuery, IProductResponse, ISpec } from "../../types/IProduct";
 import { ICategory } from "../../types/ICategory";
 import { useTypedSelector } from "../../store";
+import products from "../../views/Products";
 
 export class ProductService {
     static async fetchProducts(query: IProductQuery): Promise<AxiosResponse<IProductResponse>> {
@@ -12,9 +13,8 @@ export class ProductService {
         return $api.get<IProductOneResponse>(`product/get-one/${id}`)
     }
     static async createProduct(product: IProductNew): Promise<AxiosResponse<IProductOneResponse>> {
-        //console.log('hello')
         const formData = new FormData();
-        console.log(product)
+
         formData.append('title', product.title);
         formData.append('categoryId', product.categoryId);
         formData.append('smallDesc', product.smallDesc);
@@ -23,11 +23,11 @@ export class ProductService {
         formData.append('discount', String(product.discount));
         formData.append('shopId', String(product.shopId));
         formData.append('subs', product.subs[0]);
-        formData.append('specs',product.specs.join(','))
+        formData.append('specs',Array.from(product.specs.values()).join(','))
         product.subs.forEach(photo => {
             formData.append('avatar', photo)
         })
-        console.log(formData)
+
         return $api.post<IProductOneResponse>(`shop/product`, formData)
     }
     static async updateProduct(product: IProductNew): Promise<AxiosResponse<IProductOneResponse>> {

@@ -9,19 +9,29 @@ interface IInitState {
     categories: ICategory[]
     specs: ISpec[]
     error: unknown
+    error2?: unknown
     isLoading: boolean
+    payload?:any
 }
 
 const initialState: IInitState = {
     isLoading: false,
     error: null,
+    error2:null,
     products: {count: 0, products: []},
     categories: [],
-    specs: []
+    specs: [],
+    payload:null,
+
 }
 const productSlice = createSlice({
     name: 'product',
-    reducers: {},
+    reducers: {
+        clearPayload: (state) => {
+
+            state.payload =null
+        },
+    },
     initialState,
     extraReducers: builder => {
         builder
@@ -29,12 +39,15 @@ const productSlice = createSlice({
                 state.isLoading = true
             }))
             .addCase(fetchProducts.fulfilled, ((state, {payload}) => {
+
                 state.isLoading = false
                 state.products = payload
+
             }))
             .addCase(fetchProducts.rejected, ((state, {error}) => {
                 state.isLoading = false
                 state.error = error
+
             }))
             .addCase(createProduct.pending, ((state) => {
                 state.isLoading = true
@@ -44,7 +57,14 @@ const productSlice = createSlice({
             // }))
             .addCase(createProduct.rejected, ((state, {error}) => {
                 state.isLoading = false
-                state.error = error
+                state.error2 = error
+
+            }))
+            .addCase(createProduct.fulfilled, ((state, response) => {
+
+                state.isLoading = false
+                state.payload = response
+                state.error2=null
             }))
             .addCase(fetchCategories.fulfilled, ((state, {payload}) => {
                 state.categories = payload
@@ -56,4 +76,6 @@ const productSlice = createSlice({
             // state.specs = payload}))
     }
 })
+
+export const {clearPayload} = productSlice.actions
 export default productSlice.reducer

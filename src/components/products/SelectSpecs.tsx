@@ -1,7 +1,6 @@
 import { styled } from '@mui/material/styles';
 import { MenuItem, Select, Typography } from '@mui/material';
 import React from 'react';
-import { useFormik } from 'formik';
 import { useGetSpecsQuery } from '../../store/rtk-api/baseEndpoints';
 
 
@@ -22,23 +21,24 @@ type Props = {
 }
 const SelectSpecs: React.FC<Props> = ({ categoryId,setFieldValue }) => {
   const { data: specs, isLoading } = useGetSpecsQuery(String(categoryId))
- // console.log(specs)
- // console.log("specsspecs")
+
   const map = new Map();
   const [specsList, setSpecsList] = React.useState<any>(map)
 
   const handleAddSpec = (key:number,specId: number) => {
+
     setSpecsList(specsList.set(String(key),specId))
-    //console.log(specsList)
 
 
-      setFieldValue('specs',specsList)
+
+
+
+    setFieldValue('specs',specsList)
 
 
   }
 
-  // console.log("frf")
-  //console.log(map)
+
 
   return (
     <>

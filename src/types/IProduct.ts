@@ -31,6 +31,7 @@ export interface IProduct {
     quantity?:number
 }
 export interface IProductOneResponse {
+    meta?: any;
     product:IProduct;
     avg:number;
 }

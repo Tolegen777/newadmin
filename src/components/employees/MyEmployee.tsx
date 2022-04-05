@@ -171,8 +171,8 @@ const MyEmployee = () => {
 
                 >
                     {isLoading&& <CircularProgress />}
-                    {addSellingError&&<CustomAlert status="error" message = "Возникла неизвестная ошибка перепрверьте email!"/>}
-                    {isSuccess&&<CustomAlert status="success" message = "Операция успешно выполнено"/>}
+                    {addSellingError&&<CustomAlert title="Ошибка"status="error" message = "Возникла неизвестная ошибка перепрверьте email!"/>}
+                    {isSuccess&&<CustomAlert title="Успешно" status="success" message = "Операция успешно выполнено"/>}
 
                         <DialogTitle id="alert-dialog-title" sx={{}}>
                             <CloseIcon onClick={closeWindow} sx={{float:'right',cursor:'pointer'}}></CloseIcon>

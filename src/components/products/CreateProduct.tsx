@@ -3,13 +3,12 @@ import {Box, Button, Grid, ListItem, MenuItem, Select, TextField, textFieldClass
 // import ImageInput from '../admin/ImageInput';
 import { styled } from '@mui/material/styles';
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { $imageApi } from '../../api';
 import { ProductService } from '../../service/product/product.service';
 import { useTypedSelector } from '../../store';
-import { ActionsEnum } from '../../store/enum';
 import { createProduct, fetchCategories, fetchSpecs, updateProduct } from '../../store/product/product.action';
 import { IProductNew, IProductOneResponse } from '../../types/IProduct';
 import ImageContainer from '../image-input/ImageContainer';
@@ -17,6 +16,8 @@ import ImageInput from '../image-input/ImageInput';
 import SelectCategory from '../select-category/SelectCategory';
 import SelectSpecs from './SelectSpecs';
 import {useGetSpecsQuery} from "../../store/rtk-api/baseEndpoints";
+import CustomAlert from "../alert/CustomAlert";
+import {clearPayload} from "../../store/product/product.slice";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   [`&.${textFieldClasses.root}`]: {
@@ -63,10 +64,27 @@ const CreateProduct: React.FC = () => {
   const { data: specs, isLoading } = useGetSpecsQuery(String(categoryId))
   let arr:Array<string> = [];
   {specs&&specs.map(spec=>arr.push(String(spec.id)))}
-  //console.log(arr)
+  const {payload, error2,isLoading:isProductAdding}  = useTypedSelector(state => state.product)
+  const [isAlert,setAlert] = useState(false)
 
 
-  //console.log("ds")
+
+
+
+  useEffect(()=>{
+    if (payload&&payload.meta.requestStatus==="fulfilled"&&error2==null){
+
+      navigate('/app/products/list')
+
+      dispatch(clearPayload())
+
+    } else if(error2!=null){
+      setAlert(true)
+    }
+
+  },[payload,error2])
+
+
   const handleSetCategory = (categoryId:number,categoryName:string) => {
     setCategoryId(categoryId)
     setFieldValue('categoryId', categoryId)
@@ -74,14 +92,14 @@ const CreateProduct: React.FC = () => {
   }
 
 
+
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
-      console.log('post')
-      console.log(productId)
+
       if (!productId) {
-        console.log('otti')
         dispatch(createProduct(values));
+
       } else {
         dispatch(updateProduct(values));
       }
@@ -115,6 +133,10 @@ const CreateProduct: React.FC = () => {
     let images = [...values.subs].filter((img, ind) => ind !== id);
     setFieldValue('photos', images);
   }
+  const goToBack = () => {
+    navigate('/app/products/list')
+    setAlert(false)
+  }
 
   React.useEffect(() => {
     async function fetch() {
@@ -145,12 +167,13 @@ const CreateProduct: React.FC = () => {
   React.useEffect(() => {
     if (values.categoryId.length) {
       dispatch(fetchSpecs(values.categoryId))
+
     }
   }, [values.categoryId])
 
   return (
     <Box>
-      <Button variant="contained" sx={{ backgroundColor: '#EFF3F9', color: 'black' }} startIcon={<ArrowBackIosNewIcon />} onClick={() => navigate('/app/products/list')}>Назад</Button>
+      <Button variant="contained" sx={{ backgroundColor: '#EFF3F9', color: 'black' }} startIcon={<ArrowBackIosNewIcon />} onClick={goToBack}>Назад</Button>
       <Typography sx={{ fontSize: "20px", marginTop: '20px', marginBottom: '25px' }}>Добавить товар</Typography>
       <form>
         <StyledSubHeader>Фотография</StyledSubHeader>
@@ -273,11 +296,12 @@ const CreateProduct: React.FC = () => {
           size="large"
           onClick={() => handleSubmit()}
           sx={{ marginTop: '15px' }}
-        // disabled={isLoading}
+         disabled={isProductAdding}
         >
           Сохранить
         </Button>
       </form>
+      {isAlert&&<CustomAlert title="Ошибка" status="error" message='Произошла ошибка,перепроверьте заполняемые данные!'/>}
     </Box>
   )
 }
