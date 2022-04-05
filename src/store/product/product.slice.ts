@@ -1,7 +1,7 @@
 import {ActionsEnum} from "../enum";
 import {IProductResponse, ISpec} from "../../types/IProduct";
 import {createSlice} from "@reduxjs/toolkit";
-import {createProduct, fetchCategories, fetchProducts, fetchSpecs} from "./product.action";
+import {createProduct, fetchCategories, fetchOneProduct, fetchProducts, fetchSpecs} from "./product.action";
 import { ICategory } from "../../types/ICategory";
 
 interface IInitState {
@@ -52,6 +52,8 @@ const productSlice = createSlice({
             .addCase(fetchSpecs.fulfilled, ((state, {payload}) => {
                 state.specs = payload
             }))
+            // .addCase(fetchOneProduct.fulfilled,((state,{payload})=>{
+            // state.specs = payload}))
     }
 })
 export default productSlice.reducer

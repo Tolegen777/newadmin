@@ -17,22 +17,28 @@ const StyledSelect = styled(Select)(({ theme }) => ({
 }))
 
 type Props = {
-  categoryId: string
+  categoryId: number | null,
+  setFieldValue(name:string,arr:Array<number>):void
 }
-const SelectSpecs: React.FC<Props> = ({ categoryId }) => {
-  const { data: specs, isLoading } = useGetSpecsQuery(categoryId)
-  const [specsList, setSpecsList] = React.useState<{ title: string, id: '' }[]>([])
+const SelectSpecs: React.FC<Props> = ({ categoryId,setFieldValue }) => {
+  const { data: specs, isLoading } = useGetSpecsQuery(String(categoryId))
+ // console.log(specs)
+ // console.log("specsspecs")
+  const map = new Map();
+  const [specsList, setSpecsList] = React.useState<any>(map)
 
-  const addSpec = (spec: { title: string, id: number }) => {
+  const handleAddSpec = (key:number,specId: number) => {
+    setSpecsList(specsList.set(String(key),specId))
+    //console.log(specsList)
+
+
+      setFieldValue('specs',specsList)
+
+
   }
 
-  React.useEffect(() => {
-    if (specs) {
-      setSpecsList(specs.map((spec) => {
-        return { title: spec.title, id: '' }
-      }))
-    }
-  }, specs)
+  // console.log("frf")
+  //console.log(map)
 
   return (
     <>
@@ -40,17 +46,15 @@ const SelectSpecs: React.FC<Props> = ({ categoryId }) => {
         <>
           <StyledSubHeader>{spec?.title}</StyledSubHeader>
           <StyledSelect
-            // value={values.category}
-            // name="category"
-            // onChange={handleChange}
+            value={specsList.get(String(spec.id))}
             displayEmpty
           >
             <MenuItem value="">
               <em>Вариант не выбран</em>
             </MenuItem>
-            {spec?.values?.map((specValue) => (
-              <MenuItem value={specValue.id}>{specValue.value}</MenuItem>
-            ))}
+            {spec?.values?.map((specValue) => {
+               return <MenuItem key={specValue.id} value={specValue.id} onClick={() => handleAddSpec(spec.id,specValue.id)}>{specValue.value}</MenuItem>
+            })}
           </StyledSelect>
         </>
       ))}

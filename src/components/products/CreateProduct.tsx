@@ -1,5 +1,5 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Box, Button, Grid, MenuItem, Select, TextField, textFieldClasses, Typography } from '@mui/material';
+import {Box, Button, Grid, ListItem, MenuItem, Select, TextField, textFieldClasses, Typography} from '@mui/material';
 // import ImageInput from '../admin/ImageInput';
 import { styled } from '@mui/material/styles';
 import { useFormik } from 'formik';
@@ -16,6 +16,7 @@ import ImageContainer from '../image-input/ImageContainer';
 import ImageInput from '../image-input/ImageInput';
 import SelectCategory from '../select-category/SelectCategory';
 import SelectSpecs from './SelectSpecs';
+import {useGetSpecsQuery} from "../../store/rtk-api/baseEndpoints";
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   [`&.${textFieldClasses.root}`]: {
@@ -42,24 +43,44 @@ const initialValues: IProductNew = {
   fullDesc: '',
   discount: 0,
   price: 0,
-  category: '',
+  categoryId: '',
   specs: [],
-  image: null,
-  photos: [],
+  avatar: null,
+  subs: [],
   shopId: 7
 }
 
+
 const CreateProduct: React.FC = () => {
+
   const { productId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [product, setProduct] = useState<IProductOneResponse | null>(null);
   const { user } = useTypedSelector(state => state.auth);
+  const [categoryId,setCategoryId] = useState<number | null>(null)
+  const [categoryName,setCategoryName] = useState<string>('')
+  const { data: specs, isLoading } = useGetSpecsQuery(String(categoryId))
+  let arr:Array<string> = [];
+  {specs&&specs.map(spec=>arr.push(String(spec.id)))}
+  //console.log(arr)
+
+
+  //console.log("ds")
+  const handleSetCategory = (categoryId:number,categoryName:string) => {
+    setCategoryId(categoryId)
+    setFieldValue('categoryId', categoryId)
+    setCategoryName(categoryName)
+  }
+
 
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: async (values) => {
+      console.log('post')
+      console.log(productId)
       if (!productId) {
+        console.log('otti')
         dispatch(createProduct(values));
       } else {
         dispatch(updateProduct(values));
@@ -74,9 +95,9 @@ const CreateProduct: React.FC = () => {
       return;
     }
     const file = input.files[0];
-    let images = [...values.photos];
+    let images = [...values.subs];
     images.push(file);
-    setFieldValue('photos', images);
+    setFieldValue('subs', images);
   }
 
   const handleImageChange = (event: Event, id: number) => {
@@ -85,13 +106,13 @@ const CreateProduct: React.FC = () => {
       return;
     }
     const file = input.files[0];
-    let images = [...values.photos];
+    let images = [...values.subs];
     images[id] = file;
     setFieldValue('photos', images);
   }
 
   const handleImageDelete = (id: number) => {
-    let images = [...values.photos].filter((img, ind) => ind !== id);
+    let images = [...values.subs].filter((img, ind) => ind !== id);
     setFieldValue('photos', images);
   }
 
@@ -106,26 +127,26 @@ const CreateProduct: React.FC = () => {
           title,
           smallDesc,
           fullDesc,
-          category: String(category.id),
+          categoryId: String(category.id),
           discount,
-          image: null,
-          photos: [],
+          avatar: null,
+          subs: [],
           price,
-          specs: [],
+          specs: arr,
           shopId: user?.shops[0].id as number
         }
+        handleSetCategory(category.id, category.name);
         setValues(productData);
       }
     }
     fetch()
   }, [])
 
-
   React.useEffect(() => {
-    if (values.category.length) {
-      dispatch(fetchSpecs(values.category))
+    if (values.categoryId.length) {
+      dispatch(fetchSpecs(values.categoryId))
     }
-  }, [values.category])
+  }, [values.categoryId])
 
   return (
     <Box>
@@ -151,7 +172,7 @@ const CreateProduct: React.FC = () => {
                 // <img src={`${$imageApi}/${photo.image}`} />
               ))
             }
-            {values.photos.map((image, ind) => {
+            {values.subs.map((image, ind) => {
               return (
                 <Grid item xs={2} key={ind}>
                   <ImageContainer
@@ -202,8 +223,10 @@ const CreateProduct: React.FC = () => {
             {/*/>*/}
           </Grid>
           <Grid item sm={6} xs={6} lg={6}>
+
             <StyledSubHeader>Категория</StyledSubHeader>
-            <SelectCategory />
+            <ListItem sx = {{fontWeight:'bold'}}>Выбранная категория: <Typography sx={{marginLeft:'4px'}}> {categoryName}{categoryId}</Typography></ListItem>
+            <SelectCategory handleSetCategory = {handleSetCategory}/>
             {/* <StyledSelect
               value={values.category}
               name="category"
@@ -230,7 +253,7 @@ const CreateProduct: React.FC = () => {
             </div>
             <StyledSubHeader>Характеристики товара</StyledSubHeader>
             <div style={{ width: '100%', backgroundColor: '#EFF3F9', borderRadius: '8px', paddingLeft: '10px', paddingBottom: '10px' }}>
-              {values.category && <SelectSpecs categoryId={values.category} />}
+              {categoryId && <SelectSpecs categoryId={categoryId} setFieldValue = {setFieldValue}/>}
             </div>
             <StyledSubHeader>Дополнительная информация</StyledSubHeader>
             <div style={{ width: '100%', borderRadius: '8px' }}>

@@ -53,15 +53,15 @@ interface Photo {
 export interface IProductNew {
     id?: number
     title: string
-    category: string
+    categoryId: string
     smallDesc: string
     fullDesc: string
     price: number
     discount: number
-    specs: number[]
+    specs: string[]
     shopId: number
-    image: File | null
-    photos: File[]
+    avatar: File | null
+    subs: File[]
 }
 
 export interface IProductResponse {
