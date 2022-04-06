@@ -3,14 +3,14 @@ import { TypedUseSelectorHook, useSelector } from "react-redux";
 import authReducer from './auth/auth.slice'
 import productReducer from './product/product.slice';
 import { baseApi } from "./rtk-api/baseApi";
-import orderReducer from './order/order.slice'
+// import orderReducer from './order/order.slice'
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
         product: productReducer,
         [baseApi.reducerPath]: baseApi.reducer,
-        order:orderReducer,
+        // order:orderReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(baseApi.middleware),

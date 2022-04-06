@@ -28,7 +28,6 @@ const productSlice = createSlice({
     name: 'product',
     reducers: {
         clearPayload: (state) => {
-
             state.payload =null
         },
     },
@@ -39,15 +38,12 @@ const productSlice = createSlice({
                 state.isLoading = true
             }))
             .addCase(fetchProducts.fulfilled, ((state, {payload}) => {
-
                 state.isLoading = false
                 state.products = payload
-
             }))
             .addCase(fetchProducts.rejected, ((state, {error}) => {
                 state.isLoading = false
                 state.error = error
-
             }))
             .addCase(createProduct.pending, ((state) => {
                 state.isLoading = true
@@ -58,10 +54,8 @@ const productSlice = createSlice({
             .addCase(createProduct.rejected, ((state, {error}) => {
                 state.isLoading = false
                 state.error2 = error
-
             }))
             .addCase(createProduct.fulfilled, ((state, response) => {
-
                 state.isLoading = false
                 state.payload = response
                 state.error2=null
