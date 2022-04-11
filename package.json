@@ -2,7 +2,7 @@
   "name": "newadmin",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://shop.adu24.com",
   "dependencies": {
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
