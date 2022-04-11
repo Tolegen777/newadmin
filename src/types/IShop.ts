@@ -1,3 +1,6 @@
+import {IProduct} from "./IProduct";
+import {IAdminRole, IOwner} from "./types";
+
 export interface IShop {
     id: number
     name: string
@@ -11,4 +14,16 @@ export interface IShop {
     shop_type: string
     payment: boolean
     confirm: boolean
+    view?: boolean,
+    block?: boolean,
+    admin_users?:IAdminRole[]|undefined,
+    products?:IProduct[],
+    owner?:IOwner,
+    addresses?: Array<any>,
+
+
+
+
+
+
   }

@@ -1,5 +1,16 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import {Box, Button, Grid, ListItem, MenuItem, Select, TextField, textFieldClasses, Typography} from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  ListItem,
+  MenuItem,
+  Select,
+  TextField,
+  textFieldClasses,
+  Typography
+} from '@mui/material';
 // import ImageInput from '../admin/ImageInput';
 import { styled } from '@mui/material/styles';
 import { useFormik } from 'formik';
@@ -275,6 +286,7 @@ const CreateProduct: React.FC = () => {
               />
             </div>
             <StyledSubHeader>Характеристики товара</StyledSubHeader>
+            {isLoading&&<CircularProgress/>}
             <div style={{ width: '100%', backgroundColor: '#EFF3F9', borderRadius: '8px', paddingLeft: '10px', paddingBottom: '10px' }}>
               {categoryId && <SelectSpecs categoryId={categoryId} setFieldValue = {setFieldValue}/>}
             </div>

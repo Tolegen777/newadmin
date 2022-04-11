@@ -37,15 +37,14 @@ import CircularProgress from '@mui/material/CircularProgress';
 const MyEmployee = () => {
 
     const [value, setValue] = React.useState('all');
+    const [role, setRole] = React.useState('all');
     const [open, setOpen] = React.useState(true);
     const [isWindowOpen,setWindowOpen] = React.useState(false)
     const [addSeller, {isLoading, isError:addSellingError,isSuccess}] = useAddSellerMutation()
     const data = useTypedSelector(state => state.auth)
 
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
-    };
+
     const handleClick = () => {
         setOpen(!open);
     };
@@ -68,6 +67,18 @@ const MyEmployee = () => {
          addSeller({email,shopId,ownerEmail})
 
     }
+
+    // const changeRadioButtonValue:React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    //     console.log(e.target.value)
+    // }
+
+    const changeRadioButtonValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue((event.target as HTMLInputElement).value);
+        setRole((event.target as HTMLInputElement).value)
+        console.log((event.target as HTMLInputElement).value)
+    };
+
+
 
     // React.useEffect(() => {
     //     if(addSellingError) {
@@ -98,11 +109,7 @@ const MyEmployee = () => {
                 if (data&&data.user&&data.shop) {
                     handleAddSeller(values.email,data?.shop.id,data?.user.email)
                 }
-
-
-
-
-            },
+                },
         });
 
 
@@ -141,9 +148,10 @@ const MyEmployee = () => {
                                                     aria-labelledby="demo-controlled-radio-buttons-group"
                                                     name="controlled-radio-buttons-group"
                                                     value={value}
-                                                    onChange={handleChange}
+                                                    onChange={changeRadioButtonValue}
+
                                                 >
-                                                    <FormControlLabel value="all" control={<Radio />} label="Все статусы" />
+                                                    <FormControlLabel value="all" control={<Radio />} label="Все статусы"/>
                                                     <FormControlLabel value="seller" control={<Radio />} label="Управляющий" />
                                                     <FormControlLabel value="admin" control={<Radio />} label="Администратор" />
                                                 </RadioGroup>
@@ -165,7 +173,7 @@ const MyEmployee = () => {
                     </Button>
                     </Grid>
                 </Grid>
-                <EmployeesInfoList/>
+                <EmployeesInfoList role={role}/>
                 {isWindowOpen&&<Dialog
                     open={isWindowOpen}
 

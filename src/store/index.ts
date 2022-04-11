@@ -4,6 +4,7 @@ import authReducer from './auth/auth.slice'
 import productReducer from './product/product.slice';
 import { baseApi } from "./rtk-api/baseApi";
 import orderReducer from './order/order.slice'
+import webSocketReducer from "./webSocket/webSocket.slice"
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,8 @@ export const store = configureStore({
         product: productReducer,
         [baseApi.reducerPath]: baseApi.reducer,
         order:orderReducer,
+        websocketNotification:webSocketReducer,
+        [baseApi.reducerPath]:baseApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(baseApi.middleware),

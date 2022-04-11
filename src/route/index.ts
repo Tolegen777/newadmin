@@ -25,7 +25,7 @@ export enum MyRoutes {
     HOME = "/app",
     POSTS = "/app/posts",
     SETTINGS = "/app/settings",
-    CLIENTS = "/app/clients",
+    NOTIFICATIONS = "/app/notifications",
     EMPLOYEES = "/app/employees"
 }
 
@@ -39,7 +39,7 @@ export const menuRoutes: RouteType[] = [
     // { name: "Главная", path: MyRoutes.ORDERS, icon: ArticleIcon },
     { name: "Мои товары", path: MyRoutes.PRODUCTS, icon: InventoryIcon },
     { name: "Мои заказы", path: MyRoutes.ORDERS, icon: FactCheckIcon },
-    { name: "Клиенты", path: MyRoutes.CLIENTS, icon: GroupIcon },
+    { name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: GroupIcon },
     { name: "Сотрудники", path: MyRoutes.EMPLOYEES, icon: EngineeringRoundedIcon },
 ]
 

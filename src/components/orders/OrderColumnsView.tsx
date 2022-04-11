@@ -5,13 +5,21 @@ import OrderCard from './OrderCard';
 import {useGetOrdersQuery} from '../../store/rtk-api/baseEndpoints';
 import {useDispatch} from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+import {useTypedSelector} from "../../store";
 
 
 const OrderColumnsView: React.FC = () => {
     let dispatch = useDispatch()
+    const {shop} = useTypedSelector(state => state.auth)
+    let shopId = 0
+    if(shop) {
+        shopId = shop.id
+    }
+
 
     // test
-    const {data: orders, isLoading, error} = useGetOrdersQuery(7)
+
+    const {data: orders, isLoading, error} = useGetOrdersQuery(shopId)
 
     // React.useEffect(() => {
     //     console.log(orders + 'orders');

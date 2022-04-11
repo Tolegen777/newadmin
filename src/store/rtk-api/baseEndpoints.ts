@@ -18,7 +18,7 @@ const endpoints = baseApi.injectEndpoints({
         }),
         getSpecs: builder.query<ISpec[], string>({
             query: (categoryId) => ({
-                url: `/spec/${categoryId}`
+                url: `/spec/category/${categoryId}`
             }),
             providesTags: ['orders']
         }),

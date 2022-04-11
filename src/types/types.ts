@@ -105,3 +105,45 @@ export interface IAddSeller {
     email:string,
     ownerEmail:string
 }
+
+export interface IAdminRole {
+    id: number,
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    activated: boolean,
+    activationLink: string,
+    phone: string,
+    blocked: boolean,
+    avatar: any
+}
+
+export interface IOwner {
+    id: number,
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    activated: boolean,
+    activationLink: string,
+    phone: string,
+    blocked: boolean,
+    avatar: any
+}
+
+export interface ISendNotification {
+    userId:number,
+    message:string,
+    read?:boolean
+
+}
+
+export interface IGetNotification {
+    count:string | null,
+    data:{
+        notifications:ISendNotification[]
+    }
+
+
+}

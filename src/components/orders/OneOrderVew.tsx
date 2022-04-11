@@ -1,4 +1,4 @@
-import {Box, Grid, Paper, Typography} from '@mui/material'
+import {Box, CircularProgress, Grid, Paper, Typography} from '@mui/material'
 import React from 'react'
 import {useNavigate} from 'react-router-dom';
 import {
@@ -10,15 +10,25 @@ import {
 import OrderProductsBlock from "./OrderProductsBlock";
 import {useParams} from "react-router";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {useTypedSelector} from "../../store";
+import CustomAlert from "../alert/CustomAlert";
 
 
 const OneOrderVew = () => {
-    const {data: orders, isLoading, error} = useGetOrdersQuery(7)
+    const {shop} = useTypedSelector(state => state.auth)
+    let shopId = 0
+    if(shop) {
+        shopId = shop.id
+    }
+
+
+
+    const {data: orders, isLoading, error} = useGetOrdersQuery(shopId)
 
     const [createDelivery, {}] = useCreateDeliveryMutation()
     const [deleteDelivery, {isLoading: isDeleting, error: isDeletingError}] = useCancelOrderMutation()
 
-    console.log(orders + " orders!")
+
     const navigate = useNavigate();
     const params = useParams();
     let paramsId = undefined
@@ -42,8 +52,8 @@ const OneOrderVew = () => {
     return (
         <Paper sx={{padding: '10px'}}>
             <Box>
-                {isLoading && <Box sx={{textAlign: 'center'}}>Загрузка...</Box>}
-                {isDeleting && <Box sx={{textAlign: 'center'}}>Загрузка...</Box>}
+                {isLoading && <Box sx={{textAlign: 'center'}}><CircularProgress/></Box>}
+                {isDeleting && <Box sx={{textAlign: 'center'}}><CircularProgress/></Box>}
                 {error && <Box sx={{textAlign: 'center'}}>Что то пошло не так!</Box>}
                 {isDeletingError && <Box sx={{textAlign: 'center'}}>Что то пошло не так!</Box>}
 

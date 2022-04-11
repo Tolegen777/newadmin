@@ -20,10 +20,6 @@ type PropsType = {
 }
 
 const SelectCategory:React.FC<PropsType> = (props) => {
-    const navigate = useNavigate()
-
-    const dispatch = useDispatch();
-
     const [selectedCategory, setSelectedCategory] = useState<number | string>('')
     const data = useTypedSelector(state => state.product)
     const [open, setOpen] = React.useState(false);

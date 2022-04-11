@@ -6,10 +6,15 @@ import { NavLink, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import { menuRoutes } from '../../route';
 import { logout } from '../../store/auth/auth.action';
+import CustomAlert from "../alert/CustomAlert";
+import {useTypedSelector} from "../../store";
 
 const drawerWidth = 240;
 
+
+
 export default function ResponsiveDrawer() {
+    const isNotification = useTypedSelector(state=>state.websocketNotification.isNotification)
   const location = useLocation();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -63,6 +68,11 @@ export default function ResponsiveDrawer() {
           <ListItemText primary="Log Out" />
         </ListItemButton>
       </NavLink>
+        <Box sx = {{marginTop:'180px'}}>
+            {isNotification&&<CustomAlert title="Новое сообщение" status="info" message="У вас новое сообщение" />}
+        </Box>
+
+
     </div>
   );
 
