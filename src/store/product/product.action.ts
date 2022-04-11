@@ -34,14 +34,8 @@ export const createProduct = createAsyncThunk<IProductOneResponse, IProductNew>(
     'product/create',
     async function (product, { rejectWithValue }) {
         try {
-
             const response = await ProductService.createProduct(product)
-
-            //console.log(response)
-
             return response.data
-
-
         } catch (e) {
             return rejectWithValue(e)
         }

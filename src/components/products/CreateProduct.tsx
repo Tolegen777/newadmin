@@ -78,10 +78,6 @@ const CreateProduct: React.FC = () => {
   const {payload, error2,isLoading:isProductAdding}  = useTypedSelector(state => state.product)
   const [isAlert,setAlert] = useState(false)
 
-
-
-
-
   useEffect(()=>{
     if (payload&&payload.meta.requestStatus==="fulfilled"&&error2==null){
 
@@ -95,14 +91,11 @@ const CreateProduct: React.FC = () => {
 
   },[payload,error2])
 
-
   const handleSetCategory = (categoryId:number,categoryName:string) => {
     setCategoryId(categoryId)
     setFieldValue('categoryId', categoryId)
     setCategoryName(categoryName)
   }
-
-
 
   const formik = useFormik({
     initialValues: initialValues,
