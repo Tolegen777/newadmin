@@ -25,7 +25,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
         basketDefault = oneOrderData.order.basket.id
     }
 
-    const {data: basketUserData,isLoading} = useGetBasketUserDataQuery(basketDefault)
+    const {data: basketUserData, isLoading} = useGetBasketUserDataQuery(basketDefault)
 
 
     const handleClickClose = () => {
@@ -35,12 +35,14 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
     let showCancelWindow = () => {
         setCancelClick(true)
         setWindowOpen(true);
+        setConfirmClick(false)
 
     }
     let showConfirmWindow = () => {
 
         setConfirmClick(true)
         setWindowOpen(true);
+        setCancelClick(false)
 
     }
 
@@ -54,7 +56,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
 
     return (
         <>
-            {isLoading&& <CircularProgress />}
+            {isLoading && <CircularProgress/>}
             {
                 oneOrderData && String(oneOrderData.id) === params.orderId &&
                 <GetOrderInfo oneOrderData={oneOrderData} basketUserData={basketUserData} style={style}/>
@@ -67,7 +69,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                             <Typography sx={{fontWeight: 'bold', marginTop: '20px'}}>Информация о
                                 заказе</Typography>
                             <Grid item sm={5} xs={5} lg={5}>
-                                <OrderProductCard key = {products.product.id} id={products.product.id}
+                                <OrderProductCard key={products.product.id} id={products.product.id}
                                                   productCount={products.product.quantity && products.product.quantity}
                                                   image={products.product.image}
                                                   price={products.product.price}
@@ -98,9 +100,9 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                                         Отклонить заказ
                                     </Button>
                                     {isCancelClicked && <OrderConfirmDialogWindow
-                                    title='Отменение заказа' buttonTypeText='Отменить заказ'
-                                    handleCancelOrder={handleCancelOrder} isWindowOpen={isWindowOpen}
-                                    handleClickClose={handleClickClose}/>}
+                                        title='Отменение заказа' buttonTypeText='Отменить заказ'
+                                        handleCancelOrder={handleCancelOrder} isWindowOpen={isWindowOpen}
+                                        handleClickClose={handleClickClose}/>}
                                 </Box>}
 
                             {oneOrderData.status === "SUCCESS" &&
@@ -111,7 +113,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
 
                             {oneOrderData.status === "CANCELED" &&
                                 <Box>
-                                    <Typography sx={{fontWeight: 'bold', marginTop: '20px', color:'red'}}>Заказ
+                                    <Typography sx={{fontWeight: 'bold', marginTop: '20px', color: 'red'}}>Заказ
                                         отменен!</Typography>
                                 </Box>}
 
@@ -122,7 +124,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
             ) : <>
                 <Typography sx={{fontWeight: 'bold', marginBottom: '10px'}}>Информация о
                     заказе</Typography>
-                <Typography variant={'h6'} sx = {{color:'red'}}>Товара нет внутри заказа!</Typography>
+                <Typography variant={'h6'} sx={{color: 'red'}}>Товара нет внутри заказа!</Typography>
             </>
 
             }

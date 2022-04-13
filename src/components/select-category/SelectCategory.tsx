@@ -16,10 +16,10 @@ import {useNavigate} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 
 type PropsType = {
-    handleSetCategory(categoryId:number,categoryName:string):void
+    handleSetCategory(categoryId: number, categoryName: string): void
 }
 
-const SelectCategory:React.FC<PropsType> = (props) => {
+const SelectCategory: React.FC<PropsType> = (props) => {
     const [selectedCategory, setSelectedCategory] = useState<number | string>('')
     const data = useTypedSelector(state => state.product)
     const [open, setOpen] = React.useState(false);
@@ -48,33 +48,33 @@ const SelectCategory:React.FC<PropsType> = (props) => {
 
     };
 
-    const handleSetCategoryId = (id: number, value: string = '',arr:Array<any>) => {
+    const handleSetCategoryId = (id: number, value: string = '', arr: Array<any>) => {
         setSelectedCategory(id)
         setCategoryId(id)
 
-        props.handleSetCategory(id,value)
-        if(arr.length===0){
+        props.handleSetCategory(id, value)
+        if (arr.length === 0) {
             handleClose()
         }
 
 
     }
 
-    const handleSetSecondCategoryId = (id: number, value: string = '',arr:Array<any>) => {
+    const handleSetSecondCategoryId = (id: number, value: string = '', arr: Array<any>) => {
         setSelectedCategory(id)
         setSecondCategoryId(id)
 
-        props.handleSetCategory(id,value)
-        if(arr.length===0){
+        props.handleSetCategory(id, value)
+        if (arr.length === 0) {
             handleClose()
         }
     }
 
-    const handleSetThirdCategoryId = (id: number, value: string = '',arr:Array<any>) => {
+    const handleSetThirdCategoryId = (id: number, value: string = '', arr: Array<any>) => {
         setSelectedCategory(id)
 
-        props.handleSetCategory(id,value)
-        if(arr.length===0){
+        props.handleSetCategory(id, value)
+        if (arr.length === 0) {
             handleClose()
         }
     }
@@ -87,8 +87,9 @@ const SelectCategory:React.FC<PropsType> = (props) => {
 
             <Dialog disableEscapeKeyDown open={open} onClose={handleClose} maxWidth='lg'>
                 <Grid container>
-                    <Grid item sm = {11}> <DialogTitle>Выбор категории</DialogTitle></Grid>
-                    <Grid item sm={1} sx={{marginTop:'15px'}}> <Button variant={"text"} onClick={handleClose}><CloseIcon/></Button></Grid>
+                    <Grid item sm={11}> <DialogTitle>Выбор категории</DialogTitle></Grid>
+                    <Grid item sm={1} sx={{marginTop: '15px'}}> <Button variant={"text"}
+                                                                        onClick={handleClose}><CloseIcon/></Button></Grid>
                 </Grid>
 
                 <DialogContent sx={{width: '1024px', height: '75vh'}}>
@@ -102,7 +103,7 @@ const SelectCategory:React.FC<PropsType> = (props) => {
                                         key={category.id}
                                         // style = {selectedCategory === category.id ? {color: 'red'} : {color: 'blue'}}
                                         selected={selectedCategory === category.id}
-                                        onClick={() => handleSetCategoryId(category.id, category.name,category.children)}
+                                        onClick={() => handleSetCategoryId(category.id, category.name, category.children)}
 
                                     >
                                         <ListItemText primary={category.name}/>
@@ -129,7 +130,7 @@ const SelectCategory:React.FC<PropsType> = (props) => {
                                             return <ListItemButton
                                                 key={childCategory.id}
                                                 selected={selectedCategory === childCategory.id}
-                                                onClick={() => handleSetSecondCategoryId(childCategory.id, childCategory.name,childCategory.children)}
+                                                onClick={() => handleSetSecondCategoryId(childCategory.id, childCategory.name, childCategory.children)}
                                             >
                                                 <ListItemText primary={childCategory.name}/>
                                                 <ListItemIcon sx={{minWidth: 0}}>
@@ -158,11 +159,10 @@ const SelectCategory:React.FC<PropsType> = (props) => {
                                                 return childCategory.children && childCategory.children.map(secondChild => {
 
 
-
                                                     return <ListItemButton
                                                         key={secondChild.id}
                                                         selected={selectedCategory === secondChild.id}
-                                                        onClick={() => handleSetThirdCategoryId(secondChild.id, secondChild.name,secondChild.children)}
+                                                        onClick={() => handleSetThirdCategoryId(secondChild.id, secondChild.name, secondChild.children)}
                                                     >
                                                         <ListItemText primary={secondChild.name}/>
                                                         <ListItemIcon sx={{minWidth: 0}}>
@@ -183,10 +183,7 @@ const SelectCategory:React.FC<PropsType> = (props) => {
                     </Grid>
                 </DialogContent>
 
-                {/* <DialogActions>
-          <Button onClick={handleClose} color='warning'>Отменить</Button>
-          <Button onClick={handleClose} color='success'>Ok</Button>
-        </DialogActions> */}
+
             </Dialog>
         </div>
     )

@@ -6,12 +6,12 @@ interface IInitState {
         message: string | null,
         read: boolean
     }>,
-    isNotification:boolean
+    isNotification: boolean
 }
 
 const initialState: IInitState = {
     data: [],
-    isNotification:false
+    isNotification: false
 
 }
 
@@ -37,6 +37,6 @@ const webSocketSlice = createSlice({
     }
 })
 
-export const {getNotification, setPrevNotifications,readNotification,unReadNotification} = webSocketSlice.actions
+export const {getNotification, setPrevNotifications, readNotification, unReadNotification} = webSocketSlice.actions
 
 export default webSocketSlice.reducer

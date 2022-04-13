@@ -2,7 +2,7 @@ import {ActionsEnum} from "../enum";
 import {IProductResponse, ISpec} from "../../types/IProduct";
 import {createSlice} from "@reduxjs/toolkit";
 import {createProduct, fetchCategories, fetchOneProduct, fetchProducts, fetchSpecs} from "./product.action";
-import { ICategory } from "../../types/ICategory";
+import {ICategory} from "../../types/ICategory";
 
 interface IInitState {
     products: IProductResponse
@@ -11,24 +11,24 @@ interface IInitState {
     error: unknown
     error2?: unknown
     isLoading: boolean
-    payload?:any
+    payload?: any
 }
 
 const initialState: IInitState = {
     isLoading: false,
     error: null,
-    error2:null,
+    error2: null,
     products: {count: 0, products: []},
     categories: [],
     specs: [],
-    payload:null,
+    payload: null,
 
 }
 const productSlice = createSlice({
     name: 'product',
     reducers: {
         clearPayload: (state) => {
-            state.payload =null
+            state.payload = null
         },
     },
     initialState,
@@ -58,7 +58,7 @@ const productSlice = createSlice({
             .addCase(createProduct.fulfilled, ((state, response) => {
                 state.isLoading = false
                 state.payload = response
-                state.error2=null
+                state.error2 = null
             }))
             .addCase(fetchCategories.fulfilled, ((state, {payload}) => {
                 state.categories = payload
@@ -66,8 +66,8 @@ const productSlice = createSlice({
             .addCase(fetchSpecs.fulfilled, ((state, {payload}) => {
                 state.specs = payload
             }))
-            // .addCase(fetchOneProduct.fulfilled,((state,{payload})=>{
-            // state.specs = payload}))
+        // .addCase(fetchOneProduct.fulfilled,((state,{payload})=>{
+        // state.specs = payload}))
     }
 })
 

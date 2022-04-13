@@ -12,7 +12,6 @@ type Props = {
 }
 
 const OrderProductCard: React.FC<Props> = ({id, image, productCount, price, name, date = "24 Августа 2021"}) => {
-    const navigate = useNavigate();
 
     return (
         <Paper

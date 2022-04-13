@@ -4,20 +4,27 @@ import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from "react-router-dom";
 
 type PropsType = {
-    buttonTypeText:string,
-    title:string,
+    buttonTypeText: string,
+    title: string,
     handleCreate?(): void
     handleCancelOrder?(): void,
-    handleClickClose?():void,
-    isWindowOpen:boolean
+    handleClickClose?(): void,
+    isWindowOpen: boolean
 }
 
-const OrderConfirmDialogWindow:React.FC<PropsType> = ({buttonTypeText,title,handleCreate,handleCancelOrder,handleClickClose,isWindowOpen}) => {
+const OrderConfirmDialogWindow: React.FC<PropsType> = ({
+                                                           buttonTypeText,
+                                                           title,
+                                                           handleCreate,
+                                                           handleCancelOrder,
+                                                           handleClickClose,
+                                                           isWindowOpen
+                                                       }) => {
     const navigate = useNavigate()
     const handleAfterOperationClose = () => {
-        if (handleCreate){
+        if (handleCreate) {
             handleCreate()
-        } else if (handleCancelOrder){
+        } else if (handleCancelOrder) {
             handleCancelOrder()
         }
 
@@ -30,16 +37,16 @@ const OrderConfirmDialogWindow:React.FC<PropsType> = ({buttonTypeText,title,hand
             open={isWindowOpen}
 
         >
-            <Paper sx = {{borderRadius:1}}>
+            <Paper sx={{borderRadius: 1}}>
                 <DialogTitle id="alert-dialog-title" sx={{}}>
-                    <CloseIcon onClick={handleClickClose} sx={{float:'right',cursor:'pointer'}}></CloseIcon>
+                    <CloseIcon onClick={handleClickClose} sx={{float: 'right', cursor: 'pointer'}}></CloseIcon>
                 </DialogTitle>
 
-                <DialogContent sx = {{width:'500px',textAlign:'center'}}>
-                    <Typography sx={{ fontWeight: 600, fontSize:'20px' }}>{title}</Typography>
+                <DialogContent sx={{width: '500px', textAlign: 'center'}}>
+                    <Typography sx={{fontWeight: 600, fontSize: '20px'}}>{title}</Typography>
 
                 </DialogContent>
-                <Box sx={{textAlign:'center',marginBottom:'50px'}}>
+                <Box sx={{textAlign: 'center', marginBottom: '50px'}}>
 
 
                     <Button onClick={handleAfterOperationClose}
@@ -54,7 +61,7 @@ const OrderConfirmDialogWindow:React.FC<PropsType> = ({buttonTypeText,title,hand
                 </Box>
             </Paper>
 
-            </Dialog>
+        </Dialog>
 
     );
 };

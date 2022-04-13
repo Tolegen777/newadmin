@@ -1,8 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
+import {configureStore} from "@reduxjs/toolkit";
+import {TypedUseSelectorHook, useSelector} from "react-redux";
 import authReducer from './auth/auth.slice'
 import productReducer from './product/product.slice';
-import { baseApi } from "./rtk-api/baseApi";
+import {baseApi} from "./rtk-api/baseApi";
 import webSocketReducer from "./webSocket/webSocket.slice"
 
 export const store = configureStore({
@@ -10,7 +10,7 @@ export const store = configureStore({
         auth: authReducer,
         product: productReducer,
         [baseApi.reducerPath]: baseApi.reducer,
-        websocketNotification:webSocketReducer,
+        websocketNotification: webSocketReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(baseApi.middleware),

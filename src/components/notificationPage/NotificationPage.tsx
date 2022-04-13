@@ -1,22 +1,41 @@
 import * as React from 'react';
 import Paper from "@mui/material/Paper";
 import {useTypedSelector} from "../../store";
-import { Grid, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import {Box} from "@mui/system";
 import photo from "../../assets/images/user (1).png";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import {useDispatch} from "react-redux";
 import {readNotification} from "../../store/webSocket/webSocket.slice";
 
 
 const NotificationPage = () => {
     const dispatch = useDispatch()
-
-    useEffect(()=>{
-        dispatch(readNotification())
-    },[])
-
+    const bottomRef = React.useRef<HTMLDivElement>(null);
     const notificationData = useTypedSelector(state => state.websocketNotification)
+
+    const scrollToBottom = () => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }
+
+    };
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [])
+
+    useEffect(() => {
+        dispatch(readNotification())
+    }, [])
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [notificationData])
+
 
     return (
         <Paper sx={{height: '85vh', overflow: 'scroll', scrollBehavior: 'smooth',}}>
@@ -53,6 +72,8 @@ const NotificationPage = () => {
                     }
                 )
                 }
+
+                <div ref={bottomRef} className="list-bottom"></div>
 
             </Box>
 

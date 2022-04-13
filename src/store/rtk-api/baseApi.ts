@@ -1,25 +1,25 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
 export const BASE_URL = 'https://dev.adu24.com/';
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
-  prepareHeaders: (headers) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`)
-    } else {
-      headers.set('Authorization', 'NO HEADER')
-    }
-    return headers
-  },
+    baseUrl: BASE_URL,
+    prepareHeaders: (headers) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            headers.set('Authorization', `Bearer ${token}`)
+        } else {
+            headers.set('Authorization', 'NO HEADER')
+        }
+        return headers
+    },
 });
 
 export const baseApi = createApi({
-  reducerPath: 'baseApi',
-  baseQuery: baseQuery,
-  tagTypes: ['categories', 'orders','shop'],
-  endpoints: () => ({}),
+    reducerPath: 'baseApi',
+    baseQuery: baseQuery,
+    tagTypes: ['categories', 'orders', 'shop'],
+    endpoints: () => ({}),
 })
 
 // const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (

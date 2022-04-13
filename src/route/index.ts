@@ -1,7 +1,7 @@
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { SvgIconTypeMap } from '@mui/material';
-import { OverridableComponent } from '@mui/material/OverridableComponent';
+import {SvgIconTypeMap} from '@mui/material';
+import {OverridableComponent} from '@mui/material/OverridableComponent';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import GroupIcon from '@mui/icons-material/Group';
@@ -29,18 +29,16 @@ export enum MyRoutes {
     EMPLOYEES = "/app/employees"
 }
 
-export const privateRoute = [
-
-]
+export const privateRoute = []
 
 
 export const menuRoutes: RouteType[] = [
-    { name: "Профиль", path: MyRoutes.PROFILE, icon: PersonRoundedIcon },
+    {name: "Профиль", path: MyRoutes.PROFILE, icon: PersonRoundedIcon},
     // { name: "Главная", path: MyRoutes.ORDERS, icon: ArticleIcon },
-    { name: "Мои товары", path: MyRoutes.PRODUCTS, icon: InventoryIcon },
-    { name: "Мои заказы", path: MyRoutes.ORDERS, icon: FactCheckIcon },
-    { name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: GroupIcon },
-    { name: "Сотрудники", path: MyRoutes.EMPLOYEES, icon: EngineeringRoundedIcon },
+    {name: "Мои товары", path: MyRoutes.PRODUCTS, icon: InventoryIcon},
+    {name: "Мои заказы", path: MyRoutes.ORDERS, icon: FactCheckIcon},
+    {name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: GroupIcon},
+    {name: "Сотрудники", path: MyRoutes.EMPLOYEES, icon: EngineeringRoundedIcon},
 ]
 
 export const publicRoute = []

@@ -2,7 +2,7 @@ import {baseApi} from "../baseApi";
 import {IGetNotification} from "../../../types/types";
 
 const endpoints = baseApi.injectEndpoints({
-    endpoints:(builder) => ({
+    endpoints: (builder) => ({
         // sendMessage:builder.mutation<any,ISendNotification>({
         //     query: (sendingData) => ({
         //         url: `notification`,
@@ -10,13 +10,13 @@ const endpoints = baseApi.injectEndpoints({
         //         body: {...sendingData}
         //     })
         // }),
-        getNotifications:builder.query<IGetNotification,number>({
+        getNotifications: builder.query<IGetNotification, number>({
             query: (limit: number = 5) => ({
                 url: `notification`,
                 method: 'GET',
                 params: {
                     limit: limit,
-                    page:1
+                    page: 1
                 }
 
             })

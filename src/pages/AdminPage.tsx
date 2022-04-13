@@ -17,7 +17,7 @@ import {useGetNotificationsQuery} from "../store/rtk-api/sendNotification-rtk/se
 const AdminPage: React.FC = () => {
     const {data, error, isLoading} = useGetNotificationsQuery(10)
     const dispatch = useDispatch();
-    if (data&&data.data&&data.data.notifications) {
+    if (data && data.data && data.data.notifications) {
         dispatch(setPrevNotifications(data.data.notifications))
     }
 
@@ -47,7 +47,7 @@ const AdminPage: React.FC = () => {
                     {/*<Route path={"customers"} element={<CustomersView />} />*/}
                     <Route path={"products/*"} element={<ProductsView/>}/>
                     <Route path={"orders/*"} element={<OrdersView/>}/>
-                    <Route path={"employees/*"} element={<Employees/>}/>
+                    <Route path={"employees"} element={<Employees/>}/>
                     <Route path={"/notifications"} element={<Notifications/>}/>
                     <Route
                         path="//*"
@@ -61,3 +61,4 @@ const AdminPage: React.FC = () => {
 }
 
 export default AdminPage
+//http://localhost:3000/app/employees?search=

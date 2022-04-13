@@ -9,25 +9,14 @@ import {useTypedSelector} from "../../store";
 
 
 const OrderColumnsView: React.FC = () => {
-    let dispatch = useDispatch()
     const {shop} = useTypedSelector(state => state.auth)
     let shopId = 0
-    if(shop) {
+    if (shop) {
         shopId = shop.id
     }
 
 
-    // test
-
     const {data: orders, isLoading, error} = useGetOrdersQuery(shopId)
-
-    // React.useEffect(() => {
-    //     console.log(orders + 'orders');
-    //     dispatch(changeOrderStatusThunk(66))
-    //     dispatch(changeOrderStatusThunk(64))
-    //            dispatch(changeOrderStatusThunk(28))
-    //
-    // }, [orders])
 
     return (
 
@@ -35,8 +24,8 @@ const OrderColumnsView: React.FC = () => {
 
             {error && <div>то то пошло не так!</div>}
             <Grid item sm={4} xs={4} lg={4}>
-                {isLoading&& <CircularProgress />}
-                {orders&&<ColumnTitle title="Новые" amount={orders.payment.length}/>}
+                {isLoading && <CircularProgress/>}
+                {orders && <ColumnTitle title="Новые" amount={orders.payment.length}/>}
                 {orders &&
                     orders?.payment.map((order) =>
                         <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice}/>
@@ -44,7 +33,7 @@ const OrderColumnsView: React.FC = () => {
                 }
             </Grid>
             <Grid item sm={4} xs={4} lg={4}>
-                {orders&&<ColumnTitle color="primary" title="Доставлено" amount={orders.success.length}/>}
+                {orders && <ColumnTitle color="primary" title="Доставлено" amount={orders.success.length}/>}
                 {orders &&
                     orders?.success.map((order) =>
                         <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice}/>
@@ -52,7 +41,7 @@ const OrderColumnsView: React.FC = () => {
                 }
             </Grid>
             <Grid item sm={4} xs={4} lg={4}>
-                {orders&&<ColumnTitle color="error" title="Отказано" amount={orders.cancelled.length}/>}
+                {orders && <ColumnTitle color="error" title="Отказано" amount={orders.cancelled.length}/>}
 
                 {orders &&
                     orders?.cancelled.map((order) =>

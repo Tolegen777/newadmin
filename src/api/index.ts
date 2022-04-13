@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AuthService } from "../service/auth/auth.service";
+import {AuthService} from "../service/auth/auth.service";
 
 export const $imageApi = 'https://adu24file.ams3.digitaloceanspaces.com';
 

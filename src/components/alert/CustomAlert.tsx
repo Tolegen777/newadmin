@@ -8,17 +8,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import {AlertTitle} from "@mui/material";
 
 type PropsType = {
-    title:string,
-    message:string,
-    status:'success' | 'info' | 'warning' | 'error',
+    title: string,
+    message: string,
+    status: 'success' | 'info' | 'warning' | 'error',
 }
 
-const CustomAlert:React.FC<PropsType> = ({message,status,title}) => {
+const CustomAlert: React.FC<PropsType> = ({message, status, title}) => {
 
     return (
         <Alert severity={status}>
             <AlertTitle>{title}</AlertTitle>
-             <strong>{message}</strong>
+            <strong>{message}</strong>
         </Alert>
     );
 };

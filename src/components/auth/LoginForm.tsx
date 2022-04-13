@@ -4,7 +4,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../../assets/styles/auth.module.css';
 import { login } from '../../store/auth/auth.action';
-import { ActionsEnum } from '../../store/enum';
 import { useTypedSelector } from '../../store/index';
 
 const LoginForm = () => {
