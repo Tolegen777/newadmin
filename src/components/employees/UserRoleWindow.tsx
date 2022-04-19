@@ -7,27 +7,27 @@ import CloseIcon from "@mui/icons-material/Close";
 type PropsType = {
     isWindowOpen:boolean,
     isLoading:boolean,
-    addSellingError:boolean,
+    isError:boolean,
     isSuccess:boolean,
     closeWindow():void,
     formik:any,
     submitAddingEmail():void,
     buttonText:string,
+    isAlert:boolean
 
 
 
 }
 
-const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,addSellingError,isSuccess,closeWindow,formik,submitAddingEmail,buttonText}) => {
+const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,formik,submitAddingEmail,buttonText,isAlert}) => {
 
     return(
         <Dialog
             open={isWindowOpen}
-
         >
             {isLoading && <CircularProgress/>}
-            {addSellingError && <CustomAlert title="Ошибка" status="error"
-                                             message="Возникла неизвестная ошибка перепрверьте email!"/>}{isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
+            {isError && isAlert &&<CustomAlert title="Ошибка" status="error"
+                                             message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
 
             <DialogTitle id="alert-dialog-title" sx={{}}>
                 <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={closeWindow}/>

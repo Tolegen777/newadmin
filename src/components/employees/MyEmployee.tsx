@@ -24,15 +24,15 @@ import UserRoleWindow from "./UserRoleWindow";
 
 const MyEmployee = () => {
 
-    const [value, setValue] = React.useState('all');
-    const [role, setRole] = React.useState('all');
-    const [open, setOpen] = React.useState(true);
-    const [isWindowOpen, setWindowOpen] = React.useState(false)
+    const [role, setRole] = useState('all');
+    const [open, setOpen] = useState(true);
+    const [isWindowOpen, setWindowOpen] = useState(false)
     const [addSeller, {isLoading, isError: addSellingError, isSuccess}] = useAddSellerMutation()
     const [removeSeller,{isLoading:isRemoveSellerLoading,isError:isRemoveSellerError,isSuccess:isRemoveSuccess}] = useRemoveSellerMutation()
     const data = useTypedSelector(state => state.auth)
     const [searchedName,setSearchedName] = useState('')
-    const [isRemoveWindowOpen, setRemoveWindowOpen] = React.useState(false)
+    const [isRemoveWindowOpen, setRemoveWindowOpen] = useState(false)
+    const [isAlert, setAlert] = useState(false)
 
 
     const handleClick = () => {
@@ -42,11 +42,15 @@ const MyEmployee = () => {
 
     const showWindow = () => {
         setWindowOpen(true)
+
+
     }
     const closeWindow = () => {
         formik.values.email=''
         setWindowOpen(false)
         setRemoveWindowOpen(false)
+        setAlert(false)
+
 
     }
 
@@ -55,15 +59,14 @@ const MyEmployee = () => {
     }
 
     const handleAddSeller = (email: string, shopId: number, ownerEmail: string) => {
-
-
         addSeller({email, shopId, ownerEmail})
 
+        setAlert(true)
     }
 
     const handleRemoveSeller = (email: string, shopId: number, ownerEmail: string) => {
-
         removeSeller({email, shopId, ownerEmail})
+            setAlert(true)
     }
 
     const handleRemoveWindowOpen = () => {
@@ -71,7 +74,6 @@ const MyEmployee = () => {
     }
 
     const changeRadioButtonValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue((event.target as HTMLInputElement).value);
         setRole((event.target as HTMLInputElement).value)
     };
 
@@ -154,7 +156,7 @@ const MyEmployee = () => {
                                             <RadioGroup
                                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                                 name="controlled-radio-buttons-group"
-                                                value={value}
+                                                value={role}
                                                 onChange={changeRadioButtonValue}
 
                                             >
@@ -190,10 +192,10 @@ const MyEmployee = () => {
             </Grid>
             <EmployeesInfoList role={role} searchedName = {searchedName} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
             {isWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isLoading} isSuccess={isSuccess} isWindowOpen={isWindowOpen}
-                                             addSellingError={addSellingError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="добавить"/>
+                                             isError={addSellingError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="добавить" isAlert={isAlert}/>
             }
             {isRemoveWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading} isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
-                                                   addSellingError={isRemoveSellerError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="удалить"/>
+                                                   isError={isRemoveSellerError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="удалить" isAlert={isAlert}/>
             }
 
         </Paper>

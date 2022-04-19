@@ -8,7 +8,8 @@ const endpoints = baseApi.injectEndpoints({
                 url: `shop/add-seller`,
                 method: 'POST',
                 body: {...sellingData}
-            })
+            }),
+
         })
     })
 })
