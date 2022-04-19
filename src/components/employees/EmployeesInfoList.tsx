@@ -10,10 +10,11 @@ import EmployeesInfoBlock from "./EmployeesInfoBlock";
 
 type PropsType = {
     role: string,
-    searchedName:string
+    searchedName:string,
+    handleRemoveWindowOpen?():void
 }
 
-const EmployeesInfoList: React.FC<PropsType> = ({role,searchedName}) => {
+const EmployeesInfoList: React.FC<PropsType> = ({role,searchedName,handleRemoveWindowOpen}) => {
     const {shop} = useTypedSelector(state => state.auth)
     let shopId = 0
     if (shop) {
@@ -40,9 +41,9 @@ const EmployeesInfoList: React.FC<PropsType> = ({role,searchedName}) => {
                             }
                             if (searchedName && user.firstName.toLowerCase().includes(searchedName.toLowerCase())
                                 ||user.lastName.toLowerCase().includes(searchedName.toLowerCase())) {
-                                return <EmployeesInfoBlock user={user} roleName={"Администратор"}/>
+                                return <EmployeesInfoBlock user={user} roleName={"Администратор"} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
                             } else if(!searchedName) {
-                                return <EmployeesInfoBlock user={user} roleName={"Администратор"}/>
+                                return <EmployeesInfoBlock user={user} roleName={"Администратор"} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
                         } else return
 
 

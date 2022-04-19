@@ -1,16 +1,5 @@
 import React, {useState} from 'react';
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    InputAdornment,
-    Paper,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Button, Grid, InputAdornment, Paper, TextField, Typography} from "@mui/material";
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -24,16 +13,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import SearchIcon from '@mui/icons-material/Search';
 import EmployeesInfoList from "./EmployeesInfoList";
-import CloseIcon from "@mui/icons-material/Close";
-
 import {useFormik} from "formik";
 import * as yup from "yup"
 import {useAddSellerMutation} from "../../store/rtk-api/addSeller-rtk/addSeller_rtk";
 import {useTypedSelector} from "../../store";
-import CustomAlert from "../alert/CustomAlert";
-
-import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
+import {useRemoveSellerMutation} from "../../store/rtk-api/removeSeller-rtk/removeSeller_rtk";
+import UserRoleWindow from "./UserRoleWindow";
 
 
 const MyEmployee = () => {
@@ -43,8 +29,10 @@ const MyEmployee = () => {
     const [open, setOpen] = React.useState(true);
     const [isWindowOpen, setWindowOpen] = React.useState(false)
     const [addSeller, {isLoading, isError: addSellingError, isSuccess}] = useAddSellerMutation()
+    const [removeSeller,{isLoading:isRemoveSellerLoading,isError:isRemoveSellerError,isSuccess:isRemoveSuccess}] = useRemoveSellerMutation()
     const data = useTypedSelector(state => state.auth)
     const [searchedName,setSearchedName] = useState('')
+    const [isRemoveWindowOpen, setRemoveWindowOpen] = React.useState(false)
 
 
     const handleClick = () => {
@@ -56,51 +44,36 @@ const MyEmployee = () => {
         setWindowOpen(true)
     }
     const closeWindow = () => {
+        formik.values.email=''
         setWindowOpen(false)
+        setRemoveWindowOpen(false)
+
     }
 
     const submitAddingEmail = () => {
         formik.handleSubmit()
     }
-    const handlePressEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.code==="Enter"){
-            setSearchedName(formik.values.search)
-        }
-
-    }
-
-
 
     const handleAddSeller = (email: string, shopId: number, ownerEmail: string) => {
+
 
         addSeller({email, shopId, ownerEmail})
 
     }
 
-    // const changeRadioButtonValue:React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    //     console.log(e.target.value)
-    // }
+    const handleRemoveSeller = (email: string, shopId: number, ownerEmail: string) => {
+
+        removeSeller({email, shopId, ownerEmail})
+    }
+
+    const handleRemoveWindowOpen = () => {
+        setRemoveWindowOpen(true)
+    }
 
     const changeRadioButtonValue = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue((event.target as HTMLInputElement).value);
         setRole((event.target as HTMLInputElement).value)
-        //console.log((event.target as HTMLInputElement).value)
     };
-
-
-    // React.useEffect(() => {
-    //     if(addSellingError) {
-    //         alert('Возникла неизвестная ошибка перепрверьте email!')
-    //
-    //
-    //     } else if(isSuccess) {
-    //         closeWindow()
-    //         alert("Операция успешно выполнено!")
-    //
-    //     }
-    // }, [addSellingError,isSuccess])
-
-
 
 
     const validationSchema = yup.object().shape({
@@ -119,35 +92,18 @@ const MyEmployee = () => {
         onSubmit: values => {
 
             if (data && data.user && data.shop) {
-                handleAddSeller(values.email, data?.shop.id, data?.user.email)
+                if (isWindowOpen){
+                    handleAddSeller(values.email, data?.shop.id, data?.user.email)
+
+                } else if (isRemoveWindowOpen) {
+                    handleRemoveSeller(values.email, data?.shop.id, data?.user.email)
+
+                }
+
             }
         },
     });
 
-    // useEffect( () => {
-    //   setTimeout(() => {
-    //         console.log(searchedName)
-    //
-    //
-    //     }, 2000)
-    //
-    //     //return () => clearTimeout(delayDebounceFn)
-    // }, [searchedName])
-
-    // const handleChange = (e:Event) => {
-    //     formik.handleChange
-    //     if(!e){
-    //         return
-    //     }
-    //     setSearchedName(String(e.target.value as HTMLInputElement))
-    //
-    // }
-
-    // const handleChange = (event: SelectChangeEvent<typeof searchedName>) => {
-    //     formik.handleChange(event.target.value)
-    //     setSearchedName(String(event.target.value));
-    //
-    // };
 
 
     return (
@@ -162,7 +118,6 @@ const MyEmployee = () => {
                     placeholder="найти"
                     size="medium"
                     sx={{width: '700px', backgroundColor: '#F2F4F5'}}
-                    // onKeyDown={event => handlePressEnter(event)}
 
                     InputProps={{
                         endAdornment: <InputAdornment position="end"><IconButton onClick={()=>{setSearchedName(formik.values.search)}}
@@ -233,64 +188,21 @@ const MyEmployee = () => {
                     </Button>
                 </Grid>
             </Grid>
-            <EmployeesInfoList role={role} searchedName = {searchedName}/>
-            {isWindowOpen && <Dialog
-                open={isWindowOpen}
+            <EmployeesInfoList role={role} searchedName = {searchedName} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
+            {isWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isLoading} isSuccess={isSuccess} isWindowOpen={isWindowOpen}
+                                             addSellingError={addSellingError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="добавить"/>
+            }
+            {isRemoveWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading} isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
+                                                   addSellingError={isRemoveSellerError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="удалить"/>
+            }
 
-            >
-                {isLoading && <CircularProgress/>}
-                {addSellingError && <CustomAlert title="Ошибка" status="error"
-                                                 message="Возникла неизвестная ошибка перепрверьте email!"/>}
-                {isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
-
-                <DialogTitle id="alert-dialog-title" sx={{}}>
-                    <CloseIcon onClick={closeWindow} sx={{float: 'right', cursor: 'pointer'}}></CloseIcon>
-
-                </DialogTitle>
-
-                <DialogContent sx={{width: '500px', textAlign: 'center'}}>
-                    <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>Напишите электронную почту</Typography>
-                    <form>
-
-                        <TextField
-
-                            name="email"
-                            type="email"
-                            label="email"
-                            rows={1}
-                            variant="outlined"
-                            size="small"
-                            onChange={formik.handleChange}
-                            value={formik.values.email}
-                            sx={{width: 300, height: 70}}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            helperText={formik.touched.email && formik.errors.email}
-
-                        />
-
-
-                        <Box sx={{textAlign: 'center', marginBottom: '50px'}}>
-
-
-                            <Button onClick={submitAddingEmail}
-                                    variant="contained"
-                                    color="primary"
-                                    size="large"
-                                    sx={{width: 80, height: 30, marginTop: 1}}
-                            >
-                                Send
-                            </Button>
-                        </Box>
-                    </form>
-
-
-                </DialogContent>
-
-
-            </Dialog>}
         </Paper>
 
     );
 };
+
+
+
+
 
 export default MyEmployee;

@@ -20,7 +20,7 @@ export enum MyRoutes {
     CHANGE_PASSWORD = "/login/reset",
 
     PROFILE = "/app/profile",
-    PRODUCTS = "/app/products",
+    PRODUCTS = "/app/products/list",
     ORDERS = "/app/orders",
     HOME = "/app",
     POSTS = "/app/posts",

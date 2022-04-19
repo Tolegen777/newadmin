@@ -7,10 +7,11 @@ import {IAdminRole} from "../../types/types";
 
 type PropsType = {
     user: IAdminRole,
-    roleName:string
+    roleName:string,
+    handleRemoveWindowOpen?():void
 }
 
-const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName}) => {
+const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName,handleRemoveWindowOpen}) => {
 
     return  <TableRow key={user.id}>
         <TableCell> {user.avatar ? <img
@@ -26,7 +27,10 @@ const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName}) => {
         <TableCell align="right">{roleName}</TableCell>
         <TableCell align="right">{user.email}</TableCell>
         <TableCell align="right">{user.phone}</TableCell>
-        <TableCell align="right"><MoreHorizIcon fontSize="large"/></TableCell>
+        {
+            roleName==="Администратор"&&<TableCell align="right"><MoreHorizIcon fontSize="large" cursor={"pointer"} onClick={handleRemoveWindowOpen}/></TableCell>
+        }
+
 
     </TableRow>
 
