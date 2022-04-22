@@ -8,13 +8,14 @@ export const PROD_API = 'https://api.adu24.com/';
 const env = process.env.NODE_ENV;
 
 export const getEnvApi = (): string => {
-    if (env === 'development' || env === 'test') {
-        return DEV_API;
-    } else if (env === 'production') {
-        return PROD_API;
-    } else {
-        return DEV_API;
-    }
+    return PROD_API
+    // if (env === 'development' || env === 'test') {
+    //     return DEV_API;
+    // } else if (env === 'production') {
+    //     return PROD_API;
+    // } else {
+    //     return DEV_API;
+    // }
 }
 
 export const $api = axios.create({
