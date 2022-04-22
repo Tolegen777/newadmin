@@ -1,0 +1,23 @@
+
+services: "3.7"
+
+ client:
+    container_name: client
+    build: ./
+    command: node
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    restart: always
+
+ nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+     - "80:80"
+    volumes:
+        - ./nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+       - client

@@ -1,0 +1,7 @@
+server{
+   listen 80;
+   server_name 167.99.40.110;
+   location / {
+     proxy_pass http://client:4200;
+   }
+}
