@@ -1,9 +1,8 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-
-export const BASE_URL = 'https://dev.adu24.com/';
+import { getEnvApi } from "../../api";
 
 export const baseQuery = fetchBaseQuery({
-    baseUrl: BASE_URL,
+    baseUrl: getEnvApi(),
     prepareHeaders: (headers) => {
         const token = localStorage.getItem('access_token');
         if (token) {
