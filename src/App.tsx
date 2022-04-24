@@ -18,8 +18,7 @@ function App() {
   return (
     <Routes>
       <Route path={`/auth/*`} element={<AuthPage />} />
-      
-      <Route path={`/app/*`}  element={isAuth ? <AdminPage /> : <Navigate to="/auth" />} />
+      <Route path={`/app/*`} element={isAuth ? <AdminPage /> : <Navigate to="/auth" />} />
       <Route
         path="*"
         element={<Navigate to='/app' />}

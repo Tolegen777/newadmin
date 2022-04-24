@@ -1,5 +1,7 @@
 import axios from "axios";
 import {AuthService} from "../service/auth/auth.service";
+import { store } from "../store";
+import { fetchUser } from "../store/auth/auth.action";
 
 export const $imageApi = 'https://adu24file.ams3.digitaloceanspaces.com';
 
@@ -8,7 +10,6 @@ export const PROD_API = 'https://api.adu24.com/';
 const env = process.env.NODE_ENV;
 
 export const getEnvApi = (): string => {
-    // return PROD_API
     if (env === 'development' || env === 'test') {
         return DEV_API;
     } else if (env === 'production') {
@@ -41,6 +42,7 @@ $api.interceptors.response.use(config => {
         try {
             const response = await AuthService.refresh();
             localStorage.setItem('access_token', response.data.access_token)
+            store.dispatch(fetchUser())
             return $api.request(originalRequest)
         } catch (e) {
             console.log("Пользователь не авторизован")

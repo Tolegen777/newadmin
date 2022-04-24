@@ -12,14 +12,12 @@ const AuthPage = () => {
     React.useEffect(() => {
         if (isAuth) {
             navigate('/app')
-
         }
 
     }, [isAuth])
     return (
         <div className={styles.container}>
             <LoginPaper/>
-
         </div>
     )
 }

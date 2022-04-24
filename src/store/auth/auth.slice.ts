@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IUser } from "../../types/IProfile";
 import { IShop } from "../../types/IShop";
 import { ActionsEnum } from "../enum";
-import { login, logout } from "./auth.action";
+import { fetchUser, login, logout } from "./auth.action";
 
 interface IInitState {
     isAuth: boolean;
@@ -40,6 +40,12 @@ const authReducer = createSlice({
             .addCase(login.rejected, ((state, { error }) => {
                 state.isLoading = false
                 state.error = error
+            }))
+            .addCase(fetchUser.fulfilled, ((state, { payload }) => {
+                state.isLoading = false
+                state.isAuth = true
+                state.user = payload
+                state.shop = payload.shops[0]
             }))
             .addCase(logout, () => {
                 return initialState
