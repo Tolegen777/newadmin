@@ -41,12 +41,12 @@ const authReducer = createSlice({
                 state.isLoading = false
                 state.error = error
             }))
-            .addCase(fetchUser.fulfilled, ((state, { payload }) => {
-                state.isLoading = false
-                state.isAuth = true
-                state.user = payload
-                state.shop = payload.shops[0]
-            }))
+            // .addCase(fetchUser.fulfilled, ((state, { payload }) => {
+            //     state.isLoading = false
+            //     state.isAuth = true
+            //     state.user = payload
+            //     state.shop = payload.shops[0]
+            // }))
             .addCase(logout, () => {
                 return initialState
             })

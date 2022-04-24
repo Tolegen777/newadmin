@@ -42,7 +42,6 @@ $api.interceptors.response.use(config => {
         try {
             const response = await AuthService.refresh();
             localStorage.setItem('access_token', response.data.access_token)
-            store.dispatch(fetchUser())
             return $api.request(originalRequest)
         } catch (e) {
             console.log("Пользователь не авторизован")
