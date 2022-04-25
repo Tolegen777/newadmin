@@ -7,8 +7,6 @@ import AllOrderTypes from "../components/orders/AllOrderTypes";
 
 
 const OrdersView: React.FC = () => {
-
-
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -29,17 +27,13 @@ const OrdersView: React.FC = () => {
                 background: 'white',
                 mb: '16px'
             }}>
-
                 <Tabs value={value} onChange={handleChange}>
                     <Tab label="Управление" onClick={() => navigate('app/orders')}/>
                     <Tab label="Все заказы" onClick={() => navigate('all/orders/types')}/>
                     {/* <Tab label="Item Two" />
           <Tab label="Item Three" /> */}
                 </Tabs>
-
-
             </Box>
-
             <Routes>
                 <Route index element={<OrderColumnsView/>}/>
                 <Route path="one/:orderId" element={<OneOrderVew/>}/>

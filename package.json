@@ -20,6 +20,7 @@
     "@types/yup": "^0.29.13",
     "axios": "^0.24.0",
     "chartist": "^0.11.4",
+    "cross-env": "^7.0.3",
     "formik": "^2.2.9",
     "react": "^17.0.2",
     "react-chartist": "^0.14.4",

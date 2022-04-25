@@ -4,6 +4,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../../assets/styles/auth.module.css';
 import { login } from '../../store/auth/auth.action';
+import { ActionsEnum } from '../../store/enum';
 import { useTypedSelector } from '../../store/index';
 
 const LoginForm = () => {
@@ -12,8 +13,8 @@ const LoginForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'shop@email.com',
-      password: '123456'
+      email: '',
+      password: ''
     },
     onSubmit: async (values) => {
       dispatch(login(values));
@@ -56,7 +57,8 @@ const LoginForm = () => {
           onChange={handleChange}
           fullWidth
           margin="normal"
-          required />
+          required
+        />
         <Button
           variant="outlined"
           type="submit"
