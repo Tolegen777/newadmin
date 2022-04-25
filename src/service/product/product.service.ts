@@ -24,10 +24,12 @@ export class ProductService {
         formData.append('price', String(product.price));
         formData.append('discount', String(product.discount));
         formData.append('shopId', String(product.shopId));
-        formData.append('subs', product.subs[0]);
-        formData.append('specs', Array.from(product.specs.values()).join(','))
+        formData.append('avatar', product.subs[0]);
+        if (product.specs.length>0){
+            formData.append('specs', Array.from(product.specs.values()).join(','))
+        }
         product.subs.forEach(photo => {
-            formData.append('avatar', photo)
+            formData.append('subs', photo)
         })
 
         return $api.post<IProductOneResponse>(`shop/product`, formData)
