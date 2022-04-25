@@ -49,21 +49,30 @@ const StyledSubHeader = styled(Typography)(({theme}) => ({
     marginTop: '15px'
 }))
 
-const initialValues: IProductNew = {
-    title: '',
-    smallDesc: '',
-    fullDesc: '',
-    discount: 0,
-    price: 0,
-    categoryId: '',
-    specs: [],
-    avatar: null,
-    subs: [],
-    shopId: 7
-}
+
 
 
 const CreateProduct: React.FC = () => {
+    const {shop} = useTypedSelector(state => state.auth)
+    let shopId = 0
+    if(shop) {
+        shopId = shop.id
+
+    }
+
+    const initialValues: IProductNew = {
+        title: '',
+        smallDesc: '',
+        fullDesc: '',
+        discount: 0,
+        price: 0,
+        categoryId: '',
+        specs: [],
+        avatar: null,
+        subs: [],
+        shopId: shopId
+    }
+
 
     const {productId} = useParams();
     const navigate = useNavigate();
@@ -112,6 +121,7 @@ const CreateProduct: React.FC = () => {
         }
     })
     const {values, setFieldValue, setValues, handleChange, handleSubmit} = formik;
+
 
     const handleAddImage = (event: Event) => {
         const input = event.target as HTMLInputElement;
@@ -270,7 +280,7 @@ const CreateProduct: React.FC = () => {
 
                         <StyledSubHeader>Категория</StyledSubHeader>
                         <ListItem sx={{fontWeight: 'bold'}}>Выбранная категория: <Typography
-                            sx={{marginLeft: '4px'}}> {categoryName}{categoryId}</Typography></ListItem>
+                            sx={{marginLeft: '4px'}}> {categoryName}</Typography></ListItem>
                         <SelectCategory handleSetCategory={handleSetCategory}/>
                         {/* <StyledSelect
               value={values.category}
