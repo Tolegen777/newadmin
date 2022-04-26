@@ -11,7 +11,7 @@ const env = process.env.NODE_ENV;
 
 export const getEnvApi = (): string => {
     if (env === 'development' || env === 'test') {
-        return PROD_API;
+        return DEV_API;
     } else if (env === 'production') {
         return PROD_API;
     } else {

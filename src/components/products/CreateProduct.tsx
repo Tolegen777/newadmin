@@ -28,7 +28,7 @@ import SelectCategory from '../select-category/SelectCategory';
 import SelectSpecs from './SelectSpecs';
 import {useGetSpecsQuery} from "../../store/rtk-api/baseEndpoints";
 import CustomAlert from "../alert/CustomAlert";
-import {clearPayload} from "../../store/product/product.slice";
+import {clearError, clearPayload} from "../../store/product/product.slice";
 
 const StyledTextField = styled(TextField)(({theme}) => ({
     [`&.${textFieldClasses.root}`]: {
@@ -152,6 +152,7 @@ const CreateProduct: React.FC = () => {
     const goToBack = () => {
         navigate('/app/products/list')
         setAlert(false)
+        dispatch(clearError())
     }
 
     React.useEffect(() => {

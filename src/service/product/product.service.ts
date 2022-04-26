@@ -25,7 +25,7 @@ export class ProductService {
         formData.append('discount', String(product.discount));
         formData.append('shopId', String(product.shopId));
         formData.append('avatar', product.subs[0]);
-        if (product.specs.length>0){
+        if (Array.from(product.specs).length>0){
             formData.append('specs', Array.from(product.specs.values()).join(','))
         }
         product.subs.forEach(photo => {

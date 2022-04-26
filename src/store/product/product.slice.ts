@@ -30,6 +30,10 @@ const productSlice = createSlice({
         clearPayload: (state) => {
             state.payload = null
         },
+        clearError: (state) => {
+
+            state.error2=null
+        },
     },
     initialState,
     extraReducers: builder => {
@@ -71,5 +75,5 @@ const productSlice = createSlice({
     }
 })
 
-export const {clearPayload} = productSlice.actions
+export const {clearPayload, clearError} = productSlice.actions
 export default productSlice.reducer
