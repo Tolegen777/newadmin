@@ -10,22 +10,22 @@ type PropsType = {
     isError:boolean,
     isSuccess:boolean,
     closeWindow():void,
-    submitRemovingEmail():void,
-    isAlert:boolean
+    handleDeleteProduct(id:number):void,
+    id:number
 
 
 
 }
 
-const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,submitRemovingEmail,isAlert}) => {
+const RemoveProductWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,handleDeleteProduct,id}) => {
 
     return(
         <Dialog
             open={isWindowOpen}
         >
             {isLoading && <CircularProgress/>}
-            {isError && isAlert &&<CustomAlert title="Ошибка" status="error"
-                                             message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
+            {isError  &&<CustomAlert title="Ошибка" status="error"
+                                             message="Возникла неизвестная ошибка!"/>}{ isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
 
             <DialogTitle id="alert-dialog-title" sx={{}}>
                 <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={closeWindow}/>
@@ -33,7 +33,7 @@ const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,is
             </DialogTitle>
 
             <DialogContent sx={{width: '500px', textAlign: 'center'}}>
-                <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>Вы точно хотите удалить сотрудника ?</Typography>
+                <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>Вы точно хотите удалить продукт?</Typography>
                 <form>
 
                     <Box sx={{textAlign: 'center', marginBottom: '50px'}}>
@@ -43,7 +43,7 @@ const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,is
                                 color="primary"
                                 size="large"
                                 sx={{width: 100, height: 30, marginTop: 1, textTransform:'lowercase'}}
-                                onClick={submitRemovingEmail}
+                                onClick={()=>{handleDeleteProduct(id)}}
                         >
                             Удалить
                         </Button>
@@ -66,4 +66,4 @@ const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,is
     )
 }
 
-export default RoleRemoveWindow
+export default RemoveProductWindow

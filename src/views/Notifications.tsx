@@ -8,12 +8,13 @@ type PropsType = {
 }
 
 const Notifications: React.FC<PropsType> = ({readNotification}) => {
-    useEffect(() => {
-        if (readNotification) {
-            readNotification()
-        }
-
-    })
+    // useEffect(() => {
+    //     if (readNotification) {
+    //         debugger
+    //         readNotification()
+    //     }
+    //
+    // })
     return (
         <Box sx={{width: '100%'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>

@@ -214,7 +214,7 @@ const MyEmployee = () => {
                                              isError={addSellingError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="добавить" isAlert={isAlert}/>
             }
             {isRemoveWindowOpen && <RoleRemoveWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading} isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
-                                                   isError={isRemoveSellerError} formik={formik} submitRemovingEmail={submitRemovingEmail}  isAlert={isAlert}/>
+                                                   isError={isRemoveSellerError} submitRemovingEmail={submitRemovingEmail}  isAlert={isAlert}/>
             }
 
         </Paper>

@@ -18,17 +18,13 @@ const AdminPage: React.FC = () => {
     const {data, error, isLoading} = useGetNotificationsQuery(15)
     const dispatch = useDispatch();
     if (data && data.data && data.data.notifications) {
-
         dispatch(setPrevNotifications(data.data.notifications))
-        console.log(data.data.notifications)
-        console.log('data.data.notifications')
+
     }
 
     useEffect(() => {
         let socket = connectSocket()
         socket.onAny((eventName, ...args) => {
-
-            console.log(args[0])
             dispatch(getNotification(args[0]))
             dispatch(unReadNotification())
 

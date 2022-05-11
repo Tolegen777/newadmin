@@ -14,9 +14,9 @@ const NotificationPage = () => {
     const bottomRef = React.useRef<HTMLDivElement>(null);
     const notificationData = useTypedSelector(state => state.websocketNotification)
     useEffect(()=>{
-        // console.log(notificationData)
-        // console.log("notificationData")
-    }, [notificationData])
+        dispatch(readNotification())
+
+    }, [])
     const scrollToBottom = () => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({
@@ -30,9 +30,9 @@ const NotificationPage = () => {
 
 
 
-    useEffect(() => {
-        dispatch(readNotification())
-    }, [])
+    // useEffect(() => {
+    //     dispatch(readNotification())
+    // }, [])
 
     useEffect(() => {
         scrollToBottom()

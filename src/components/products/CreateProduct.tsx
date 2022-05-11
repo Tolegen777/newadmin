@@ -10,7 +10,6 @@ import {
     textFieldClasses,
     Typography
 } from '@mui/material';
-// import ImageInput from '../admin/ImageInput';
 import {styled} from '@mui/material/styles';
 import {useFormik} from 'formik';
 import React, {useEffect, useState} from 'react';
@@ -31,6 +30,7 @@ import {clearError, clearPayload} from "../../store/product/product.slice";
 import {useUpdateSpecsMutation} from "../../store/rtk-api/updateSpecs-rtk/updateSpecs-rtk";
 import {useRemoveProductImageMutation} from "../../store/rtk-api/removeProductImage-rtk/removeProductImage-rtk";
 import * as yup from 'yup';
+
 const StyledTextField = styled(TextField)(({theme}) => ({
     [`&.${textFieldClasses.root}`]: {
         color: '#AAAAAA',
@@ -38,11 +38,6 @@ const StyledTextField = styled(TextField)(({theme}) => ({
         backgroundColor: '#EFF3F9'
     }
 }));
-
-const StyledSelect = styled(Select)(({theme}) => ({
-    backgroundColor: '#EFF3F9',
-    marginTop: '10px'
-}))
 
 const StyledSubHeader = styled(Typography)(({theme}) => ({
     fontSize: '15px',
@@ -82,22 +77,14 @@ const CreateProduct: React.FC = () => {
     const [categoryName, setCategoryName] = useState<string>('')
     const {data: specs, isLoading} = useGetSpecsQuery(String(categoryId))
 
-    const [removeProductImage, {
-        isLoading: deleteLoading,
-        isError: deletingProductError,
-        isSuccess
-    }] = useRemoveProductImageMutation()
+    const [removeProductImage, {}] = useRemoveProductImageMutation()
 
     let arr: Array<string> = [];
     {
         specs && specs.map(spec => arr.push(String(spec.id)))
     }
-    const {payload,payload2,error3, error2, isLoading: isProductAdding} = useTypedSelector(state => state.product)
+    const {payload, payload2, error3, error2, isLoading: isProductAdding} = useTypedSelector(state => state.product)
     const [isAlert, setAlert] = useState(false)
-    // console.log(payload2)
-    // console.log(error3)
-    // console.log("lofof")
-
     const [specsArr, setSpecs] = useState<Array<string>>([])
 
     const handleSetSpecs = (arr: Array<string>) => {
@@ -107,8 +94,7 @@ const CreateProduct: React.FC = () => {
 
     //updateProductSpecs
 
-    const [navigateFlag,setNavigateFlag] = useState(false)
-
+    const [navigateFlag, setNavigateFlag] = useState(false)
     const [flag, setFlag] = useState(false)
 
     const [updateProductSpecs, {
@@ -124,12 +110,9 @@ const CreateProduct: React.FC = () => {
     }
 
 
-
     useEffect(() => {
-        if (payload && payload.meta.requestStatus === "fulfilled" && error2 == null ) {
-
+        if (payload && payload.meta.requestStatus === "fulfilled" && error2 == null) {
             navigate('/app/products/list')
-
             dispatch(clearPayload())
 
         } else if (error2 != null) {
@@ -139,26 +122,21 @@ const CreateProduct: React.FC = () => {
     }, [payload, error2])
 
     useEffect(() => {
-        if (payload2 && payload2.meta.requestStatus === "fulfilled" && error3 == null ) {
-            if (!navigateFlag){
+        if (payload2 && payload2.meta.requestStatus === "fulfilled" && error3 == null) {
+            if (!navigateFlag) {
                 navigate('/app/products/list')
-
                 dispatch(clearPayload())
             } else {
                 if (updateSuccess) {
                     navigate('/app/products/list')
-
                     dispatch(clearPayload())
                 }
             }
-
-
-        } else if (error3 != null ||updateError) {
+        } else if (error3 != null || updateError) {
             setAlert(true)
         }
 
     }, [payload2, error3, updateSuccess, updateError])
-
 
 
     const handleSetCategory = (categoryId: number, categoryName: string) => {
@@ -173,14 +151,14 @@ const CreateProduct: React.FC = () => {
             .required('Название продукта обязательное поле'),
         discount: yup
             .number()
-            .max(100,"Максимум может быть установлен до 100%")
-        .min(0,"Минимум может быть установлен до 0%"),
+            .max(100, "Максимум может быть установлен до 100%")
+            .min(0, "Минимум может быть установлен до 0%"),
 
     });
 
     const formik = useFormik({
         initialValues: initialValues,
-        validationSchema:validationSchema,
+        validationSchema: validationSchema,
         onSubmit: async (values) => {
 
             if (!productId) {
@@ -193,14 +171,6 @@ const CreateProduct: React.FC = () => {
                     setNavigateFlag(true)
                 }
             }
-            // else {
-            //
-            //     if (specsArr.length>0){
-            //         handleUpdateProductSpecs(Number(productId),specsArr)
-            //     }
-            //
-            // }
-
         }
     })
     const {values, setFieldValue, setValues, handleChange, handleSubmit} = formik;
@@ -239,7 +209,7 @@ const CreateProduct: React.FC = () => {
         const file = input.files[0];
         let images = [...values.subs];
         images[id] = file;
-         setFieldValue('photos', images);
+        setFieldValue('photos', images);
         //setFieldValue('subs', images);
     }
 
@@ -258,16 +228,16 @@ const CreateProduct: React.FC = () => {
 
     let [photos, setPhotos] = useState<Photo[]>([])
 
-    useEffect(()=>{
-        if (productId&&product?.product.photos){
+    useEffect(() => {
+        if (productId && product?.product.photos) {
             setPhotos(product?.product.photos)
         }
-    },[productId,product])
+    }, [productId, product])
 
-    const handleRemoveProductImage = (id: number, ind:number) => {
+    const handleRemoveProductImage = (id: number, ind: number) => {
 
         removeProductImage(id)
-        setPhotos(photos.filter(p=>p!=photos[ind]))
+        setPhotos(photos.filter(p => p != photos[ind]))
     }
 
 
@@ -334,16 +304,12 @@ const CreateProduct: React.FC = () => {
                                 </Grid>
 
                                 {productId && !flag && <Grid item xs={2}>
-                                            <ImageContainer
-                                                image={`${$imageApi}/${product?.product.image}`}
-                                                // handleChange={(event) => handleImageChange(event, ind)}
-                                                handleChange={handleAddImage2}
-                                                 //handleDelete={() => handleImageDelete(ind)}
-                                                 handleDelete={() => setFlag(true)}
-                                                //handleDelete={() => handleRemoveProductImage(photo.id)}
-                                            />
-                                        </Grid>
-                                        // <img src={`${$imageApi}/${photo.image}`} />
+                                    <ImageContainer
+                                        image={`${$imageApi}/${product?.product.image}`}
+                                        handleChange={handleAddImage2}
+                                        handleDelete={() => setFlag(true)}
+                                    />
+                                </Grid>
 
                                 }
                                 {values.subs.map((image, ind) => {
@@ -357,27 +323,23 @@ const CreateProduct: React.FC = () => {
                                         </Grid>
                                     )
                                 })}
-
-
                                 <Grid container direction={"column"}>
-                                    <Typography variant="caption" color="gray" sx={{marginBottom:"5px"}}>Другие фотографий</Typography>
-
-                                    {productId && photos.length>0&&
-                                        photos.map((photo, ind) => (
-                                            <Grid item xs={5} key={ind} sx={{marginRight:"10px"}}>
-                                                <ImageContainer
-                                                    image={`${$imageApi}/${photo.image}`}
-                                                    // handleChange={(event) => handleImageChange(event, ind)}
-                                                    handleChange={()=>{}}
-                                                    //   // handleDelete={() => handleImageDelete(ind)}
-                                                    handleDelete={() => handleRemoveProductImage(photo.id,ind)}
-                                                />
-                                            </Grid>
-                                            // <img src={`${$imageApi}/${photo.image}`} />
-                                        ))
-                                    }
+                                    <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
+                                    <Grid container direction={"row"}>
+                                        {productId && photos.length > 0 &&
+                                            photos.map((photo, ind) => (
+                                                <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                                    <ImageContainer
+                                                        image={`${$imageApi}/${photo.image}`}
+                                                        handleChange={() => {
+                                                        }}
+                                                        handleDelete={() => handleRemoveProductImage(photo.id, ind)}
+                                                    />
+                                                </Grid>
+                                            ))
+                                        }
+                                    </Grid>
                                 </Grid>
-
 
 
                             </Grid>
@@ -386,11 +348,9 @@ const CreateProduct: React.FC = () => {
                         </div>
 
 
-
-
                     </> :
                     <>
-                        <StyledSubHeader>Фотография<span style={{color:"red"}}> *</span></StyledSubHeader>
+                        <StyledSubHeader>Фотография<span style={{color: "red"}}> *</span></StyledSubHeader>
 
                         <Typography variant="caption" color="gray">Первая фотография будет отображаться на карточке
                             товара</Typography>
@@ -400,18 +360,6 @@ const CreateProduct: React.FC = () => {
                                     <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px"
                                                 width="100px"/>
                                 </Grid>
-                                {/*{productId &&*/}
-                                {/*    product?.product.photos.map((photo, ind) => (*/}
-                                {/*        <Grid item xs={2} key={ind}>*/}
-                                {/*            <ImageContainer*/}
-                                {/*                image={`${$imageApi}/${photo.image}`}*/}
-                                {/*                handleChange={(event) => handleImageChange(event, ind)}*/}
-                                {/*                handleDelete={() => handleImageDelete(ind)}*/}
-                                {/*            />*/}
-                                {/*        </Grid>*/}
-                                {/*        // <img src={`${$imageApi}/${photo.image}`} />*/}
-                                {/*    ))*/}
-                                {/*}*/}
                                 {values.subs.map((image, ind) => {
                                     return (
                                         <Grid item xs={2} key={ind}>
@@ -430,7 +378,7 @@ const CreateProduct: React.FC = () => {
 
                 <Grid container spacing={2}>
                     <Grid item sm={6} xs={6} lg={6}>
-                        <StyledSubHeader>Название товара<span style={{color:"red"}}> *</span></StyledSubHeader>
+                        <StyledSubHeader>Название товара<span style={{color: "red"}}> *</span></StyledSubHeader>
                         <StyledTextField
                             label="Название товара"
                             name="title"
@@ -464,32 +412,15 @@ const CreateProduct: React.FC = () => {
                             fullWidth
                             required
                         />
-                        {/*{/<StyledSubHeader>Артикул товара</StyledSubHeader>/}*/}
-                        {/*{/<StyledTextField/}*/}
-                        {/*/!*  label="Артикул"*!/*/}
-                        {/*/!*  name="article"*!/*/}
-                        {/*{//>/}*/}
+
                     </Grid>
                     <Grid item sm={6} xs={6} lg={6}>
 
-                        <StyledSubHeader>Категория<span style={{color:"red"}}> *</span></StyledSubHeader>
+                        <StyledSubHeader>Категория<span style={{color: "red"}}> *</span></StyledSubHeader>
                         <ListItem sx={{fontWeight: 'bold'}}>Выбранная категория: <Typography
                             sx={{marginLeft: '4px'}}> {categoryName}</Typography></ListItem>
                         <SelectCategory handleSetCategory={handleSetCategory}/>
-                        {/* <StyledSelect
-              value={values.category}
-              name="category"
-              onChange={handleChange}
-              displayEmpty
-              fullWidth
-            >
-              <MenuItem value="">
-                <em>Категория не выбрана</em>
-              </MenuItem>
-              {categories?.map((category) => (
-                <MenuItem value={category.id}>{category.name}</MenuItem>
-              ))}
-            </StyledSelect> */}
+
                         <StyledSubHeader>Цена, ₸</StyledSubHeader>
                         <div style={{borderLeft: '1px solid #8A3FFC', marginTop: '15px', paddingLeft: '10px'}}>
                             <TextField

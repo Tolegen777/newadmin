@@ -8,6 +8,7 @@ import { menuRoutes } from '../../route';
 import { logout } from '../../store/auth/auth.action';
 import CustomAlert from "../alert/CustomAlert";
 import {useTypedSelector} from "../../store";
+import {useEffect} from "react";
 
 const drawerWidth = 240;
 
@@ -15,13 +16,14 @@ const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
     const isNotification = useTypedSelector(state=>state.websocketNotification.isNotification)
-    // console.log(isNotification)
-    // console.log("isNotification")
+
   const location = useLocation();
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout());
   }
+
+
 
   const drawer = (
     <div style={{ padding: '15px' }}>
@@ -70,8 +72,7 @@ export default function ResponsiveDrawer() {
           <ListItemText primary="Log Out" />
         </ListItemButton>
       </NavLink>
-        <Box sx = {{marginTop:'180px'}}>
-            {/*{isNotification&&<CustomAlert title="Новое сообщение" status="info" message="У вас новое сообщение" />}*/}
+        <Box sx = {{marginTop:'80px'}}>
             {isNotification&&<CustomAlert title="Новое сообщение" status="info" message="У вас новое сообщение" />}
         </Box>
 

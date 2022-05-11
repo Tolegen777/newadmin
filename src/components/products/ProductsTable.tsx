@@ -27,6 +27,7 @@ import Filters from './Filters';
 import CustomAlert from "../alert/CustomAlert";
 import {useAddSellerMutation} from "../../store/rtk-api/addSeller-rtk/addSeller_rtk";
 import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
+import RemoveProductWindow from "./RemoveProductWindow";
 
 
 const mapping = {
@@ -79,6 +80,18 @@ const ProductsTable: React.FC = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     //deleting
+    const [isOpen, setOpen] = useState(false)
+    const [deletingId, setDeletingId] = useState<number>()
+
+    const handleWindowOpen = (id:number) => {
+        setOpen(true)
+        setDeletingId(id)
+    }
+
+    const closeWindow = () => {
+        setOpen(false)
+    }
+
     const [isSuccessfulDeleting, setSuccessfullDeleting] = useState(false)
     const handleDeleteProduct = (id: number) => {
         removeProduct(id).then(() => {
@@ -158,8 +171,8 @@ const ProductsTable: React.FC = () => {
 
                                             <Button variant='contained' color='error'
                                                     sx={{borderWidth: '2px', fontWeight: 600, marginLeft: "5px"}}
-                                                    onClick={() => handleDeleteProduct(row.id)}>
-                                                Удалить товар
+                                                    onClick={() => handleWindowOpen(row.id)}>
+                                                Удалить
                                             </Button>
                                         </StyledTableCell>
                                     </StyledTableRow>
@@ -177,6 +190,10 @@ const ProductsTable: React.FC = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 labelRowsPerPage="Товаров на одной странице:"
             />
+            {isOpen&&deletingId&&<RemoveProductWindow
+                isWindowOpen={isOpen} closeWindow={closeWindow}
+                isLoading={deleteLoading} isError={deletingProductError} isSuccess={isSuccess} handleDeleteProduct={handleDeleteProduct}
+            id={deletingId}/>}
         </>
     )
 }
