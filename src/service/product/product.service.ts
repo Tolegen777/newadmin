@@ -36,7 +36,9 @@ export class ProductService {
     }
 
     static async updateProduct(product: IProductNew): Promise<AxiosResponse<IProductOneResponse>> {
+
         const formData = new FormData();
+
         formData.append('title', product.title);
         formData.append('categoryId', product.categoryId);
         formData.append('smallDesc', product.smallDesc);
@@ -44,13 +46,14 @@ export class ProductService {
         formData.append('price', String(product.price));
         formData.append('discount', String(product.discount));
         formData.append('shopId', String(product.shopId));
-        formData.append('image', product.subs[0])
-        product.subs.forEach(photo => {
-            formData.append('photos', photo)
-        })
-
-        return $api.put<IProductOneResponse>(`product/${product.id}`, formData)
+        formData.append('image', product.subs[0]);
+        if (Array.from(product.specs).length>0){
+            formData.append('specs', Array.from(product.specs.values()).join(','))
+        }
+        return $api.put<IProductOneResponse>(`product/update/${product.id}`, formData)
     }
+
+
 
     static async fetchCategories(): Promise<AxiosResponse<ICategory[]>> {
         return $api.get<ICategory[]>(`category`)

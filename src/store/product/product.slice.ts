@@ -1,27 +1,38 @@
 import {ActionsEnum} from "../enum";
 import {IProductResponse, ISpec} from "../../types/IProduct";
 import {createSlice} from "@reduxjs/toolkit";
-import {createProduct, fetchCategories, fetchOneProduct, fetchProducts, fetchSpecs} from "./product.action";
+import {
+    createProduct,
+    fetchCategories,
+    fetchOneProduct,
+    fetchProducts,
+    fetchSpecs,
+    updateProduct
+} from "./product.action";
 import {ICategory} from "../../types/ICategory";
 
-interface IInitState {
+interface InitState {
     products: IProductResponse
     categories: ICategory[]
     specs: ISpec[]
     error: unknown
     error2?: unknown
+    error3?:unknown
     isLoading: boolean
     payload?: any
+    payload2?:any
 }
 
-const initialState: IInitState = {
+const initialState: InitState = {
     isLoading: false,
     error: null,
     error2: null,
+    error3:null,
     products: {count: 0, products: []},
     categories: [],
     specs: [],
     payload: null,
+    payload2:null
 
 }
 const productSlice = createSlice({
@@ -29,10 +40,12 @@ const productSlice = createSlice({
     reducers: {
         clearPayload: (state) => {
             state.payload = null
+            state.payload2 = null
         },
         clearError: (state) => {
 
             state.error2=null
+            state.error3=null
         },
     },
     initialState,
@@ -52,9 +65,7 @@ const productSlice = createSlice({
             .addCase(createProduct.pending, ((state) => {
                 state.isLoading = true
             }))
-            // .addCase(createProduct.fulfilled, ((state) => {
-            //     state.status = ActionsEnum.SUCCESS
-            // }))
+
             .addCase(createProduct.rejected, ((state, {error}) => {
                 state.isLoading = false
                 state.error2 = error
@@ -70,8 +81,21 @@ const productSlice = createSlice({
             .addCase(fetchSpecs.fulfilled, ((state, {payload}) => {
                 state.specs = payload
             }))
-        // .addCase(fetchOneProduct.fulfilled,((state,{payload})=>{
-        // state.specs = payload}))
+
+            .addCase(updateProduct.pending, ((state) => {
+                state.isLoading = true
+            }))
+
+            .addCase(updateProduct.rejected, ((state, {error}) => {
+                state.isLoading = false
+                state.error3 = error
+            }))
+            .addCase(updateProduct.fulfilled, ((state, response) => {
+                state.isLoading = false
+                state.payload2 = response
+                state.error3 = null
+            }))
+
     }
 })
 

@@ -100,7 +100,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                                         Отклонить заказ
                                     </Button>
                                     {isCancelClicked && <OrderConfirmDialogWindow
-                                        title='Отменение заказа' buttonTypeText='Отменить заказ'
+                                        title='Отклонение заказа' buttonTypeText='Отклонить заказ'
                                         handleCancelOrder={handleCancelOrder} isWindowOpen={isWindowOpen}
                                         handleClickClose={handleClickClose}/>}
                                 </Box>}

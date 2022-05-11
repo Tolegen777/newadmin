@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, KeyboardEvent} from 'react';
 import {Button, Grid, InputAdornment, Paper, TextField, Typography} from "@mui/material";
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -20,6 +20,7 @@ import {useTypedSelector} from "../../store";
 import IconButton from '@mui/material/IconButton';
 import {useRemoveSellerMutation} from "../../store/rtk-api/removeSeller-rtk/removeSeller_rtk";
 import UserRoleWindow from "./UserRoleWindow";
+import RoleRemoveWindow from "./RoleRemoveWindow";
 
 
 const MyEmployee = () => {
@@ -33,6 +34,7 @@ const MyEmployee = () => {
     const [searchedName,setSearchedName] = useState('')
     const [isRemoveWindowOpen, setRemoveWindowOpen] = useState(false)
     const [isAlert, setAlert] = useState(false)
+    const [removeSellerEmail, setRemoveSellerEmail] = useState('')
 
 
     const handleClick = () => {
@@ -58,6 +60,15 @@ const MyEmployee = () => {
         formik.handleSubmit()
     }
 
+
+
+    const submitRemovingEmail = () => {
+        if (data && data.user && data.shop&&removeSellerEmail){
+            handleRemoveSeller(removeSellerEmail, data?.shop.id, data?.user.email)
+        }
+
+    }
+
     const handleAddSeller = (email: string, shopId: number, ownerEmail: string) => {
         addSeller({email, shopId, ownerEmail})
 
@@ -69,8 +80,10 @@ const MyEmployee = () => {
             setAlert(true)
     }
 
-    const handleRemoveWindowOpen = () => {
+    const handleRemoveWindowOpen = (email:string) => {
         setRemoveWindowOpen(true)
+        setRemoveSellerEmail(email)
+
     }
 
     const changeRadioButtonValue = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,12 +91,19 @@ const MyEmployee = () => {
     };
 
 
+    const handleSearch = (e: KeyboardEvent<HTMLImageElement>) => {
+        if (e.key==="Enter"){
+            setSearchedName(formik.values.search)
+        }
+    };
+
+
     const validationSchema = yup.object().shape({
         email: yup
             .string()
-            .email('Enter a valid email')
-            .required('Email is required')
-            .max(40, 'Too long email!')
+            .email('Введите действительный адрес электронной почты')
+            .required('Требуется электронная почта')
+            .max(40, 'Слишком длинное электронное письмо!')
     });
     const formik = useFormik({
         initialValues: {
@@ -97,10 +117,8 @@ const MyEmployee = () => {
                 if (isWindowOpen){
                     handleAddSeller(values.email, data?.shop.id, data?.user.email)
 
-                } else if (isRemoveWindowOpen) {
-                    handleRemoveSeller(values.email, data?.shop.id, data?.user.email)
-
                 }
+
 
             }
         },
@@ -112,7 +130,7 @@ const MyEmployee = () => {
 
         <Paper sx={{paddingLeft: 3, paddingTop: 3}}>
             <Typography sx={{marginBottom: 3}}>Список сотрудников</Typography>
-            <form>
+            <form onSubmit={e => e.preventDefault()}>
                 <TextField
                     name="search"
                     onChange={formik.handleChange}
@@ -120,10 +138,11 @@ const MyEmployee = () => {
                     placeholder="найти"
                     size="medium"
                     sx={{width: '700px', backgroundColor: '#F2F4F5'}}
+                    onKeyDown={handleSearch}
 
                     InputProps={{
                         endAdornment: <InputAdornment position="end"><IconButton onClick={()=>{setSearchedName(formik.values.search)}}
-                            color="primary" sx={{ p: '10px' }} aria-label="directions">
+                                                                                 color="primary" sx={{ p: '10px' }} aria-label="directions">
                             <SearchIcon/>
                         </IconButton></InputAdornment>
                     }}
@@ -190,12 +209,12 @@ const MyEmployee = () => {
                     </Button>
                 </Grid>
             </Grid>
-            <EmployeesInfoList role={role} searchedName = {searchedName} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
+            <EmployeesInfoList role={role} searchedName = {searchedName} handleRemoveWindowOpen={handleRemoveWindowOpen} />
             {isWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isLoading} isSuccess={isSuccess} isWindowOpen={isWindowOpen}
                                              isError={addSellingError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="добавить" isAlert={isAlert}/>
             }
-            {isRemoveWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading} isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
-                                                   isError={isRemoveSellerError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="удалить" isAlert={isAlert}/>
+            {isRemoveWindowOpen && <RoleRemoveWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading} isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
+                                                   isError={isRemoveSellerError} formik={formik} submitRemovingEmail={submitRemovingEmail}  isAlert={isAlert}/>
             }
 
         </Paper>

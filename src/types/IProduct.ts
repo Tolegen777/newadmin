@@ -63,6 +63,7 @@ export interface IProductNew {
     shopId: number
     avatar: File | null
     subs: File[]
+
 }
 
 export interface IProductResponse {
@@ -76,7 +77,7 @@ export interface IProductQuery {
     brandId?: string
     bestseller?: boolean
     almostFree?: boolean
-    search: string
+    search?: string
     tagId?: string
     priceFrom?: string
     priceTo?: string
@@ -84,4 +85,13 @@ export interface IProductQuery {
     limit?: number
     block?: boolean
     confirm?: boolean
+}
+
+export interface IProductSpecs {
+ id:number,
+    value:string,
+    title:{
+     id:number,
+        title:string
+    }
 }

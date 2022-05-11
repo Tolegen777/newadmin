@@ -1,17 +1,17 @@
 import {baseApi} from "../baseApi";
-import {IAddSeller} from "../../../types/types";
+import { IUpdateSpecs} from "../../../types/types";
 
 const endpoints = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        removeSeller: builder.mutation<any, IAddSeller>({
+        updateSpecs: builder.mutation<any, IUpdateSpecs>({
             query: (sellingData) => ({
-                url: `shop/remove-seller`,
+                url: `spec/add-product`,
                 method: 'POST',
                 body: {...sellingData}
             }),
-             invalidatesTags:['getShop']
+
         })
     })
 })
 
-export const {useRemoveSellerMutation} = endpoints
+export const {useUpdateSpecsMutation} = endpoints

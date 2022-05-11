@@ -14,7 +14,7 @@ import {
     Typography
 } from '@mui/material';
 import {FormikProvider, useFormik} from 'formik';
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router';
 import {useTypedSelector} from '../../store';
@@ -24,6 +24,10 @@ import StyledTableCell from '../table/StyledTableCell';
 import StyledTableRow from '../table/StyledTableRow';
 import TableLoadingMockup from '../table/TableLoadingMockup';
 import Filters from './Filters';
+import CustomAlert from "../alert/CustomAlert";
+import {useAddSellerMutation} from "../../store/rtk-api/addSeller-rtk/addSeller_rtk";
+import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
+
 
 const mapping = {
     'id': 'Артикул',
@@ -39,6 +43,16 @@ const ProductsTable: React.FC = () => {
     const dispatch = useDispatch();
 
     const {products, isLoading} = useTypedSelector(state => state.product);
+
+    // React.useEffect(() => {
+    //     console.log(products)
+    // }, [products])
+
+    const [removeProduct, {
+        isLoading: deleteLoading,
+        isError: deletingProductError,
+        isSuccess
+    }] = useRemoveProductMutation()
 
     // Filter states
     const formik = useFormik<IProductQuery>({
@@ -64,6 +78,14 @@ const ProductsTable: React.FC = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+    //deleting
+    const [isSuccessfulDeleting, setSuccessfullDeleting] = useState(false)
+    const handleDeleteProduct = (id: number) => {
+        removeProduct(id).then(() => {
+            dispatch(fetchProducts({...values, limit: rowsPerPage, page: page + 1}));
+        })
+    }
+
     // Pagination actions
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -74,6 +96,12 @@ const ProductsTable: React.FC = () => {
     };
 
     React.useEffect(() => {
+        if (deletingProductError) {
+            setSuccessfullDeleting(true)
+        }
+    }, [deletingProductError])
+
+    React.useEffect(() => {
         dispatch(fetchProducts({...values, limit: rowsPerPage, page: page + 1}));
     }, [page, rowsPerPage])
 
@@ -82,6 +110,9 @@ const ProductsTable: React.FC = () => {
             <TableContainer>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
                     <Typography style={{fontSize: "20px", marginBottom: '25px'}}>Инвентарь товаров</Typography>
+                    {isSuccessfulDeleting &&
+                        <CustomAlert title={""} status="error" message="Произошла ошибка при удалений товара"/>}
+
                     <Button variant="contained" startIcon={<AddIcon/>}
                             onClick={() => navigate('/app/products/one/new')}>Создать товар</Button>
                 </div>
@@ -123,6 +154,12 @@ const ProductsTable: React.FC = () => {
                                                     sx={{borderWidth: '2px', fontWeight: 600}}
                                                     onClick={() => navigate(`/app/products/one/${row.id}`)}>
                                                 Подробнее
+                                            </Button>
+
+                                            <Button variant='contained' color='error'
+                                                    sx={{borderWidth: '2px', fontWeight: 600, marginLeft: "5px"}}
+                                                    onClick={() => handleDeleteProduct(row.id)}>
+                                                Удалить товар
                                             </Button>
                                         </StyledTableCell>
                                     </StyledTableRow>

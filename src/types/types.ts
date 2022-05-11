@@ -106,6 +106,18 @@ export interface IAddSeller {
     ownerEmail:string
 }
 
+export interface IAddSeller {
+    shopId:number,
+    email:string,
+    ownerEmail:string
+}
+
+export interface IUpdateSpecs {
+    productId:number,
+    specs:string
+}
+
+
 export interface IAdminRole {
     id: number,
     email: string,

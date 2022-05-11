@@ -8,7 +8,9 @@ import {IAdminRole} from "../../types/types";
 type PropsType = {
     user: IAdminRole,
     roleName:string,
-    handleRemoveWindowOpen?():void
+    handleRemoveWindowOpen(email:string):void,
+
+
 }
 
 const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName,handleRemoveWindowOpen}) => {
@@ -28,7 +30,7 @@ const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName,handleRemoveWindo
         <TableCell align="right">{user.email}</TableCell>
         <TableCell align="right">{user.phone}</TableCell>
         {
-            roleName==="Администратор"&&<TableCell align="right"><MoreHorizIcon fontSize="large" cursor={"pointer"} onClick={handleRemoveWindowOpen}/></TableCell>
+            roleName==="Администратор"&&<TableCell align="right"><MoreHorizIcon fontSize="large" cursor={"pointer"} onClick={()=>{handleRemoveWindowOpen(user.email)}}/></TableCell>
         }
 
 

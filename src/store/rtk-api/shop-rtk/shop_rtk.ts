@@ -8,7 +8,8 @@ const endpoints = baseApi.injectEndpoints({
                 url: `shop/${shopId}`,
                 method: 'GET',
 
-            })
+            }),
+             providesTags:['getShop']
         })
     })
 })

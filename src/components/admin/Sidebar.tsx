@@ -15,6 +15,8 @@ const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
     const isNotification = useTypedSelector(state=>state.websocketNotification.isNotification)
+    // console.log(isNotification)
+    // console.log("isNotification")
   const location = useLocation();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -69,6 +71,7 @@ export default function ResponsiveDrawer() {
         </ListItemButton>
       </NavLink>
         <Box sx = {{marginTop:'180px'}}>
+            {/*{isNotification&&<CustomAlert title="Новое сообщение" status="info" message="У вас новое сообщение" />}*/}
             {isNotification&&<CustomAlert title="Новое сообщение" status="info" message="У вас новое сообщение" />}
         </Box>
 

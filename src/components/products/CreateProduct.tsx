@@ -5,7 +5,6 @@ import {
     CircularProgress,
     Grid,
     ListItem,
-    MenuItem,
     Select,
     TextField,
     textFieldClasses,
@@ -20,7 +19,7 @@ import {useNavigate, useParams} from 'react-router';
 import {$imageApi} from '../../api';
 import {ProductService} from '../../service/product/product.service';
 import {useTypedSelector} from '../../store';
-import {createProduct, fetchCategories, fetchSpecs, updateProduct} from '../../store/product/product.action';
+import {createProduct, fetchSpecs, updateProduct} from '../../store/product/product.action';
 import {IProductNew, IProductOneResponse} from '../../types/IProduct';
 import ImageContainer from '../image-input/ImageContainer';
 import ImageInput from '../image-input/ImageInput';
@@ -29,7 +28,9 @@ import SelectSpecs from './SelectSpecs';
 import {useGetSpecsQuery} from "../../store/rtk-api/baseEndpoints";
 import CustomAlert from "../alert/CustomAlert";
 import {clearError, clearPayload} from "../../store/product/product.slice";
-
+import {useUpdateSpecsMutation} from "../../store/rtk-api/updateSpecs-rtk/updateSpecs-rtk";
+import {useRemoveProductImageMutation} from "../../store/rtk-api/removeProductImage-rtk/removeProductImage-rtk";
+import * as yup from 'yup';
 const StyledTextField = styled(TextField)(({theme}) => ({
     [`&.${textFieldClasses.root}`]: {
         color: '#AAAAAA',
@@ -50,12 +51,10 @@ const StyledSubHeader = styled(Typography)(({theme}) => ({
 }))
 
 
-
-
 const CreateProduct: React.FC = () => {
     const {shop} = useTypedSelector(state => state.auth)
     let shopId = 0
-    if(shop) {
+    if (shop) {
         shopId = shop.id
 
     }
@@ -82,15 +81,48 @@ const CreateProduct: React.FC = () => {
     const [categoryId, setCategoryId] = useState<number | null>(null)
     const [categoryName, setCategoryName] = useState<string>('')
     const {data: specs, isLoading} = useGetSpecsQuery(String(categoryId))
+
+    const [removeProductImage, {
+        isLoading: deleteLoading,
+        isError: deletingProductError,
+        isSuccess
+    }] = useRemoveProductImageMutation()
+
     let arr: Array<string> = [];
     {
         specs && specs.map(spec => arr.push(String(spec.id)))
     }
-    const {payload, error2, isLoading: isProductAdding} = useTypedSelector(state => state.product)
+    const {payload,payload2,error3, error2, isLoading: isProductAdding} = useTypedSelector(state => state.product)
     const [isAlert, setAlert] = useState(false)
+    // console.log(payload2)
+    // console.log(error3)
+    // console.log("lofof")
+
+    const [specsArr, setSpecs] = useState<Array<string>>([])
+
+    const handleSetSpecs = (arr: Array<string>) => {
+        setSpecs(arr.map(String))
+        // console.log(arr.map(String))
+    }
+
+    //updateProductSpecs
+
+    const [navigateFlag,setNavigateFlag] = useState(false)
+
+    const [updateProductSpecs, {
+        isLoading: updateLoading,
+        isError: updateError,
+        isSuccess: updateSuccess,
+    }] = useUpdateSpecsMutation()
+
+
+    const handleUpdateProductSpecs = (productId: number, specs: string) => {
+        const data = {productId, specs}
+        updateProductSpecs(data)
+    }
 
     useEffect(() => {
-        if (payload && payload.meta.requestStatus === "fulfilled" && error2 == null) {
+        if (payload && payload.meta.requestStatus === "fulfilled" && error2 == null ) {
 
             navigate('/app/products/list')
 
@@ -102,14 +134,49 @@ const CreateProduct: React.FC = () => {
 
     }, [payload, error2])
 
+    useEffect(() => {
+        if (payload2 && payload2.meta.requestStatus === "fulfilled" && error3 == null ) {
+            if (!navigateFlag){
+                navigate('/app/products/list')
+
+                dispatch(clearPayload())
+            } else {
+                if (updateSuccess) {
+                    navigate('/app/products/list')
+
+                    dispatch(clearPayload())
+                }
+            }
+
+
+        } else if (error3 != null ||updateError) {
+            setAlert(true)
+        }
+
+    }, [payload2, error3, updateSuccess, updateError])
+
+
+
     const handleSetCategory = (categoryId: number, categoryName: string) => {
         setCategoryId(categoryId)
         setFieldValue('categoryId', categoryId)
         setCategoryName(categoryName)
     }
 
+    const validationSchema = yup.object().shape({
+        title: yup
+            .string()
+            .required('Название продукта обязательное поле'),
+        discount: yup
+            .number()
+            .max(100,"Максимум может быть установлен до 100%")
+        .min(0,"Минимум может быть установлен до 0%"),
+
+    });
+
     const formik = useFormik({
         initialValues: initialValues,
+        validationSchema:validationSchema,
         onSubmit: async (values) => {
 
             if (!productId) {
@@ -117,7 +184,19 @@ const CreateProduct: React.FC = () => {
 
             } else {
                 dispatch(updateProduct(values));
+                if (specsArr.length > 0) {
+                    handleUpdateProductSpecs(Number(productId), specsArr.join(','))
+                    setNavigateFlag(true)
+                }
             }
+            // else {
+            //
+            //     if (specsArr.length>0){
+            //         handleUpdateProductSpecs(Number(productId),specsArr)
+            //     }
+            //
+            // }
+
         }
     })
     const {values, setFieldValue, setValues, handleChange, handleSubmit} = formik;
@@ -130,6 +209,19 @@ const CreateProduct: React.FC = () => {
         }
         const file = input.files[0];
         let images = [...values.subs];
+        //let images = [];
+        images.push(file);
+        setFieldValue('subs', images);
+    }
+
+    const handleAddImage2 = (event: Event) => {
+        const input = event.target as HTMLInputElement;
+        if (!input.files?.length) {
+            return;
+        }
+        const file = input.files[0];
+        // let images = [...values.subs];
+        let images = [];
         images.push(file);
         setFieldValue('subs', images);
     }
@@ -147,12 +239,18 @@ const CreateProduct: React.FC = () => {
 
     const handleImageDelete = (id: number) => {
         let images = [...values.subs].filter((img, ind) => ind !== id);
-        setFieldValue('photos', images);
+        setFieldValue('subs', images);
     }
     const goToBack = () => {
         navigate('/app/products/list')
         setAlert(false)
         dispatch(clearError())
+    }
+
+    //removing product image
+
+    const handleRemoveProductImage = (id: number) => {
+        removeProductImage(id)
     }
 
     React.useEffect(() => {
@@ -204,51 +302,96 @@ const CreateProduct: React.FC = () => {
         <Box>
             <Button variant="contained" sx={{backgroundColor: '#EFF3F9', color: 'black'}}
                     startIcon={<ArrowBackIosNewIcon/>} onClick={goToBack}>Назад</Button>
-            <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Добавить товар</Typography>
+            <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Изменить товар</Typography>
             <form>
-                <StyledSubHeader>Фотография</StyledSubHeader>
-                <Typography variant="caption" color="gray">Первая фотография будет отображаться на карточке
-                    товара</Typography>
-                <div style={{display: 'flex'}}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={2}>
-                            <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px"
-                                        width="100px"/>
-                        </Grid>
-                        {productId &&
-                            product?.product.photos.map((photo, ind) => (
-                                <Grid item xs={2} key={ind}>
-                                    <ImageContainer
-                                        image={`${$imageApi}/${photo.image}`}
-                                        handleChange={(event) => handleImageChange(event, ind)}
-                                        handleDelete={() => handleImageDelete(ind)}
-                                    />
+                {productId ? <>
+                        <StyledSubHeader>Фотография</StyledSubHeader>
+                        <Typography variant="caption" color="gray">Выбранная фотография будет отображаться на карточке
+                            товара</Typography>
+                        <div style={{display: 'flex'}}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={2}>
+                                    <ImageInput title="Добавить фотографию" handleChange={handleAddImage2} height="100px"
+                                                width="100px"/>
                                 </Grid>
-                                // <img src={`${$imageApi}/${photo.image}`} />
-                            ))
-                        }
-                        {values.subs.map((image, ind) => {
-                            return (
-                                <Grid item xs={2} key={ind}>
-                                    <ImageContainer
-                                        image={URL.createObjectURL(image)}
-                                        handleChange={(event) => handleImageChange(event, ind)}
-                                        handleDelete={() => handleImageDelete(ind)}
-                                    />
+                                {productId &&
+                                    product?.product.photos.map((photo, ind) => (
+                                        <Grid item xs={2} key={ind}>
+                                            <ImageContainer
+                                                image={`${$imageApi}/${photo.image}`}
+                                                handleChange={(event) => handleImageChange(event, ind)}
+                                                 handleDelete={() => handleImageDelete(ind)}
+                                               // handleDelete={() => handleRemoveProductImage(photo..id)}
+                                            />
+                                        </Grid>
+                                        // <img src={`${$imageApi}/${photo.image}`} />
+                                    ))
+                                }
+                                {values.subs.map((image, ind) => {
+                                    return (
+                                        <Grid item xs={2} key={ind}>
+                                            <ImageContainer
+                                                image={URL.createObjectURL(image)}
+                                                handleChange={(event) => handleImageChange(event, ind)}
+                                                handleDelete={() => handleImageDelete(ind)}
+                                            />
+                                        </Grid>
+                                    )
+                                })}
+                            </Grid>
+                        </div>
+                    </> :
+                    <>
+                        <StyledSubHeader>Фотография<span style={{color:"red"}}> *</span></StyledSubHeader>
+
+                        <Typography variant="caption" color="gray">Первая фотография будет отображаться на карточке
+                            товара</Typography>
+                        <div style={{display: 'flex'}}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={2}>
+                                    <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px"
+                                                width="100px"/>
                                 </Grid>
-                            )
-                        })}
-                    </Grid>
-                </div>
+                                {/*{productId &&*/}
+                                {/*    product?.product.photos.map((photo, ind) => (*/}
+                                {/*        <Grid item xs={2} key={ind}>*/}
+                                {/*            <ImageContainer*/}
+                                {/*                image={`${$imageApi}/${photo.image}`}*/}
+                                {/*                handleChange={(event) => handleImageChange(event, ind)}*/}
+                                {/*                handleDelete={() => handleImageDelete(ind)}*/}
+                                {/*            />*/}
+                                {/*        </Grid>*/}
+                                {/*        // <img src={`${$imageApi}/${photo.image}`} />*/}
+                                {/*    ))*/}
+                                {/*}*/}
+                                {values.subs.map((image, ind) => {
+                                    return (
+                                        <Grid item xs={2} key={ind}>
+                                            <ImageContainer
+                                                image={URL.createObjectURL(image)}
+                                                handleChange={(event) => handleImageChange(event, ind)}
+                                                handleDelete={() => handleImageDelete(ind)}
+                                            />
+                                        </Grid>
+                                    )
+                                })}
+                            </Grid>
+                        </div>
+                    </>
+                }
+
                 <Grid container spacing={2}>
                     <Grid item sm={6} xs={6} lg={6}>
-                        <StyledSubHeader>Название товара</StyledSubHeader>
+                        <StyledSubHeader>Название товара<span style={{color:"red"}}> *</span></StyledSubHeader>
                         <StyledTextField
                             label="Название товара"
                             name="title"
                             value={values.title}
                             onChange={handleChange}
                             fullWidth
+                            required
+                            error={formik.touched.title && Boolean(formik.errors.title)}
+                            helperText={formik.touched.title && formik.errors.title}
                         />
                         <StyledSubHeader>Короткое описание товара</StyledSubHeader>
                         <StyledTextField
@@ -259,6 +402,7 @@ const CreateProduct: React.FC = () => {
                             multiline
                             rows={3}
                             fullWidth
+                            required
                         />
                         <StyledSubHeader>Полное описание товара</StyledSubHeader>
                         <StyledTextField
@@ -270,16 +414,17 @@ const CreateProduct: React.FC = () => {
                             rows={5}
                             maxRows={8}
                             fullWidth
+                            required
                         />
-                        {/*<StyledSubHeader>Артикул товара</StyledSubHeader>*/}
-                        {/*<StyledTextField*/}
-                        {/*  label="Артикул"*/}
-                        {/*  name="article"*/}
-                        {/*/>*/}
+                        {/*{/<StyledSubHeader>Артикул товара</StyledSubHeader>/}*/}
+                        {/*{/<StyledTextField/}*/}
+                        {/*/!*  label="Артикул"*!/*/}
+                        {/*/!*  name="article"*!/*/}
+                        {/*{//>/}*/}
                     </Grid>
                     <Grid item sm={6} xs={6} lg={6}>
 
-                        <StyledSubHeader>Категория</StyledSubHeader>
+                        <StyledSubHeader>Категория<span style={{color:"red"}}> *</span></StyledSubHeader>
                         <ListItem sx={{fontWeight: 'bold'}}>Выбранная категория: <Typography
                             sx={{marginLeft: '4px'}}> {categoryName}</Typography></ListItem>
                         <SelectCategory handleSetCategory={handleSetCategory}/>
@@ -305,6 +450,8 @@ const CreateProduct: React.FC = () => {
                                 value={values.price}
                                 onChange={handleChange}
                                 type="number"
+                                required
+
                             />
                         </div>
                         <StyledSubHeader>Характеристики товара</StyledSubHeader>
@@ -316,7 +463,9 @@ const CreateProduct: React.FC = () => {
                             paddingLeft: '10px',
                             paddingBottom: '10px'
                         }}>
-                            {categoryId && <SelectSpecs categoryId={categoryId} setFieldValue={setFieldValue}/>}
+                            {categoryId && <SelectSpecs categoryId={categoryId} setFieldValue={setFieldValue}
+                                                        handleSetSpecs={handleSetSpecs}
+                            />}
                         </div>
                         <StyledSubHeader>Дополнительная информация</StyledSubHeader>
                         <div style={{width: '100%', borderRadius: '8px'}}>
@@ -326,6 +475,8 @@ const CreateProduct: React.FC = () => {
                                 value={values.discount}
                                 onChange={handleChange}
                                 type="number"
+                                error={formik.touched.discount && Boolean(formik.errors.discount)}
+                                helperText={formik.touched.discount && formik.errors.discount}
                             />
                         </div>
                     </Grid>

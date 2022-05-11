@@ -11,7 +11,7 @@ import EmployeesInfoBlock from "./EmployeesInfoBlock";
 type PropsType = {
     role: string,
     searchedName:string,
-    handleRemoveWindowOpen?():void
+    handleRemoveWindowOpen(email:string):void
 }
 
 const EmployeesInfoList: React.FC<PropsType> = ({role,searchedName,handleRemoveWindowOpen}) => {
@@ -32,7 +32,7 @@ const EmployeesInfoList: React.FC<PropsType> = ({role,searchedName,handleRemoveW
                     <TableBody>
                         {role === "seller"&& shopData && shopData.shop && shopData.shop.owner &&
                             (searchedName && shopData.shop.owner.firstName.toLowerCase().includes(searchedName.toLowerCase())||shopData.shop.owner.lastName.toLowerCase().includes(searchedName.toLowerCase())) &&
-                            <EmployeesInfoBlock user={shopData.shop.owner} roleName={"Управляющий"}/>
+                            <EmployeesInfoBlock user={shopData.shop.owner} roleName={"Управляющий"} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
                         }
 
                         {(role === "admin" || role === "all") && shopData && shopData.shop && shopData.shop.admin_users && shopData.shop.admin_users.map(user => {
@@ -49,7 +49,7 @@ const EmployeesInfoList: React.FC<PropsType> = ({role,searchedName,handleRemoveW
 
                         })}{role === "seller" || role === "all" && shopData && shopData.shop && shopData.shop.owner &&
                         (searchedName && shopData.shop.owner.firstName.toLowerCase().includes(searchedName.toLowerCase())||shopData.shop.owner.lastName.toLowerCase().includes(searchedName.toLowerCase())) &&
-                         <EmployeesInfoBlock user={shopData.shop.owner} roleName={"Управляющий"}/>
+                         <EmployeesInfoBlock user={shopData.shop.owner} roleName={"Управляющий"} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
                         }
 
 

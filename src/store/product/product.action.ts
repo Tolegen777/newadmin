@@ -9,8 +9,10 @@ export const fetchProducts = createAsyncThunk<IProductResponse, IProductQuery>(
     async function (query, {getState, rejectWithValue}) {
         try {
             const {auth} = getState() as RootState;
+            const {search, shopId, confirm, priceFrom, priceTo, categoryId, limit, page} = query;
+            const filteredQuery = {search, shopId, confirm, priceFrom, priceTo, categoryId, limit, page};
             if (auth.user?.shops) {
-                const response = await ProductService.fetchProducts({...query, shopId: auth.user?.shops[0].id})
+                const response = await ProductService.fetchProducts({...filteredQuery, shopId: auth.user?.shops[0].id})
                 return response.data
             }
             throw Error('Нет магазина')

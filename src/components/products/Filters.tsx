@@ -99,27 +99,30 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit}) => {
                     </Grid>
                     <Grid item xs>
                         <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                            <FormControlLabel
-                                label="Бестселлеры"
-                                style={{margin: '4px'}}
-                                onChange={handleChange}
-                                control={
-                                    <Field type="checkbox" name="bestseller"/>
-                                }
-                            />
-                            <FormControlLabel
-                                label="Заблокированные"
-                                style={{margin: '4px'}}
-                                control={
-                                    <Field type="checkbox" name="block"/>
-                                }
-                            />
-                            <FormControlLabel
-                                label="Подтвержденные"
-                                control={
-                                    <Field type="checkbox" name="confirm"/>
-                                }
-                            />
+                            {/*<FormControlLabel*/}
+                            {/*    label="Бестселлеры"*/}
+                            {/*    style={{margin: '4px'}}*/}
+                            {/*    onChange={handleChange}*/}
+                            {/*    control={*/}
+                            {/*        <Field type="checkbox" name="bestseller"/>*/}
+                            {/*    }*/}
+                            {/*/>*/}
+                            {/*<FormControlLabel*/}
+                            {/*    label="Заблокированные"*/}
+                            {/*    style={{margin: '4px'}}*/}
+                            {/*    control={*/}
+                            {/*        <Field type="checkbox" name="block"/>*/}
+                            {/*    }*/}
+                            {/*/>*/}
+
+                           {/*Фильтр временно закоменчил*/}
+                            {/*<FormControlLabel*/}
+                            {/*    style={{margin: '4px'}}*/}
+                            {/*    label="Подтвержденные"*/}
+                            {/*    control={*/}
+                            {/*        <Field type="checkbox" name="confirm"/>*/}
+                            {/*    }*/}
+                            {/*/>*/}
                         </Stack>
                     </Grid>
                 </Grid>
