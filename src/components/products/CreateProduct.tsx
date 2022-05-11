@@ -20,7 +20,7 @@ import {$imageApi} from '../../api';
 import {ProductService} from '../../service/product/product.service';
 import {useTypedSelector} from '../../store';
 import {createProduct, fetchSpecs, updateProduct} from '../../store/product/product.action';
-import {IProductNew, IProductOneResponse} from '../../types/IProduct';
+import {IProductNew, IProductOneResponse, Photo} from '../../types/IProduct';
 import ImageContainer from '../image-input/ImageContainer';
 import ImageInput from '../image-input/ImageInput';
 import SelectCategory from '../select-category/SelectCategory';
@@ -109,6 +109,8 @@ const CreateProduct: React.FC = () => {
 
     const [navigateFlag,setNavigateFlag] = useState(false)
 
+    const [flag, setFlag] = useState(false)
+
     const [updateProductSpecs, {
         isLoading: updateLoading,
         isError: updateError,
@@ -120,6 +122,8 @@ const CreateProduct: React.FC = () => {
         const data = {productId, specs}
         updateProductSpecs(data)
     }
+
+
 
     useEffect(() => {
         if (payload && payload.meta.requestStatus === "fulfilled" && error2 == null ) {
@@ -224,6 +228,7 @@ const CreateProduct: React.FC = () => {
         let images = [];
         images.push(file);
         setFieldValue('subs', images);
+        setFlag(true)
     }
 
     const handleImageChange = (event: Event, id: number) => {
@@ -234,12 +239,14 @@ const CreateProduct: React.FC = () => {
         const file = input.files[0];
         let images = [...values.subs];
         images[id] = file;
-        setFieldValue('photos', images);
+         setFieldValue('photos', images);
+        //setFieldValue('subs', images);
     }
 
     const handleImageDelete = (id: number) => {
         let images = [...values.subs].filter((img, ind) => ind !== id);
         setFieldValue('subs', images);
+        setFlag(false)
     }
     const goToBack = () => {
         navigate('/app/products/list')
@@ -249,9 +256,20 @@ const CreateProduct: React.FC = () => {
 
     //removing product image
 
-    const handleRemoveProductImage = (id: number) => {
+    let [photos, setPhotos] = useState<Photo[]>([])
+
+    useEffect(()=>{
+        if (productId&&product?.product.photos){
+            setPhotos(product?.product.photos)
+        }
+    },[productId,product])
+
+    const handleRemoveProductImage = (id: number, ind:number) => {
+
         removeProductImage(id)
+        setPhotos(photos.filter(p=>p!=photos[ind]))
     }
+
 
     React.useEffect(() => {
         async function fetch() {
@@ -305,7 +323,7 @@ const CreateProduct: React.FC = () => {
             <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Изменить товар</Typography>
             <form>
                 {productId ? <>
-                        <StyledSubHeader>Фотография</StyledSubHeader>
+                        <StyledSubHeader>Фотография на карточке</StyledSubHeader>
                         <Typography variant="caption" color="gray">Выбранная фотография будет отображаться на карточке
                             товара</Typography>
                         <div style={{display: 'flex'}}>
@@ -314,18 +332,19 @@ const CreateProduct: React.FC = () => {
                                     <ImageInput title="Добавить фотографию" handleChange={handleAddImage2} height="100px"
                                                 width="100px"/>
                                 </Grid>
-                                {productId &&
-                                    product?.product.photos.map((photo, ind) => (
-                                        <Grid item xs={2} key={ind}>
+
+                                {productId && !flag && <Grid item xs={2}>
                                             <ImageContainer
-                                                image={`${$imageApi}/${photo.image}`}
-                                                handleChange={(event) => handleImageChange(event, ind)}
-                                                 handleDelete={() => handleImageDelete(ind)}
-                                               // handleDelete={() => handleRemoveProductImage(photo..id)}
+                                                image={`${$imageApi}/${product?.product.image}`}
+                                                // handleChange={(event) => handleImageChange(event, ind)}
+                                                handleChange={handleAddImage2}
+                                                 //handleDelete={() => handleImageDelete(ind)}
+                                                 handleDelete={() => setFlag(true)}
+                                                //handleDelete={() => handleRemoveProductImage(photo.id)}
                                             />
                                         </Grid>
                                         // <img src={`${$imageApi}/${photo.image}`} />
-                                    ))
+
                                 }
                                 {values.subs.map((image, ind) => {
                                     return (
@@ -338,8 +357,37 @@ const CreateProduct: React.FC = () => {
                                         </Grid>
                                     )
                                 })}
+
+
+                                <Grid container direction={"column"}>
+                                    <Typography variant="caption" color="gray" sx={{marginBottom:"5px"}}>Другие фотографий</Typography>
+
+                                    {productId && photos.length>0&&
+                                        photos.map((photo, ind) => (
+                                            <Grid item xs={5} key={ind} sx={{marginRight:"10px"}}>
+                                                <ImageContainer
+                                                    image={`${$imageApi}/${photo.image}`}
+                                                    // handleChange={(event) => handleImageChange(event, ind)}
+                                                    handleChange={()=>{}}
+                                                    //   // handleDelete={() => handleImageDelete(ind)}
+                                                    handleDelete={() => handleRemoveProductImage(photo.id,ind)}
+                                                />
+                                            </Grid>
+                                            // <img src={`${$imageApi}/${photo.image}`} />
+                                        ))
+                                    }
+                                </Grid>
+
+
+
                             </Grid>
+
+
                         </div>
+
+
+
+
                     </> :
                     <>
                         <StyledSubHeader>Фотография<span style={{color:"red"}}> *</span></StyledSubHeader>

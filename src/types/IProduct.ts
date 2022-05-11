@@ -46,7 +46,7 @@ export interface IProducts{
     rating: null | string
     sells: string
 }
-interface Photo {
+export interface Photo {
     id: number
     image: string
 }

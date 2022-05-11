@@ -21,7 +21,10 @@ const webSocketSlice = createSlice({
     reducers: {
 
         getNotification: (state, {payload}) => {
+
             // state.data = state.data.concat([payload])
+            console.log(state.data)
+            console.log("log")
             state.data.push(payload)
             // console.log(state.data)
             // console.log("first")
