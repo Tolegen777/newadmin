@@ -164,13 +164,13 @@ const ProductsTable: React.FC = () => {
                                         <StyledTableCell><Chip label={`${row.discount}%`}/></StyledTableCell>
                                         <StyledTableCell>
                                             <Button variant='outlined' color='primary'
-                                                    sx={{borderWidth: '2px', fontWeight: 600}}
+                                                    sx={{borderWidth: '2px', fontWeight: 600, width:"120px", marginRight:"5px"}}
                                                     onClick={() => navigate(`/app/products/one/${row.id}`)}>
                                                 Подробнее
                                             </Button>
 
                                             <Button variant='contained' color='error'
-                                                    sx={{borderWidth: '2px', fontWeight: 600, marginLeft: "5px"}}
+                                                    sx={{borderWidth: '2px', fontWeight: 600, width:"120px"}}
                                                     onClick={() => handleWindowOpen(row.id)}>
                                                 Удалить
                                             </Button>
