@@ -1,12 +1,12 @@
 import {baseApi} from "../baseApi";
-import { IUpdateSpecs} from "../../../types/types";
+import {IUpdateSpecArr, IUpdateSpecs} from "../../../types/types";
 
 const endpoints = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        updateSpecs: builder.mutation<any, IUpdateSpecs>({
+        updateSpecs: builder.mutation<any, IUpdateSpecArr>({
             query: (sellingData) => ({
-                url: `spec/add-product`,
-                method: 'POST',
+                url: `spec/product-spec`,
+                method: 'PUT',
                 body: {...sellingData}
             }),
 

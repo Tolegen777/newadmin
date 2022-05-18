@@ -159,3 +159,15 @@ export interface IGetNotification {
 
 
 }
+
+export interface IUpdateSpecArr {
+    productId:number,
+    specs: ISpecArr[]
+
+}
+
+export interface ISpecArr {
+    oldSpecId: number,
+    newSpecId: number
+}
+

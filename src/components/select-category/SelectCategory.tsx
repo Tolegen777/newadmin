@@ -22,6 +22,8 @@ type PropsType = {
 const SelectCategory: React.FC<PropsType> = (props) => {
     const [selectedCategory, setSelectedCategory] = useState<number | string>('')
     const data = useTypedSelector(state => state.product)
+    // console.log(data)
+    // console.log("data")
     const [open, setOpen] = React.useState(false);
     const [age, setAge] = React.useState<number | string>('');
     const [categoryId, setCategoryId] = React.useState<number | string>('')
@@ -55,6 +57,7 @@ const SelectCategory: React.FC<PropsType> = (props) => {
         props.handleSetCategory(id, value)
         if (arr.length === 0) {
             handleClose()
+            // console.log("hey hey hey")
         }
 
 
@@ -67,6 +70,7 @@ const SelectCategory: React.FC<PropsType> = (props) => {
         props.handleSetCategory(id, value)
         if (arr.length === 0) {
             handleClose()
+            // console.log("hey hey hey")
         }
     }
 
@@ -76,6 +80,7 @@ const SelectCategory: React.FC<PropsType> = (props) => {
         props.handleSetCategory(id, value)
         if (arr.length === 0) {
             handleClose()
+            // console.log("hey hey hey")
         }
     }
 

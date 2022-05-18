@@ -9,6 +9,7 @@ import { logout } from '../../store/auth/auth.action';
 import CustomAlert from "../alert/CustomAlert";
 import {useTypedSelector} from "../../store";
 import {useEffect} from "react";
+import {readNotification} from "../../store/webSocket/webSocket.slice";
 
 const drawerWidth = 240;
 
@@ -22,7 +23,6 @@ export default function ResponsiveDrawer() {
   const handleLogout = () => {
     dispatch(logout());
   }
-
 
 
   const drawer = (
@@ -72,8 +72,8 @@ export default function ResponsiveDrawer() {
           <ListItemText primary="Log Out" />
         </ListItemButton>
       </NavLink>
-        <Box sx = {{marginTop:'80px'}}>
-            {isNotification&&<CustomAlert title="Новое сообщение" status="info" message="У вас новое сообщение" />}
+        <Box sx = {{marginTop:'60%'}}>
+            {isNotification&&<CustomAlert title="Новое уведомление!" status="info" message="Нажмите на 'Уведомления' чтобы увидеть" />}
         </Box>
 
 
@@ -95,6 +95,7 @@ export default function ResponsiveDrawer() {
         elevation={16}
       >
         {drawer}
+
       </Drawer>
     </Box>
   );

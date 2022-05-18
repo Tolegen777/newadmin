@@ -7,16 +7,20 @@ import photo from "../../assets/images/user (1).png";
 import {useEffect, useRef} from "react";
 import {useDispatch} from "react-redux";
 import {readNotification} from "../../store/webSocket/webSocket.slice";
+import {useParams} from "react-router";
+import {useLocation} from "react-router-dom";
 
 
 const NotificationPage = () => {
     const dispatch = useDispatch()
     const bottomRef = React.useRef<HTMLDivElement>(null);
     const notificationData = useTypedSelector(state => state.websocketNotification)
+    // console.log(notificationData)
+    // console.log("notificationData")
     useEffect(()=>{
         dispatch(readNotification())
-
     }, [])
+
     const scrollToBottom = () => {
         if (bottomRef.current) {
             bottomRef.current.scrollIntoView({

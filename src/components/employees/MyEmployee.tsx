@@ -118,8 +118,6 @@ const MyEmployee = () => {
                     handleAddSeller(values.email, data?.shop.id, data?.user.email)
 
                 }
-
-
             }
         },
     });

@@ -1,15 +1,5 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import {
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    ListItem,
-    Select,
-    TextField,
-    textFieldClasses,
-    Typography
-} from '@mui/material';
+import {Box, Button, CircularProgress, Grid, ListItem, TextField, textFieldClasses, Typography} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {useFormik} from 'formik';
 import React, {useEffect, useState} from 'react';
@@ -87,9 +77,11 @@ const CreateProduct: React.FC = () => {
     const [isAlert, setAlert] = useState(false)
     const [specsArr, setSpecs] = useState<Array<string>>([])
 
+    const handleUpdateSpecs = React.useRef(null)
+
     const handleSetSpecs = (arr: Array<string>) => {
         setSpecs(arr.map(String))
-        // console.log(arr.map(String))
+
     }
 
     //updateProductSpecs
@@ -104,10 +96,7 @@ const CreateProduct: React.FC = () => {
     }] = useUpdateSpecsMutation()
 
 
-    const handleUpdateProductSpecs = (productId: number, specs: string) => {
-        const data = {productId, specs}
-        updateProductSpecs(data)
-    }
+
 
 
     useEffect(() => {
@@ -166,10 +155,15 @@ const CreateProduct: React.FC = () => {
 
             } else {
                 dispatch(updateProduct(values));
-                if (specsArr.length > 0) {
-                    handleUpdateProductSpecs(Number(productId), specsArr.join(','))
-                    setNavigateFlag(true)
+
+
+                if (handleUpdateSpecs.current != null) {
+
+                    // @ts-ignore
+                    handleUpdateSpecs.current()
                 }
+
+
             }
         }
     })
@@ -183,7 +177,6 @@ const CreateProduct: React.FC = () => {
         }
         const file = input.files[0];
         let images = [...values.subs];
-        //let images = [];
         images.push(file);
         setFieldValue('subs', images);
     }
@@ -194,7 +187,6 @@ const CreateProduct: React.FC = () => {
             return;
         }
         const file = input.files[0];
-        // let images = [...values.subs];
         let images = [];
         images.push(file);
         setFieldValue('subs', images);
@@ -210,7 +202,6 @@ const CreateProduct: React.FC = () => {
         let images = [...values.subs];
         images[id] = file;
         setFieldValue('photos', images);
-        //setFieldValue('subs', images);
     }
 
     const handleImageDelete = (id: number) => {
@@ -323,11 +314,11 @@ const CreateProduct: React.FC = () => {
                                         </Grid>
                                     )
                                 })}
-                                <Grid container direction={"column"}>
-                                    <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
-                                    <Grid container direction={"row"}>
-                                        {productId && photos.length > 0 &&
-                                            photos.map((photo, ind) => (
+                                {
+                                    productId && photos.length > 0 && <Grid container direction={"column"}>
+                                        <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
+                                        <Grid container direction={"row"}>
+                                            {photos.map((photo, ind) => (
                                                 <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
                                                     <ImageContainer
                                                         image={`${$imageApi}/${photo.image}`}
@@ -337,9 +328,10 @@ const CreateProduct: React.FC = () => {
                                                     />
                                                 </Grid>
                                             ))
-                                        }
+                                            }
+                                        </Grid>
                                     </Grid>
-                                </Grid>
+                                }
 
 
                             </Grid>
@@ -356,13 +348,13 @@ const CreateProduct: React.FC = () => {
                             товара</Typography>
                         <div style={{display: 'flex'}}>
                             <Grid container spacing={1}>
-                                <Grid item xs={2}>
+                                <Grid item xs={1.2}>
                                     <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px"
                                                 width="100px"/>
                                 </Grid>
                                 {values.subs.map((image, ind) => {
                                     return (
-                                        <Grid item xs={2} key={ind}>
+                                        <Grid item xs={1.1} key={ind}>
                                             <ImageContainer
                                                 image={URL.createObjectURL(image)}
                                                 handleChange={(event) => handleImageChange(event, ind)}
@@ -444,6 +436,7 @@ const CreateProduct: React.FC = () => {
                         }}>
                             {categoryId && <SelectSpecs categoryId={categoryId} setFieldValue={setFieldValue}
                                                         handleSetSpecs={handleSetSpecs}
+                                                        handleUpdateSpecs={handleUpdateSpecs}
                             />}
                         </div>
                         <StyledSubHeader>Дополнительная информация</StyledSubHeader>

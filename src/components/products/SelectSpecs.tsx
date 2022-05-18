@@ -1,13 +1,14 @@
-///variant not choosed works
-
-
 import {styled} from '@mui/material/styles';
 import {MenuItem, Select, Typography} from '@mui/material';
-import React, {useState} from 'react';
+import React, {MutableRefObject, useEffect, useState} from 'react';
 import {useGetSpecsQuery} from '../../store/rtk-api/baseEndpoints';
 import {ProductService} from "../../service/product/product.service";
 import {IProductSpecs} from "../../types/IProduct";
 import {useParams} from "react-router";
+import {IUpdateSpecArr, IUpdateSpecs} from "../../types/types";
+import {useUpdateSpecsMutation} from "../../store/rtk-api/updateSpecs-rtk/updateSpecs-rtk";
+import {useRemoveSpecsMutation} from "../../store/rtk-api/removeSpecs-rtk/removeSpecs-rtk";
+import {useAddSpecsMutation} from "../../store/rtk-api/addSpecs-rtk/addSpecs-rtk";
 
 
 const StyledSubHeader = styled(Typography)(({theme}) => ({
@@ -15,25 +16,28 @@ const StyledSubHeader = styled(Typography)(({theme}) => ({
     fontWeight: 700,
     marginTop: '15px'
 }))
-const StyledSelect = styled(Select)(({theme}) => ({
-    backgroundColor: '#EFF3F9',
-    marginTop: '10px',
-    minWidth: '100px'
-}))
 
 type Props = {
     categoryId: number | null,
     setFieldValue(name: string, arr: Array<number>): void
     handleSetSpecs(arr: Array<string>): void
+    // handleUpdateSpecs:MutableRefObject<null>
+    handleUpdateSpecs:any
 
 }
-const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs}) => {
+const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs, handleUpdateSpecs}) => {
 
     const [specChoseMap, setSpecChoseMap] = useState("")
     const [specVal, setSpecVal] = useState("")
 
 
     const {data: specs, isLoading} = useGetSpecsQuery(String(categoryId))
+
+    const [updateProductSpecs, {}] = useUpdateSpecsMutation()
+
+    const [removeSpecs, {}] = useRemoveSpecsMutation()
+    const [addSpecs, {}] = useAddSpecsMutation()
+
 
     const [productSpecs, setProductSpecs] = useState<IProductSpecs[]>([])
     const [arrOfMapValues, setArrOfMapValues] = useState<Array<string>>([])
@@ -43,11 +47,14 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
 
     const [specsList, setSpecsList] = React.useState<any>(new Map())
     const [mapState, setMapState] = React.useState<any>(new Map())
-
+    const [mapOldUpdate, setMapUpdate] = React.useState<any>(new Map())
+    const [mapNewUpdate, setMapNewUpdate] = React.useState<any>(new Map())
     const {productId} = useParams();
 
+    const [updateArr, setUpdateArr] = useState<any>([])
+
     const handleAddSpec = (key: number, specId: number | null, specValue: string, specValue2: string) => {
-        // console.log(specValue2)
+
         if (specId === null) {
             setSpecVal(specValue2)
             setSpecChoseMap(specValue)
@@ -69,12 +76,8 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
             if (Array.from(specsList).length > 0) {
                 handleSetSpecs(Array.from(specsList.values()))
             }
-
-
             setSpecVal(specValue2)
             setSpecChoseMap(specValue)
-
-            mapState.set(specValue, specValue2)
 
             for (let i = 0; i < arrOfMapKeys.length; i++) {
                 if (arrOfMapKeys[i] === specValue) {
@@ -84,9 +87,10 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
             }
         }
 
-        // setSpecsList(specsList.set(String(key), specId))
-
+        mapState.set(specValue, specValue2)
     }
+
+
 
     React.useEffect(() => {
         async function fetch() {
@@ -98,20 +102,12 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
                     setArrOfMapValues(result?.data?.product?.specs.map(s => s.title).map(s1 => s1.title))
                     setIndexOfSpecsArr(result.data.product.specs.map(s => s.value))
                 }
-
-                // console.log(specs)
-                // console.log("specs")
-
             }
         }
 
         fetch()
     }, [specs])
 
-    // console.log(arrOfMapKeys)
-    // console.log(arrOfMapValues)
-    // console.log(indexOfSpecsArr)
-    // console.log("arrOfMapKeys")
     arrOfMapKeys.map((key, ind) => mapState.set(key, ""))
 
     if (arrOfMapValues.length > 0) {
@@ -123,20 +119,110 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
             })
         })
     }
-    // console.log(mapState)
-    // console.log("mapState")
-    // console.log(Array.from(mapState.values()))
+
+
+    const handleUpdateSpecsOnClick = () => {
+
+
+        if (specs&&productId){
+            specs.map((s,ind)=>{
+                Array.from(mapState.keys()).map(k=>{
+                    if (s.title===k){
+                        s.values.map(v=>{
+                            if (v.value===mapState.get(k)){
+                                mapNewUpdate.set(k,v.id)
+                            }
+                        })
+                        productSpecs.map(p=>{
+                            if (p.title.title===k){
+                                mapOldUpdate.set(k,p.id)
+                            }
+
+                        })
+                    }
+
+
+                })
+            })
+        }
+
+        let array = []
+        let array2 = []
+
+        for(let i = 0; i<mapOldUpdate.size;i++){
+
+            if (Array.from(mapOldUpdate.values())[i]!==Array.from(mapNewUpdate.values())[i]){
+                if (Array.from(mapNewUpdate.values())[i]) {
+                    updateArr.push({oldSpecId:Array.from(mapOldUpdate.values())[i],
+                        newSpecId:Array.from(mapNewUpdate.values())[i]})
+                } else {
+                    array.push(String(Array.from(mapOldUpdate.values())[i]))
+                }
+
+            }
+
+        }
+
+        for(let j = 0; j<mapNewUpdate.size;j++){
+
+            if (!mapOldUpdate.has(Array.from(mapNewUpdate.keys())[j])){
+                array2.push(mapNewUpdate.get(Array.from(mapNewUpdate.keys())[j]))
+            }
+
+        }
+
+
+
+
+        let obj:IUpdateSpecArr = {
+            productId:Number(productId),
+            specs:updateArr
+        }
+
+        if (updateArr.length>0) {
+            updateProductSpecs(obj)
+        }
+
+        let obj2:IUpdateSpecs = {
+            productId:Number(productId),
+            specs:array.join(',')
+        }
+
+        let obj3:IUpdateSpecs = {
+            productId:Number(productId),
+            specs:array2.join(',')
+        }
+
+
+        if (obj2.specs.length>0){
+            removeSpecs(obj2)
+        }
+
+        if (obj3.specs.length>0){
+            addSpecs(obj3)
+        }
+
+
+
+
+    }
+
+
+
+
+    useEffect(()=>{
+
+        // @ts-ignore
+        handleUpdateSpecs.current = handleUpdateSpecsOnClick
+    })
+
 
 
     return (
         <>
             {specs && specs?.map((spec, ind) => {
-                    if (productSpecs.length > 0 && spec) {
-                        // console.log( productSpecs)
-                        // console.log( "aaa")
-                    }
 
-                    return <>
+                return <>
                         <StyledSubHeader>{spec?.title}</StyledSubHeader>
                         <Select
                             sx={{width: "150px"}}

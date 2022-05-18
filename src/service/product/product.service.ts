@@ -16,6 +16,8 @@ export class ProductService {
 
     static async createProduct(product: IProductNew): Promise<AxiosResponse<IProductOneResponse>> {
         const formData = new FormData();
+        // console.log(product.subs)
+        // console.log("product")
 
         formData.append('title', product.title);
         formData.append('categoryId', product.categoryId);

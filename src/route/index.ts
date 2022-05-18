@@ -7,6 +7,7 @@ import FactCheckIcon from '@mui/icons-material/FactCheck';
 import GroupIcon from '@mui/icons-material/Group';
 import MessageIcon from '@mui/icons-material/Message';
 import EngineeringRoundedIcon from '@mui/icons-material/EngineeringRounded';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
 type RouteType = {
     name: string;
@@ -37,7 +38,7 @@ export const menuRoutes: RouteType[] = [
     // { name: "Главная", path: MyRoutes.ORDERS, icon: ArticleIcon },
     {name: "Мои товары", path: MyRoutes.PRODUCTS, icon: InventoryIcon},
     {name: "Мои заказы", path: MyRoutes.ORDERS, icon: FactCheckIcon},
-    {name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: GroupIcon},
+    {name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: ChatBubbleIcon},
     {name: "Сотрудники", path: MyRoutes.EMPLOYEES, icon: EngineeringRoundedIcon},
 ]
 
