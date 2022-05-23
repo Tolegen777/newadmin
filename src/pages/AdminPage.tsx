@@ -33,6 +33,7 @@ const AdminPage: React.FC = () => {
 
     useEffect(() => {
         let socket = connectSocket()
+
         socket.onAny((eventName, ...args) => {
             dispatch(getNotification(args[0]))
                 if (window.location.pathname!=="/app/notifications") {

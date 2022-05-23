@@ -50,6 +50,7 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
     const [mapOldUpdate, setMapUpdate] = React.useState<any>(new Map())
     const [mapNewUpdate, setMapNewUpdate] = React.useState<any>(new Map())
     const {productId} = useParams();
+    const [productInitMapState, setProductInitMapStat] = React.useState<any>(new Map())
 
     const [updateArr, setUpdateArr] = useState<any>([])
 
@@ -121,7 +122,21 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
     }
 
 
+    useEffect(()=>{
+        if (productSpecs.length>0){
+            productSpecs.map(p=>{
+               productInitMapState.set(p.title.title,p.value)
+            })
+        }
+    },[productSpecs])
+
+
+
+    //////////
     const handleUpdateSpecsOnClick = () => {
+
+        let array:Array<String> = []
+        let array2:Array<String> = []
 
 
         if (specs&&productId){
@@ -130,10 +145,19 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
                     if (s.title===k){
                         s.values.map(v=>{
                             if (v.value===mapState.get(k)){
-                                mapNewUpdate.set(k,v.id)
+                                if (productInitMapState.size===0||productInitMapState.get(k)===''||!Array.from(productInitMapState.keys()).includes(k)){
+                                    array2.push(String(v.id))
+                                } else if(productInitMapState.size>0&&productInitMapState.get(k)!==''&&productInitMapState.get(k)!==mapState.get(k)) {
+
+                                    mapNewUpdate.set(k,v.id)
+                                }
+
+                            } else if (v.value===productInitMapState.get(k)&&mapState.get(k)===''){
+                                //removing array works!
+                                array.push(String(v.id))
                             }
                         })
-                        productSpecs.map(p=>{
+                        productSpecs.length>0&&productSpecs.map(p=>{
                             if (p.title.title===k){
                                 mapOldUpdate.set(k,p.id)
                             }
@@ -146,61 +170,43 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
             })
         }
 
-        let array = []
-        let array2 = []
 
-        for(let i = 0; i<mapOldUpdate.size;i++){
 
-            if (Array.from(mapOldUpdate.values())[i]!==Array.from(mapNewUpdate.values())[i]){
-                if (Array.from(mapNewUpdate.values())[i]) {
-                    updateArr.push({oldSpecId:Array.from(mapOldUpdate.values())[i],
-                        newSpecId:Array.from(mapNewUpdate.values())[i]})
-                } else {
-                    array.push(String(Array.from(mapOldUpdate.values())[i]))
-                }
+        Array.from(mapNewUpdate.keys()).map((m,index)=>{
 
-            }
-
-        }
-
-        for(let j = 0; j<mapNewUpdate.size;j++){
-
-            if (!mapOldUpdate.has(Array.from(mapNewUpdate.keys())[j])){
-                array2.push(mapNewUpdate.get(Array.from(mapNewUpdate.keys())[j]))
-            }
-
-        }
+                updateArr.push({oldSpecId:mapOldUpdate.get(m),
+                    newSpecId:mapNewUpdate.get(m)
+            })
+        })
 
 
 
 
-        let obj:IUpdateSpecArr = {
-            productId:Number(productId),
-            specs:updateArr
+        ///// removing spec(do not remove this comment!)
+        // if (array.length!==0){
+        //     removeSpecs({
+        //         productId:Number(productId),
+        //         specs:array.join(',')
+        //     })
+        // }
+
+        if (array2.length!==0){
+            addSpecs({
+                productId:Number(productId),
+                specs:array2.join(',')
+            })
         }
 
         if (updateArr.length>0) {
-            updateProductSpecs(obj)
+            updateProductSpecs({
+                productId:Number(productId),
+                specs:updateArr
+            })
         }
-
-        let obj2:IUpdateSpecs = {
-            productId:Number(productId),
-            specs:array.join(',')
-        }
-
-        let obj3:IUpdateSpecs = {
-            productId:Number(productId),
-            specs:array2.join(',')
-        }
-
-
-        if (obj2.specs.length>0){
-            removeSpecs(obj2)
-        }
-
-        if (obj3.specs.length>0){
-            addSpecs(obj3)
-        }
+        console.log(array)
+        console.log(array2)
+        console.log(updateArr)
+        console.log("/////////////////////")
 
 
 
@@ -215,6 +221,21 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
         // @ts-ignore
         handleUpdateSpecs.current = handleUpdateSpecsOnClick
     })
+
+    useEffect(()=>{
+        console.log(productSpecs)
+        console.log("productSpecs")
+    },[productSpecs])
+
+    // useEffect(()=>{
+    //     if (specs&&productSpecs)
+    //     console.log(specs)
+    //     console.log(productSpecs)
+    //     console.log(mapState)
+    //     console.log("yes")
+    // },[mapState,specs,productSpecs])
+
+
 
 
 
@@ -231,9 +252,9 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
 
                         >
 
-                            <MenuItem value={""} onClick={() => handleAddSpec(spec.id, null, spec.title, "")}>
+                            {!productId&&<MenuItem value={""} onClick={() => handleAddSpec(spec.id, null, spec.title, "")}>
                                 <em>Вариант не выбран</em>
-                            </MenuItem>
+                            </MenuItem>}
                             {spec?.values?.map((specValue) => {
 
 

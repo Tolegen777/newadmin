@@ -4,6 +4,7 @@ import {getEnvApi} from "../../api";
 
 export const connectSocket = () => {
 
+
     const socket = io(`${getEnvApi()}shop`, {
         transports: ["websocket"],
         // path:"/",
