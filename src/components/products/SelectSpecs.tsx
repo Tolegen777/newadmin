@@ -203,10 +203,7 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
                 specs:updateArr
             })
         }
-        console.log(array)
-        console.log(array2)
-        console.log(updateArr)
-        console.log("/////////////////////")
+
 
 
 
@@ -222,18 +219,9 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
         handleUpdateSpecs.current = handleUpdateSpecsOnClick
     })
 
-    useEffect(()=>{
-        console.log(productSpecs)
-        console.log("productSpecs")
-    },[productSpecs])
 
-    // useEffect(()=>{
-    //     if (specs&&productSpecs)
-    //     console.log(specs)
-    //     console.log(productSpecs)
-    //     console.log(mapState)
-    //     console.log("yes")
-    // },[mapState,specs,productSpecs])
+
+
 
 
 
