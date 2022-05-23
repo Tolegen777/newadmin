@@ -153,7 +153,7 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
                                 }
 
                             } else if (v.value===productInitMapState.get(k)&&mapState.get(k)===''){
-                                //removing array works!
+                                //removing array
                                 array.push(String(v.id))
                             }
                         })
@@ -174,7 +174,7 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
 
         Array.from(mapNewUpdate.keys()).map((m,index)=>{
 
-                updateArr.push({oldSpecId:mapOldUpdate.get(m),
+            updateArr.push({oldSpecId:mapOldUpdate.get(m),
                     newSpecId:mapNewUpdate.get(m)
             })
         })
@@ -203,11 +203,6 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
                 specs:updateArr
             })
         }
-
-
-
-
-
     }
 
 
