@@ -53,19 +53,19 @@ const AllOrderTypes = () => {
                                 <TableCell align="center">{order.orderNo}</TableCell>
                                 {order.status === "PAYMENT" &&
                                     <TableCell align="center"
-                                               sx={{backgroundColor: "#2196f3"}}><Typography>{order.status}</Typography></TableCell>}
+                                               sx={{color: "#2196f3",fontWeight:"400px"}}><Typography>ОПЛАТАЧЕН</Typography></TableCell>}
                                 {order.status === "CREATED" &&
                                     <TableCell align="center"
-                                               sx={{backgroundColor: "#e1f5fe"}}>{order.status}</TableCell>}
+                                               sx={{color: "#80a4be", fontWeight:"400px"}}>СОЗДАН</TableCell>}
                                 {order.status === "SUCCESS" &&
                                     <TableCell align="center"
-                                               sx={{backgroundColor: "#4caf50"}}>{order.status}</TableCell>}
+                                               sx={{color: "#4caf50", fontWeight:"400px"}}>УСПЕШНО ВЫПОЛНЕН</TableCell>}
                                 {order.status === "CANCELED" &&
                                     <TableCell align="center"
-                                               sx={{backgroundColor: "#F08080"}}>{order.status}</TableCell>}
+                                               sx={{color: "#F08080", fontWeight:"400px"}}>ОТМЕНЕН</TableCell>}
                                 {order.status === "ERROR" &&
                                     <TableCell align="center"
-                                               sx={{backgroundColor: "#B22222"}}>{order.status}</TableCell>}
+                                               sx={{color: "#B22222", fontWeight:"400px"}}>ОШИБКА</TableCell>}
 
 
                             </TableRow>
