@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IUser } from "../../types/IProfile";
 import { IShop } from "../../types/IShop";
 import { ActionsEnum } from "../enum";
-import { fetchUser, login, logout } from "./auth.action";
+import {fetchUser, login, logout, updateShopAvatar} from "./auth.action";
 
 interface IInitState {
     isAuth: boolean;
@@ -50,6 +50,36 @@ const authReducer = createSlice({
             .addCase(logout, () => {
                 return initialState
             })
+            .addCase(updateShopAvatar.pending, ((state) => {
+                state.isLoading = true
+                state.error = ''
+            }))
+            .addCase(updateShopAvatar.fulfilled, ((state, { payload }) => {
+                state.isLoading = false
+                // if (state?.shop?.logo&&payload.logo){
+                //      state.shop.logo = payload.logo
+                // } else if (state?.shop?.phone&&payload.phone){
+                //     state.shop.phone = payload.phone
+                // } else if (state?.shop?.instagram&&payload.instagram){
+                //     state.shop.instagram = payload.instagram
+                // }
+                if (state?.user?.shops[0].logo&&payload.logo){
+                    state.user.shops[0].logo = payload.logo
+                }
+                if (state?.user?.shops[0].phone&&payload.phone){
+                    state.user.shops[0].phone = payload.phone
+                }
+                if (state?.user?.shops[0].logo&&payload.instagram){
+                    state.user.shops[0].instagram = payload.instagram
+                }
+
+                state.error = ''
+
+            }))
+            .addCase(updateShopAvatar.rejected, ((state, { error }) => {
+                state.isLoading = false
+                state.error = error
+            }))
     }
 })
 export default authReducer.reducer

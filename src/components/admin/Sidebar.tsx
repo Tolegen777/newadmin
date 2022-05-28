@@ -1,14 +1,14 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import { menuRoutes } from '../../route';
 import { logout } from '../../store/auth/auth.action';
 import CustomAlert from "../alert/CustomAlert";
 import {useTypedSelector} from "../../store";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {readNotification} from "../../store/webSocket/webSocket.slice";
 
 const drawerWidth = 240;
@@ -16,6 +16,10 @@ const drawerWidth = 240;
 
 
 export default function ResponsiveDrawer() {
+
+    const {user} = useTypedSelector(state=>state.auth)
+    let mySet = new Set();
+
     const isNotification = useTypedSelector(state=>state.websocketNotification.isNotification)
 
   const location = useLocation();
@@ -23,6 +27,10 @@ export default function ResponsiveDrawer() {
   const handleLogout = () => {
     dispatch(logout());
   }
+  if (user) {
+      user.roles.map(r=>mySet.add(r.value))
+  }
+
 
 
   const drawer = (
@@ -32,8 +40,9 @@ export default function ResponsiveDrawer() {
       </Typography>
       <Divider />
       <List style={{ textAlign: 'center' }}>
-        {menuRoutes.map((route, index) => (
-          <NavLink
+        {menuRoutes.map((route, index) => {
+            if (route.name==="Сотрудники"&&!mySet.has("ADMIN")) return false
+             else return <NavLink
             to={route.path}
             key={index}
             style={{
@@ -62,7 +71,7 @@ export default function ResponsiveDrawer() {
               <ListItemText primary={route.name} />
             </ListItemButton>
           </NavLink>
-        ))}
+        })}
       </List>
       <NavLink to="/" style={{ textDecoration: 'none', color: 'black' }}>
         <ListItemButton onClick={handleLogout}>

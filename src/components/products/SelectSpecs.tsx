@@ -214,14 +214,6 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
         handleUpdateSpecs.current = handleUpdateSpecsOnClick
     })
 
-
-
-
-
-
-
-
-
     return (
         <>
             {specs && specs?.map((spec, ind) => {

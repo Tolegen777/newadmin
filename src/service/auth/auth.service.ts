@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { $api, getEnvApi } from "../../api";
 import { ILogin, ILoginResponse } from "../../types/ILogin";
-import { IProfileUpdate, IUser } from "../../types/IProfile";
+import {IProfileUpdate, IProfileUpdateData, IShopProfile, IUser} from "../../types/IProfile";
 
 export class AuthService {
     static async login(creds: ILogin): Promise<AxiosResponse<ILoginResponse>> {
@@ -16,14 +16,20 @@ export class AuthService {
     static async logout(): Promise<AxiosResponse<ILoginResponse>> {
         return axios.get<ILoginResponse>(`${getEnvApi()}auth/logout`, { withCredentials: true })
     }
-    static async updateProfileAvatar(profile: IProfileUpdate): Promise<AxiosResponse<IUser>> {
+    static async updateProfileAvatar(profileData: IProfileUpdateData): Promise<AxiosResponse<IProfileUpdateData>> {
         const formData = new FormData();
-        if (profile?.avatar) {
-            formData.append('avatar', profile.avatar)
+        if (profileData?.image) {
+            formData.append('image', profileData.image)
         }
-        const headers = {
-            accept: "multipart/form-data"
+        if (profileData?.instagram){
+            formData.append('instagram', profileData.instagram)
         }
-        return $api.put<IUser>(`profile/${profile.id}`, formData, { headers })
+        if (profileData?.phone){
+            formData.append('phone', profileData.phone)
+        }
+
+        // console.log(formData)
+        // console.log("formData")
+        return $api.put<IProfileUpdateData>(`shop/update/${profileData.id}`, formData, )
     }
 }

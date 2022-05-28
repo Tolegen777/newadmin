@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import {useTypedSelector} from "../../store";
 import {Grid, Typography} from "@mui/material";
 import {Box} from "@mui/system";
-import photo from "../../assets/images/user (1).png";
+import photo from "../../assets/logo.svg";
 import {useEffect, useRef} from "react";
 import {useDispatch} from "react-redux";
 import {readNotification} from "../../store/webSocket/webSocket.slice";
@@ -54,7 +54,7 @@ const NotificationPage = () => {
                                     <img
                                         src={photo}
                                         alt=""
-                                        style={{height: '30px', width: 'auto'}}
+                                        style={{height: '50px', width: '50px', borderRadius:"50px", marginRight:"5px"}}
                                     />
                                 </Grid>
                                 <Grid sx={{marginTop: '15px'}}>

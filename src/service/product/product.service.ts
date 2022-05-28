@@ -39,6 +39,7 @@ export class ProductService {
 
     static async updateProduct(product: IProductNew): Promise<AxiosResponse<IProductOneResponse>> {
 
+
         const formData = new FormData();
 
         formData.append('title', product.title);
@@ -52,6 +53,10 @@ export class ProductService {
         if (Array.from(product.specs).length>0){
             formData.append('specs', Array.from(product.specs.values()).join(','))
         }
+        product.images?.forEach(photo => {
+            formData.append('images', photo)
+        })
+
         return $api.put<IProductOneResponse>(`product/update/${product.id}`, formData)
     }
 

@@ -20,10 +20,5 @@ export interface IShop {
     products?:IProduct[],
     owner?:IOwner,
     addresses?: Array<any>,
+}
 
-
-
-
-
-
-  }

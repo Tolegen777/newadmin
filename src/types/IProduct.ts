@@ -63,6 +63,7 @@ export interface IProductNew {
     shopId: number
     avatar: File | null
     subs: File[]
+    images?:File[]
 
 }
 

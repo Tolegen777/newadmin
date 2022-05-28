@@ -14,6 +14,12 @@ export interface IUser {
     shops: IShop[]
 }
 
+export interface IShopProfile {
+    logo:string,
+    phone:string,
+    instagram:string
+}
+
 export interface Role {
     id: number
     value: string
@@ -21,6 +27,14 @@ export interface Role {
 }
 
 export interface IProfileUpdate {
-    id: number | undefined // profile ID
+    id: number | undefined
     avatar: File | null
+}
+
+export interface IProfileUpdateData {
+    id?:number | null
+    logo?: string | null
+    image?: File|null
+    instagram?: string | null
+    phone?:string | null
 }

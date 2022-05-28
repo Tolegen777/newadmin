@@ -54,7 +54,8 @@ const CreateProduct: React.FC = () => {
         specs: [],
         avatar: null,
         subs: [],
-        shopId: shopId
+        shopId: shopId,
+        images: []
     }
 
 
@@ -94,9 +95,6 @@ const CreateProduct: React.FC = () => {
         isError: updateError,
         isSuccess: updateSuccess,
     }] = useUpdateSpecsMutation()
-
-
-
 
 
     useEffect(() => {
@@ -171,6 +169,7 @@ const CreateProduct: React.FC = () => {
 
 
     const handleAddImage = (event: Event) => {
+
         const input = event.target as HTMLInputElement;
         if (!input.files?.length) {
             return;
@@ -191,6 +190,23 @@ const CreateProduct: React.FC = () => {
         images.push(file);
         setFieldValue('subs', images);
         setFlag(true)
+
+    }
+
+    const handleAddImage3 = (event: Event) => {
+
+        const input = event.target as HTMLInputElement;
+        if (!input.files?.length) {
+            return;
+        }
+        const file = input.files[0];
+        let images: File[] = []
+        if (values?.images) {
+            images = [...values.images];
+        }
+
+        images.push(file);
+        setFieldValue('images', images);
     }
 
     const handleImageChange = (event: Event, id: number) => {
@@ -209,6 +225,13 @@ const CreateProduct: React.FC = () => {
         setFieldValue('subs', images);
         setFlag(false)
     }
+
+    const handleImageDelete2 = (id: number) => {
+        let images = values.images?.length ? [...values.images].filter((img, ind) => ind !== id) : '';
+        setFieldValue('images', images);
+        // setFlag(false)
+    }
+
     const goToBack = () => {
         navigate('/app/products/list')
         setAlert(false)
@@ -289,49 +312,62 @@ const CreateProduct: React.FC = () => {
                             товара</Typography>
                         <div style={{display: 'flex'}}>
                             <Grid container spacing={1}>
-                                <Grid item xs={2}>
+                                <Grid item xs={1.3}>
                                     <ImageInput title="Добавить фотографию" handleChange={handleAddImage2} height="100px"
                                                 width="100px"/>
                                 </Grid>
-
-                                {productId && !flag && <Grid item xs={2}>
+                                {productId && !flag && <Grid item xs={1}>
                                     <ImageContainer
                                         image={`${$imageApi}/${product?.product.image}`}
                                         handleChange={handleAddImage2}
-                                        handleDelete={() => setFlag(true)}
+                                        // handleDelete={() => setFlag(true)}
                                     />
                                 </Grid>
-
                                 }
                                 {values.subs.map((image, ind) => {
                                     return (
-                                        <Grid item xs={2} key={ind}>
+                                        <Grid item xs={1} key={ind}>
                                             <ImageContainer
                                                 image={URL.createObjectURL(image)}
-                                                handleChange={(event) => handleImageChange(event, ind)}
-                                                handleDelete={() => handleImageDelete(ind)}
+                                                handleChange={handleAddImage2}
+                                                // handleDelete={() => handleImageDelete(ind)}
                                             />
                                         </Grid>
                                     )
                                 })}
-                                {
-                                    productId && photos.length > 0 && <Grid container direction={"column"}>
-                                        <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
-                                        <Grid container direction={"row"}>
-                                            {photos.map((photo, ind) => (
-                                                <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
-                                                    <ImageContainer
-                                                        image={`${$imageApi}/${photo.image}`}
-                                                        handleChange={() => {
-                                                        }}
-                                                        handleDelete={() => handleRemoveProductImage(photo.id, ind)}
-                                                    />
-                                                </Grid>
-                                            ))
-                                            }
-                                        </Grid>
+                                <Grid container direction={"column"}>
+                                    <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
+                                    <hr/>
+                                    <Grid item xs={2}>
+                                        <ImageInput title="Добавить фотографий" handleChange={handleAddImage3}
+                                                    height="100px"
+                                                    width="100px"/>
                                     </Grid>
-                                }
+                                    <Grid container direction={"row"}>
+                                        {productId && photos.length > 0 && photos.map((photo, ind) => (
+                                            <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                                <ImageContainer
+                                                    image={`${$imageApi}/${photo.image}`}
+                                                    handleChange={() => {
+                                                    }}
+                                                    handleDelete={() => handleRemoveProductImage(photo.id, ind)}
+                                                />
+                                            </Grid>
+                                        ))
+                                        }
+                                        {formik.values.images && formik.values.images?.length > 0 && formik.values.images.map((photo, ind) => (
+                                            <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                                <ImageContainer
+                                                    image={URL.createObjectURL(photo)}
+                                                    handleChange={() => {
+                                                    }}
+                                                    handleDelete={() => handleImageDelete2(ind)}
+                                                />
+                                            </Grid>
+                                        ))
+                                        }
+                                    </Grid>
+                                </Grid>
 
 
                             </Grid>

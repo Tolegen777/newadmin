@@ -53,7 +53,7 @@ const AllOrderTypes = () => {
                                 <TableCell align="center">{order.orderNo}</TableCell>
                                 {order.status === "PAYMENT" &&
                                     <TableCell align="center"
-                                               sx={{color: "#2196f3",fontWeight:"400px"}}><Typography>ОПЛАТАЧЕН</Typography></TableCell>}
+                                               sx={{color: "#2196f3",fontWeight:"400px"}}>ОПЛАЧЕН</TableCell>}
                                 {order.status === "CREATED" &&
                                     <TableCell align="center"
                                                sx={{color: "#80a4be", fontWeight:"400px"}}>СОЗДАН</TableCell>}

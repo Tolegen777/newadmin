@@ -4,8 +4,6 @@ import {useDispatch} from 'react-redux';
 import ShopInfo from '../components/profile/ShopInfo';
 import UserInfo from '../components/profile/UserInfo';
 import {useTypedSelector} from '../store';
-import {updateUserAvatar} from '../store/auth/auth.action';
-import {ActionsEnum} from '../store/enum';
 
 const ProfileView = () => {
     const {user: profile, error, isLoading} = useTypedSelector(state => state.auth);
@@ -25,9 +23,9 @@ const ProfileView = () => {
         setAvatar(null);
     }
 
-    const handleSubmit = () => {
-        dispatch(updateUserAvatar({id: profile?.id, avatar: avatar}))
-    }
+    const handleUpdateProfile = React.useRef(null)
+
+
 
     return (
         <Box>
@@ -37,17 +35,28 @@ const ProfileView = () => {
             <Paper sx={{padding: '15px'}}>
                 <Grid container>
                     <Grid item sm={6} xs={6} lg={6}>
+                        <ShopInfo handleUpdateProfile={handleUpdateProfile} isLoading={isLoading}/>
+                    </Grid>
+                    <Grid item sm={6} xs={6} lg={6}>
+
                         {profile &&
                             <UserInfo profile={profile} avatar={avatar} isLoading={isLoading}
                                       onChange={handleAvatarChange} onDelete={handleDelete}/>
                         }
                     </Grid>
-                    <Grid item sm={6} xs={6} lg={6}>
-                        <ShopInfo/>
-                    </Grid>
                 </Grid>
-                {/* <Button variant="contained" size="large" color="primary" onClick={handleSubmit}>Сохранить</Button> */}
                 {error && <Typography color="error">Ошибка! Попробуйте позже.</Typography>}
+                <Box sx={{display: "flex", justifyContent: "flex-end"}}>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        // @ts-ignore
+                        onClick={() => handleUpdateProfile.current()}
+                        disabled={isLoading}
+                    >
+                        Сохранить
+                    </Button>
+                </Box>
             </Paper>
         </Box>
     )

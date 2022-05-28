@@ -1,7 +1,7 @@
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import { ILogin, ILoginResponse } from "../../types/ILogin";
 import { AuthService } from "../../service/auth/auth.service";
-import { IProfileUpdate, IUser } from "../../types/IProfile";
+import {IProfileUpdate, IProfileUpdateData, IShopProfile, IUser} from "../../types/IProfile";
 import { IShop } from "../../types/IShop";
 
 export const login = createAsyncThunk<{ user: IUser, shop: IShop }, ILogin>(
@@ -46,13 +46,18 @@ export const fetchUser = createAsyncThunk<IUser>(
     }
 )
 
-export const updateUserAvatar = createAsyncThunk<IUser, IProfileUpdate>(
+export const updateShopAvatar = createAsyncThunk<IProfileUpdateData, IProfileUpdateData>(
     'profile/update',
-    async function (profile, { rejectWithValue }) {
+    async function (profileData, { rejectWithValue }) {
         try {
-            const response = await AuthService.updateProfileAvatar(profile)
+
+            const response = await AuthService.updateProfileAvatar(profileData)
+            // console.log(response)
+            //
+            // console.log("response")
             return response.data
         } catch (e) {
+
             return rejectWithValue(e)
         }
     }
