@@ -313,7 +313,7 @@ const CreateProduct: React.FC = () => {
                         <div style={{display: 'flex'}}>
                             <Grid container spacing={1}>
                                 <Grid item xs={1.3}>
-                                    <ImageInput title="Добавить фотографию" handleChange={handleAddImage2} height="100px"
+                                    <ImageInput title="Изменить фотографию" handleChange={handleAddImage2} height="100px"
                                                 width="100px"/>
                                 </Grid>
                                 {productId && !flag && <Grid item xs={1}>
@@ -335,9 +335,8 @@ const CreateProduct: React.FC = () => {
                                         </Grid>
                                     )
                                 })}
-                                <Grid container direction={"column"}>
+                                <Grid container direction={"column"} sx={{marginLeft:"10px"}}>
                                     <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
-                                    <hr/>
                                     <Grid item xs={2}>
                                         <ImageInput title="Добавить фотографий" handleChange={handleAddImage3}
                                                     height="100px"

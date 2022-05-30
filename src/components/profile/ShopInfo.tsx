@@ -47,7 +47,7 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
 
     const initialValues: IShopProfile = {
         id: user ? user?.shops[0].id : null,
-        logo: user ? user?.shops[0].logo : '',
+        logo: user ? user?.shops[0].logo :'',
         name: user ? user?.shops[0].name : '',
         bin_iin: user ? user?.shops[0].bin_iin : '',
         legalAddress: user ? user?.shops[0].legalAddress : '',
@@ -123,13 +123,13 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
 
     return (
         <Box sx={{marginBottom: "30px"}}>
-            <Typography sx={{fontSize: '20px', fontWeight: 700, marginBottom: '15px'}}>Бизнес</Typography>
+            <Typography sx={{fontSize: '20px', fontWeight: 700}}>Бизнес</Typography>
             {isLoading ?
                 <Skeleton variant="rectangular" animation="wave" width={300} height={400}/> :
                 <form>
                     <Table>
                         {formik.values.logo && formik.values.logo !== '' ?
-                            <Box sx={{marginTop: "32px"}}>
+                            <Box sx={{marginTop: "15px"}}>
                                 <ImageContainer
                                     image={`${$imageApi}/${formik.values.logo}`}
                                     handleChange={(e) => {
@@ -142,7 +142,7 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                             // <Paper elevation={0} sx={{ height: "100px", width: "100px", border: '1px dashed #999999', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#999999' }}>
                             //   Нет лого магазина
                             // </Paper>
-                            <Box>
+                            <Box sx={{marginBottom:"32px", marginTop:"15px"}}>
                                 {values.createdLogo.length === 0 ?
                                     <ImageInput title="Добавить логотип" handleChange={handleAddImage2} height="100px"
                                                 width="100px"/> :
@@ -189,7 +189,7 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
 
                             </TableRow>
                             <TableRow>
-                                <TableCell>instagram</TableCell>
+                                <TableCell>Instagram</TableCell>
                                 <TableCell>
                                     <TextField value={values.instagram} onChange={handleChange} variant={"standard"}
                                                InputProps={{
