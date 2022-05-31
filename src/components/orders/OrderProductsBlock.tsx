@@ -27,7 +27,6 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
 
     const {data: basketUserData, isLoading} = useGetBasketUserDataQuery(basketDefault)
 
-
     const handleClickClose = () => {
         setWindowOpen(false)
     };
@@ -36,22 +35,22 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
         setCancelClick(true)
         setWindowOpen(true);
         setConfirmClick(false)
-
     }
     let showConfirmWindow = () => {
-
         setConfirmClick(true)
         setWindowOpen(true);
         setCancelClick(false)
-
     }
 
     const params = useParams();
 
-
     const style = {
         fontWeight: 'bold',
     };
+
+    console.log(oneOrderData)
+    console.log(basketUserData)
+    console.log("oneOrderData")
 
 
     return (
@@ -62,18 +61,18 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                 <GetOrderInfo oneOrderData={oneOrderData} basketUserData={basketUserData} style={style}/>
             }
 
-
+            <Typography sx={{fontWeight: 'bold', marginTop: '20px'}}>Информация о
+                заказе</Typography>
             {oneOrderData && oneOrderData.products.length !== 0 ? oneOrderData?.products.map(products => {
                     if (String(oneOrderData.id) === params.orderId) {
                         return <>
-                            <Typography sx={{fontWeight: 'bold', marginTop: '20px'}}>Информация о
-                                заказе</Typography>
                             <Grid item sm={5} xs={5} lg={5}>
                                 <OrderProductCard key={products.product.id} id={products.product.id}
                                                   productCount={products.product.quantity && products.product.quantity}
                                                   image={products.product.image}
                                                   price={products.product.price}
-                                                  name={products.product.title}/>
+                                                  name={products.product.title}
+                                />
 
                             </Grid>
                             {oneOrderData.status === "PAYMENT" &&
@@ -116,14 +115,10 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                                     <Typography sx={{fontWeight: 'bold', marginTop: '20px', color: 'red'}}>Заказ
                                         отменен!</Typography>
                                 </Box>}
-
-
                         </>
                     }
                 }
             ) : <>
-                <Typography sx={{fontWeight: 'bold', marginBottom: '10px'}}>Информация о
-                    заказе</Typography>
                 <Typography variant={'h6'} sx={{color: 'red'}}>Товара нет внутри заказа!</Typography>
             </>
 
@@ -168,7 +163,7 @@ const GetOrderInfo: React.FC<PropsType2> = ({oneOrderData, basketUserData, style
             </Grid>
             <Grid container spacing={5}>
                 <Grid item sm={3} xs={3} lg={3}>Дата заказа</Grid>
-                <Grid item sm={3} xs={3} lg={3} sx={style}>{oneOrderData && oneOrderData.createdAt}</Grid>
+                <Grid item sm={3} xs={3} lg={3} sx={style}>{oneOrderData && oneOrderData.createdAt.slice(0,10)}</Grid>
 
             </Grid>
         </Box>

@@ -9,10 +9,11 @@ type Props = {
     totalPrice: string | number
     products?: any
     date?: Date,
+    createdAt:string
     orderCount?: number
 }
 
-const OrderCard: React.FC<Props> = ({id, totalPrice, products = [], orderCount = 1, date = "24 Августа 2021"}) => {
+const OrderCard: React.FC<Props> = ({id, totalPrice, products = [], orderCount = 1, createdAt }) => {
     const navigate = useNavigate();
 
     return (
@@ -26,7 +27,7 @@ const OrderCard: React.FC<Props> = ({id, totalPrice, products = [], orderCount =
                 <Grid item sm={11} xs={11} lg={11}>
                     <Typography sx={{fontWeight: 600}}>#{id}</Typography>
                     <Typography sx={{color: '#999999', textTransform: "uppercase"}}>Сумма: {totalPrice} T</Typography>
-                    <Typography sx={{color: '#999999'}}>{date}</Typography>
+                    <Typography sx={{color: '#999999'}}>{createdAt.slice(0,10)}</Typography>
                 </Grid>
                 <Grid item sm={1} xs={1} lg={1}><ArrowForwardIosIcon
                     sx={{marginTop: '150%', color: '#999999', fontSize: 'small'}}/></Grid>

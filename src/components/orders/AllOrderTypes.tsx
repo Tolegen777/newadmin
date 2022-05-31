@@ -36,7 +36,7 @@ const AllOrderTypes = () => {
                             <StyledTableCell align="center">Цена</StyledTableCell>
                             <StyledTableCell align="center">Дата создания</StyledTableCell>
                             <StyledTableCell align="center">Дата обновления</StyledTableCell>
-                            <StyledTableCell align="center">OrderNo</StyledTableCell>
+                            <StyledTableCell align="center">Номер заказа</StyledTableCell>
                             <StyledTableCell align="center">Статус</StyledTableCell>
                         </TableRow>
                     </TableHead>

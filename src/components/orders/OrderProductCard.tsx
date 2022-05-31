@@ -11,7 +11,7 @@ type Props = {
     name: string
 }
 
-const OrderProductCard: React.FC<Props> = ({id, image, productCount, price, name, date = "24 Августа 2021"}) => {
+const OrderProductCard: React.FC<Props> = ({id, image, productCount, price, name}) => {
 
     return (
         <Paper
@@ -19,15 +19,15 @@ const OrderProductCard: React.FC<Props> = ({id, image, productCount, price, name
             sx={{borderRadius: '10px', marginTop: '15px', padding: '10px'}}
 
         >
-            <Grid container spacing={10}>
-                <Grid item sm={2} xs={2} lg={2}>
+            <Grid container spacing={1}>
+                <Grid item sm={3} xs={3} lg={3}>
                     <img
                         src={`https://file.adu24.com/${image}`}
                         alt=""
                         style={{height: '75px', width: 'auto', borderRadius: '10px'}}
                     />
                 </Grid>
-                <Grid item sm={8} xs={8} lg={8}>
+                <Grid item sm={7} xs={7} lg={7}>
                     <Typography sx={{fontWeight: 600}}>Номер продукта: #{id} </Typography>
                     <Typography sx={{color: '#999999'}}>Название: {name}</Typography>
                     <Typography sx={{color: '#999999'}}>Количество: {productCount}</Typography>

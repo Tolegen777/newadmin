@@ -38,6 +38,7 @@ export interface IOrderProduct {
 }
 
 export interface IOrderShop {
+    createdAt: string;
     id: number
     totalPrice: number
     status: string

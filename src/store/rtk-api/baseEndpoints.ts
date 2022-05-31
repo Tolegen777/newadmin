@@ -47,7 +47,7 @@ const endpoints = baseApi.injectEndpoints({
             query: (basketId) => ({
                 url: `/basket/user/${basketId}`
             }),
-            //providesTags: ['orders']
+            providesTags: ['orders']
         }),
 
     })
