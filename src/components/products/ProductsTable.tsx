@@ -1,31 +1,17 @@
 import AddIcon from '@mui/icons-material/Add';
-import {
-    Button,
-    Chip,
-    Skeleton,
-    Table,
-    TableBody,
-    TableCell,
-    tableCellClasses,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow,
-    Typography
-} from '@mui/material';
+import {Button, Chip, Table, TableBody, TableContainer, TableHead, TablePagination, Typography} from '@mui/material';
 import {FormikProvider, useFormik} from 'formik';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router';
 import {useTypedSelector} from '../../store';
-import {fetchCategories, fetchProducts} from '../../store/product/product.action';
+import {fetchProducts} from '../../store/product/product.action';
 import {IProductQuery} from '../../types/IProduct';
 import StyledTableCell from '../table/StyledTableCell';
 import StyledTableRow from '../table/StyledTableRow';
 import TableLoadingMockup from '../table/TableLoadingMockup';
 import Filters from './Filters';
 import CustomAlert from "../alert/CustomAlert";
-import {useAddSellerMutation} from "../../store/rtk-api/addSeller-rtk/addSeller_rtk";
 import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
 import RemoveProductWindow from "./RemoveProductWindow";
 

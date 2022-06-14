@@ -58,7 +58,7 @@ const OneOrderVew = () => {
                 {isDeletingError && <Box sx={{textAlign: 'center'}}>Что то пошло не так!</Box>}
 
 
-                <Grid container spacing={0} onClick={() => navigate('/app/orders')}
+                <Grid container spacing={0} onClick={() => navigate(-1)}
                       sx={{cursor: 'pointer', marginBottom: '20px'}}>
                     <Grid><ArrowBackIcon fontSize={"small"} sx={{color: 'disabled', fill: ''}}/></Grid>
                     <Grid sx={{marginLeft: '10px'}}><Typography sx={{fontSize: '14px'}}>Назад</Typography></Grid>

@@ -10,6 +10,7 @@ import {useGetAllShopOrderQuery} from "../../store/rtk-api/shop-all-orders/shop-
 import {useTypedSelector} from "../../store";
 import StyledTableCell from "../table/StyledTableCell";
 import {Chip, CircularProgress, TableHead, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 
 const AllOrderTypes = () => {
@@ -20,9 +21,15 @@ const AllOrderTypes = () => {
     }
 
     const {data: allOrders, isLoading, error} = useGetAllShopOrderQuery(shopId)
+    if (allOrders){
+        console.log(allOrders)
+        console.log("allOrders")
+    }
     let style = {
         backgroundColor: 'red'
     }
+
+    const navigate = useNavigate()
 
 
     return (
@@ -36,21 +43,28 @@ const AllOrderTypes = () => {
                             <StyledTableCell align="center">Цена</StyledTableCell>
                             <StyledTableCell align="center">Дата создания</StyledTableCell>
                             <StyledTableCell align="center">Дата обновления</StyledTableCell>
-                            <StyledTableCell align="center">Номер заказа</StyledTableCell>
+                            {/*<StyledTableCell align="center">Номер заказа</StyledTableCell>*/}
                             <StyledTableCell align="center">Статус</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     {isLoading && <CircularProgress/>}
                     <TableBody>
                         {allOrders && allOrders.map(order => {
-                            return <TableRow key={order.id}>
+                            return <TableRow key={order.id} onClick={()=>{navigate(`one/${order.id}`,{state:true})}}
+                            sx={{cursor:"pointer", border:"2px solid #EBEBEB", borderRadius:"50px", marginBottom:"50px",
+                                '&:hover': {
+                                    backgroundColor: "#EBEBEB",
+
+                                },
+                            }}
+                            >
                                 <TableCell align="center"><Typography
                                     sx={{fontWeight: 600}}>#{order.id}</Typography></TableCell>
                                 <TableCell align="center"><Chip label={`${order.totalPrice} KZT`} variant="outlined"
                                                                 color="info"/></TableCell>
                                 <TableCell align="center">{order.createdAt.slice(0, 10)}</TableCell>
                                 <TableCell align="center">{order.updatedAt.slice(0, 10)}</TableCell>
-                                <TableCell align="center">{order.orderNo}</TableCell>
+                                {/*<TableCell align="center">{order.orderNo}</TableCell>*/}
                                 {order.status === "PAYMENT" &&
                                     <TableCell align="center"
                                                sx={{color: "#2196f3",fontWeight:"400px"}}>ОПЛАЧЕН</TableCell>}
@@ -66,6 +80,9 @@ const AllOrderTypes = () => {
                                 {order.status === "ERROR" &&
                                     <TableCell align="center"
                                                sx={{color: "#B22222", fontWeight:"400px"}}>ОШИБКА</TableCell>}
+                                {order.status === "DELIVERY" &&
+                                    <TableCell align="center"
+                                               sx={{color: "#468234", fontWeight:"400px"}}>НА ДОСТАВКЕ</TableCell>}
 
 
                             </TableRow>

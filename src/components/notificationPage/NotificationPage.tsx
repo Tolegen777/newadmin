@@ -31,13 +31,6 @@ const NotificationPage = () => {
 
     };
 
-
-
-
-    // useEffect(() => {
-    //     dispatch(readNotification())
-    // }, [])
-
     useEffect(() => {
         scrollToBottom()
     }, [notificationData])

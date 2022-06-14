@@ -31,8 +31,6 @@ export default function ResponsiveDrawer() {
       user.roles.map(r=>mySet.add(r.value))
   }
 
-
-
   const drawer = (
     <div style={{ padding: '15px' }}>
       <Typography textAlign="center" sx={{ padding: '10%' }}>
@@ -51,7 +49,7 @@ export default function ResponsiveDrawer() {
             }}
           >
             <ListItemButton style={
-              location.pathname === route.path ?
+              location.pathname.includes(route.path) ?
                 {
                   textDecoration: 'none',
                   color: '#8A3FFC',
@@ -78,14 +76,12 @@ export default function ResponsiveDrawer() {
           <ListItemIcon>
             <LogoutIcon />
           </ListItemIcon>
-          <ListItemText primary="Log Out" />
+          <ListItemText primary="Выйти" />
         </ListItemButton>
       </NavLink>
         <Box sx = {{marginTop:'60%'}}>
-            {isNotification&&<CustomAlert title="Новое уведомление!" status="info" message="Нажмите на 'Уведомления' чтобы увидеть" />}
+            {isNotification&&<CustomAlert title="Новое уведомление!" status="info" message="Нажмите сюда чтобы увидеть" isLink={true} />}
         </Box>
-
-
     </div>
   );
 
@@ -104,7 +100,6 @@ export default function ResponsiveDrawer() {
         elevation={16}
       >
         {drawer}
-
       </Drawer>
     </Box>
   );

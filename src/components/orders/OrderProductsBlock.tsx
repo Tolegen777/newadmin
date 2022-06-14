@@ -6,6 +6,9 @@ import {IBasketUser, IOneOrder, IOrdersResponse} from "../../types/types";
 import OrderConfirmDialogWindow from "./OrderConfirmDialogWindow";
 import {useGetBasketUserDataQuery} from "../../store/rtk-api/baseEndpoints";
 import CircularProgress from "@mui/material/CircularProgress";
+import {useLocation} from "react-router-dom";
+
+
 
 
 type PropsType = {
@@ -43,6 +46,10 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
     }
 
     const params = useParams();
+    const location = useLocation()
+    console.log(location)
+    // console.log(!state)
+    console.log(!location.state)
 
     const style = {
         fontWeight: 'bold',
@@ -75,7 +82,7 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                                 />
 
                             </Grid>
-                            {oneOrderData.status === "PAYMENT" &&
+                            {oneOrderData.status === "PAYMENT" && !location.state &&
                                 <Box>
                                     <Button onClick={showConfirmWindow}
                                             variant="contained"
@@ -109,11 +116,25 @@ const OrderProductsBlock: React.FC<PropsType> = React.memo(({handleCreate, handl
                                     <Typography sx={{fontWeight: 'bold', marginTop: '20px'}}>Заказ
                                         доставлен!</Typography>
                                 </Box>}
+                            {oneOrderData.status === "PAYMENT" && location.state &&
+                                <Box>
+                                    <Typography sx={{fontWeight: 'bold', marginTop: '20px'}}>Заказ
+                                        оплачен!</Typography>
+                                </Box>}
 
                             {oneOrderData.status === "CANCELED" &&
                                 <Box>
                                     <Typography sx={{fontWeight: 'bold', marginTop: '20px', color: 'red'}}>Заказ
                                         отменен!</Typography>
+                                </Box>}
+                            {oneOrderData.status === "CREATED" &&
+                                <Box>
+                                    <Typography sx={{fontWeight: 'bold', marginTop: '20px'}}>Заказ
+                                        создан!</Typography>
+                                </Box>}
+                            {oneOrderData.status === "ERROR" &&
+                                <Box>
+                                    <Typography sx={{fontWeight: 'bold', marginTop: '20px', color: 'red'}}>Неизвестная ошибка заказа!</Typography>
                                 </Box>}
                         </>
                     }

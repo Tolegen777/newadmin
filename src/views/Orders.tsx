@@ -28,17 +28,18 @@ const OrdersView: React.FC = () => {
                 mb: '16px'
             }}>
                 <Tabs value={value} onChange={handleChange}>
-                    <Tab label="Управление" onClick={() => navigate('app/orders')}/>
-                    <Tab label="Все заказы" onClick={() => navigate('all/orders/types')}/>
+                    <Tab label="Управление" onClick={() => navigate('')}/>
+                    <Tab label="Все заказы" onClick={() => navigate('all')}/>
                     {/* <Tab label="Item Two" />
           <Tab label="Item Three" /> */}
                 </Tabs>
             </Box>
             <Routes>
                 <Route index element={<OrderColumnsView/>}/>
+                <Route path="all/one/:orderId" element={<OneOrderVew/>}/>
                 <Route path="one/:orderId" element={<OneOrderVew/>}/>
+                <Route path="all" element={<AllOrderTypes/>}/>
                 <Route path="*" element={<Navigate to=""/>}/>
-                <Route path="all/orders/types" element={<AllOrderTypes/>}/>
             </Routes>
         </Box>
     )

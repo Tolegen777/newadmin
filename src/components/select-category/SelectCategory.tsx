@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,14 +22,11 @@ type PropsType = {
 const SelectCategory: React.FC<PropsType> = (props) => {
     const [selectedCategory, setSelectedCategory] = useState<number | string>('')
     const data = useTypedSelector(state => state.product)
-    // console.log(data)
-    // console.log("data")
     const [open, setOpen] = React.useState(false);
     const [age, setAge] = React.useState<number | string>('');
     const [categoryId, setCategoryId] = React.useState<number | string>('')
     const [secondCategoryId, setSecondCategoryId] = React.useState<number | string>('')
     const [categoryValue, setCategoryValue] = React.useState<string>('')
-
 
     const handleChange = (event: SelectChangeEvent<typeof age>) => {
         setAge(Number(event.target.value) || '');
@@ -57,10 +54,7 @@ const SelectCategory: React.FC<PropsType> = (props) => {
         props.handleSetCategory(id, value)
         if (arr.length === 0) {
             handleClose()
-            // console.log("hey hey hey")
         }
-
-
     }
 
     const handleSetSecondCategoryId = (id: number, value: string = '', arr: Array<any>) => {
@@ -70,7 +64,6 @@ const SelectCategory: React.FC<PropsType> = (props) => {
         props.handleSetCategory(id, value)
         if (arr.length === 0) {
             handleClose()
-            // console.log("hey hey hey")
         }
     }
 
@@ -80,9 +73,23 @@ const SelectCategory: React.FC<PropsType> = (props) => {
         props.handleSetCategory(id, value)
         if (arr.length === 0) {
             handleClose()
-            // console.log("hey hey hey")
         }
     }
+
+    const bottomRef = React.useRef<HTMLDivElement>(null);
+    const scrollToBottom = () => {
+        if (bottomRef.current) {
+            bottomRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        }
+
+    };
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [categoryId,secondCategoryId])
 
     return (
         <div>
@@ -98,6 +105,7 @@ const SelectCategory: React.FC<PropsType> = (props) => {
                 </Grid>
 
                 <DialogContent sx={{width: '1024px', height: '75vh'}}>
+                    <div ref={bottomRef}></div>
                     <Grid container columns={3} direction='row' columnGap={1}>
                         <Grid item xs>
                             <DialogContentText>Уровень 1</DialogContentText>
@@ -119,7 +127,6 @@ const SelectCategory: React.FC<PropsType> = (props) => {
                                         </ListItemIcon>
                                     </ListItemButton>
                                 })
-
                                 }
                             </List>
                         </Grid>

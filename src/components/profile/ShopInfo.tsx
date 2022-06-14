@@ -175,11 +175,14 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                                 <TableCell>Номер телефона</TableCell>
                                 <TableCell>
                                     <TextField value={values.phone} onChange={handleChange} variant={"standard"}
+                                               sx={{color:"red", fontSize:"100px"}}
                                                InputProps={{
                                                    disableUnderline: true,
                                                    endAdornment: <InputAdornment position={"end"}>
                                                        <EditIcon/>
-                                                   </InputAdornment>
+                                                   </InputAdornment>,
+                                                   style:{fontSize:"14px"}
+
                                                }}
                                                name="phone"
                                                fullWidth
@@ -196,7 +199,8 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                                                    disableUnderline: true,
                                                    endAdornment: <InputAdornment position={"end"}>
                                                        <EditIcon/>
-                                                   </InputAdornment>
+                                                   </InputAdornment>,
+                                                   style:{fontSize:"14px"}
 
                                                }}
                                                name="instagram"
