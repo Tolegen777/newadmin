@@ -1,4 +1,4 @@
-import {CssBaseline} from '@mui/material';
+import {CssBaseline, Hidden} from '@mui/material';
 import {Box} from '@mui/system';
 import React, {useEffect} from 'react';
 import {Navigate, Route, Routes} from 'react-router';
@@ -16,6 +16,7 @@ import {
 } from "../store/webSocket/webSocket.slice";
 import {useDispatch} from "react-redux";
 import {useGetNotificationsQuery} from "../store/rtk-api/sendNotification-rtk/sendnotification-rtk";
+import MobileBottomBar from "../components/admin/MobileBottomBar";
 
 
 const AdminPage: React.FC = () => {
@@ -29,8 +30,6 @@ const AdminPage: React.FC = () => {
     },[data])
 
 
-
-
     useEffect(() => {
         let socket = connectSocket()
 
@@ -39,10 +38,6 @@ const AdminPage: React.FC = () => {
                 if (window.location.pathname!=="/app/notifications") {
                     dispatch(unReadNotification())
                 }
-
-
-
-
         });
         return () => {
             socket.disconnect()
@@ -50,12 +45,14 @@ const AdminPage: React.FC = () => {
     }, [])
 
     return (
-        <Box sx={{display: 'flex', backgroundColor: '#F2F4F5', minHeight: '100vh'}}>
+        <Box sx={{display: 'flex', backgroundColor: '#F2F4F5',
+            // minHeight: '100vh'
+        }}>
             <CssBaseline/>
             <Sidebar/>
             <Box
                 component="main"
-                sx={{flexGrow: 1, p: 3, width: {sm: `calc(100% - ${240}px)`}}}
+                sx={{flexGrow: 1, p: 3, width: {sm: `calc(100% - ${240}px)`}, overflow:"hidden", }}
             >
                 <Routes>
                     <Route path={"profile"} element={<ProfileView/>}/>
@@ -69,6 +66,9 @@ const AdminPage: React.FC = () => {
                     />
                 </Routes>
             </Box>
+            <Hidden mdUp>
+                <MobileBottomBar/>
+            </Hidden>
 
 
         </Box>

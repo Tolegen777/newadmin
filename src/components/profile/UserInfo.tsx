@@ -1,4 +1,16 @@
-import {Box, Button, Grid, Paper, Skeleton, Table, TableBody, TableCell, TableRow, Typography} from '@mui/material';
+import {
+    Box,
+    Button,
+    Grid,
+    Paper,
+    Skeleton,
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    Typography, useMediaQuery,
+    useTheme
+} from '@mui/material';
 import React from 'react';
 import {IUser} from '../../types/IProfile';
 import ImageInput from '../image-input/ImageInput';
@@ -12,7 +24,8 @@ type Props = {
 }
 
 const UserInfo: React.FC<Props> = ({profile, avatar, isLoading, onChange, onDelete}) => {
-
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     return (
         <>
             <Typography sx={{fontSize: '20px', fontWeight: 700, marginBottom: '15px'}}>Пользователь</Typography>
@@ -22,16 +35,19 @@ const UserInfo: React.FC<Props> = ({profile, avatar, isLoading, onChange, onDele
                         {avatar ?
                             <img src={URL.createObjectURL(avatar)} width="132px" height="100px"/>
                             :
-                            <Paper elevation={0} sx={{
-                                height: "132px",
-                                width: "100px",
-                                display: 'flex',
-                                alignItems: 'center',
-                                textAlign: 'center',
-                                color: '#999999'
-                            }}>
+                            <>
+                                {!isMobile&&<Paper elevation={0} sx={{
+                                    height: "132px",
+                                    width: "100px",
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    textAlign: 'center',
+                                    color: '#999999'
+                                }}>
 
-                            </Paper>
+                                </Paper>}
+                            </>
+
                         }
                     </Grid>
                 </Grid>

@@ -1,25 +1,20 @@
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import {Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography} from '@mui/material';
 import * as React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {NavLink, useLocation} from 'react-router-dom';
 import logo from '../../assets/logo.svg';
-import { menuRoutes } from '../../route';
-import { logout } from '../../store/auth/auth.action';
+import {menuRoutes} from '../../route';
+import {logout} from '../../store/auth/auth.action';
 import CustomAlert from "../alert/CustomAlert";
 import {useTypedSelector} from "../../store";
-import {useEffect, useState} from "react";
-import {readNotification} from "../../store/webSocket/webSocket.slice";
 
 const drawerWidth = 240;
-
-
 
 export default function ResponsiveDrawer() {
 
     const {user} = useTypedSelector(state=>state.auth)
     let mySet = new Set();
-
     const isNotification = useTypedSelector(state=>state.websocketNotification.isNotification)
 
   const location = useLocation();
@@ -34,7 +29,7 @@ export default function ResponsiveDrawer() {
   const drawer = (
     <div style={{ padding: '15px' }}>
       <Typography textAlign="center" sx={{ padding: '10%' }}>
-        <img src={logo} width={140} height="auto" />
+        <img src={logo} width={140} height="auto" alt={"логотип"}/>
       </Typography>
       <Divider />
       <List style={{ textAlign: 'center' }}>
@@ -93,7 +88,7 @@ export default function ResponsiveDrawer() {
       <Drawer
         variant="permanent"
         sx={{
-          display: { xs: 'none', sm: 'block' },
+          display: { xs: 'none', sm: 'none', lg:'block' },
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
         open

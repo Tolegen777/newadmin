@@ -14,6 +14,7 @@ import Filters from './Filters';
 import CustomAlert from "../alert/CustomAlert";
 import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
 import RemoveProductWindow from "./RemoveProductWindow";
+import {string} from "yup";
 
 
 const mapping = {
@@ -53,14 +54,21 @@ const ProductsTable: React.FC = () => {
             priceFrom: '',
             priceTo: '',
             block: false,
-            confirm: true
+            confirm: true,
+            orderByDate:'orderByDateASC',
+            orderByPrice:'orderByPriceASC',
+            orderByDateDESC:false,
+            orderByDateASC:true,
+            orderByPriceDESC:false,
+            orderByPriceASC:true
+
+
         },
         onSubmit: (values) => {
-            const query = {} as IProductQuery;
             dispatch(fetchProducts({...values, limit: rowsPerPage, page: page + 1}));
         }
     })
-    const {values, handleSubmit, handleChange} = formik;
+    const {values, handleSubmit, handleChange, setFieldValue} = formik;
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -104,6 +112,8 @@ const ProductsTable: React.FC = () => {
         dispatch(fetchProducts({...values, limit: rowsPerPage, page: page + 1}));
     }, [page, rowsPerPage])
 
+
+
     return (
         <>
             <TableContainer>
@@ -111,7 +121,6 @@ const ProductsTable: React.FC = () => {
                     <Typography style={{fontSize: "20px", marginBottom: '25px'}}>Инвентарь товаров</Typography>
                     {isSuccessfulDeleting &&
                         <CustomAlert title={""} status="error" message="Произошла ошибка при удалений товара"/>}
-
                     <Button variant="contained" startIcon={<AddIcon/>}
                             onClick={() => navigate('/app/products/one/new')}>Создать товар</Button>
                 </div>
@@ -120,6 +129,7 @@ const ProductsTable: React.FC = () => {
                         filters={values}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
+                        setFieldValue = {setFieldValue}
                     />
                 </FormikProvider>
                 <Table>
@@ -175,6 +185,7 @@ const ProductsTable: React.FC = () => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 labelRowsPerPage="Товаров на одной странице:"
+                sx={{marginBottom:"10px"}}
             />
             {isOpen&&deletingId&&<RemoveProductWindow
                 isWindowOpen={isOpen} closeWindow={closeWindow}

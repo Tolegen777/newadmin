@@ -1,5 +1,15 @@
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import {Box, Button, CircularProgress, Grid, ListItem, TextField, textFieldClasses, Typography} from '@mui/material';
+import {
+    Box,
+    Button, Chip,
+    CircularProgress,
+    Grid,
+    ListItem,
+    TextField,
+    textFieldClasses,
+    Typography, useMediaQuery,
+    useTheme
+} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {useFormik} from 'formik';
 import React, {useEffect, useState} from 'react';
@@ -29,6 +39,15 @@ const StyledTextField = styled(TextField)(({theme}) => ({
     }
 }));
 
+const mobileListItem = {
+    display:"block",
+    fontWeight:"bold"
+}
+const desktopListItem = {
+    display:"flex",
+    fontWeight:"bold"
+}
+
 const StyledSubHeader = styled(Typography)(({theme}) => ({
     fontSize: '15px',
     fontWeight: 700,
@@ -41,8 +60,10 @@ const CreateProduct: React.FC = () => {
     let shopId = 0
     if (shop) {
         shopId = shop.id
-
     }
+
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const initialValues: IProductNew = {
         title: '',
@@ -304,15 +325,16 @@ const CreateProduct: React.FC = () => {
         <Box>
             <Button variant="contained" sx={{backgroundColor: '#EFF3F9', color: 'black'}}
                     startIcon={<ArrowBackIosNewIcon/>} onClick={goToBack}>Назад</Button>
-            <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Изменить товар</Typography>
+
             <form>
                 {productId ? <>
+                        <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Изменить товар</Typography>
                         <StyledSubHeader>Фотография на карточке</StyledSubHeader>
                         <Typography variant="caption" color="gray">Выбранная фотография будет отображаться на карточке
                             товара</Typography>
                         <div style={{display: 'flex'}}>
                             <Grid container spacing={1}>
-                                <Grid item xs={1.3}>
+                                <Grid item xs={4} lg={1.3}>
                                     <ImageInput title="Изменить фотографию" handleChange={handleAddImage2} height="100px"
                                                 width="100px"/>
                                 </Grid>
@@ -337,14 +359,14 @@ const CreateProduct: React.FC = () => {
                                 })}
                                 <Grid container direction={"column"} sx={{marginLeft:"10px"}}>
                                     <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={1.3} lg={1.3}>
                                         <ImageInput title="Добавить фотографий" handleChange={handleAddImage3}
                                                     height="100px"
                                                     width="100px"/>
                                     </Grid>
                                     <Grid container direction={"row"}>
                                         {productId && photos.length > 0 && photos.map((photo, ind) => (
-                                            <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                            <Grid item xs={3} lg={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
                                                 <ImageContainer
                                                     image={`${$imageApi}/${photo.image}`}
                                                     handleChange={() => {
@@ -355,7 +377,7 @@ const CreateProduct: React.FC = () => {
                                         ))
                                         }
                                         {formik.values.images && formik.values.images?.length > 0 && formik.values.images.map((photo, ind) => (
-                                            <Grid item xs={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                            <Grid item xs={3} lg={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
                                                 <ImageContainer
                                                     image={URL.createObjectURL(photo)}
                                                     handleChange={() => {
@@ -377,19 +399,20 @@ const CreateProduct: React.FC = () => {
 
                     </> :
                     <>
+                        <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Создать товар</Typography>
                         <StyledSubHeader>Фотография<span style={{color: "red"}}> *</span></StyledSubHeader>
 
                         <Typography variant="caption" color="gray">Первая фотография будет отображаться на карточке
                             товара</Typography>
                         <div style={{display: 'flex'}}>
                             <Grid container spacing={1}>
-                                <Grid item xs={1.2}>
+                                <Grid item xs={4} lg={1.3}>
                                     <ImageInput title="Добавить фотографию" handleChange={handleAddImage} height="100px"
                                                 width="100px"/>
                                 </Grid>
                                 {values.subs.map((image, ind) => {
                                     return (
-                                        <Grid item xs={1.1} key={ind}>
+                                        <Grid item xs={4} lg={1.1} key={ind}>
                                             <ImageContainer
                                                 image={URL.createObjectURL(image)}
                                                 handleChange={(event) => handleImageChange(event, ind)}
@@ -444,9 +467,10 @@ const CreateProduct: React.FC = () => {
                     <Grid item sm={6} xs={6} lg={6}>
 
                         <StyledSubHeader>Категория<span style={{color: "red"}}> *</span></StyledSubHeader>
-                        <ListItem sx={{fontWeight: 'bold'}}>Выбранная категория: <Typography
-                            sx={{marginLeft: '4px'}}> {categoryName}</Typography></ListItem>
-                        <SelectCategory handleSetCategory={handleSetCategory}/>
+                        <ListItem sx={isMobile?mobileListItem:desktopListItem}>Выбранная категория:
+                            <Chip label={categoryName} variant="filled" sx={{marginLeft: '4px'}}/>
+                        </ListItem>
+                        {!productId&&<SelectCategory handleSetCategory={handleSetCategory}/>}
 
                         <StyledSubHeader>Цена, ₸</StyledSubHeader>
                         <div style={{borderLeft: '1px solid #8A3FFC', marginTop: '15px', paddingLeft: '10px'}}>
@@ -493,11 +517,12 @@ const CreateProduct: React.FC = () => {
                     color="primary"
                     size="large"
                     onClick={() => handleSubmit()}
-                    sx={{marginTop: '15px'}}
+                    sx={{mt: '15px', mb:"20px"}}
                     disabled={isProductAdding}
                 >
                     Сохранить
                 </Button>
+                <div style={{height:"15px"}}></div>
             </form>
             {isAlert && <CustomAlert title="Ошибка" status="error"
                                      message='Произошла ошибка,перепроверьте заполняемые данные!'/>}

@@ -1,5 +1,5 @@
 import React, {useState, KeyboardEvent} from 'react';
-import {Button, Grid, InputAdornment, Paper, TextField, Typography} from "@mui/material";
+import {Button, Grid, InputAdornment, Paper, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -24,7 +24,8 @@ import RoleRemoveWindow from "./RoleRemoveWindow";
 
 
 const MyEmployee = () => {
-
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [role, setRole] = useState('all');
     const [open, setOpen] = useState(true);
     const [isWindowOpen, setWindowOpen] = useState(false)
@@ -40,38 +41,26 @@ const MyEmployee = () => {
     const handleClick = () => {
         setOpen(!open);
     };
-
-
     const showWindow = () => {
         setWindowOpen(true)
-
-
     }
     const closeWindow = () => {
         formik.values.email=''
         setWindowOpen(false)
         setRemoveWindowOpen(false)
         setAlert(false)
-
-
     }
-
     const submitAddingEmail = () => {
         formik.handleSubmit()
     }
-
-
-
     const submitRemovingEmail = () => {
         if (data && data.user && data.shop&&removeSellerEmail){
             handleRemoveSeller(removeSellerEmail, data?.shop.id, data?.user.email)
         }
-
     }
 
     const handleAddSeller = (email: string, shopId: number, ownerEmail: string) => {
         addSeller({email, shopId, ownerEmail})
-
         setAlert(true)
     }
 
@@ -83,7 +72,6 @@ const MyEmployee = () => {
     const handleRemoveWindowOpen = (email:string) => {
         setRemoveWindowOpen(true)
         setRemoveSellerEmail(email)
-
     }
 
     const changeRadioButtonValue = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,20 +100,14 @@ const MyEmployee = () => {
         },
         validationSchema: validationSchema,
         onSubmit: values => {
-
             if (data && data.user && data.shop) {
                 if (isWindowOpen){
                     handleAddSeller(values.email, data?.shop.id, data?.user.email)
-
                 }
             }
         },
     });
-
-
-
     return (
-
         <Paper sx={{paddingLeft: 3, paddingTop: 3}}>
             <Typography sx={{marginBottom: 3}}>Список сотрудников</Typography>
             <form onSubmit={e => e.preventDefault()}>
@@ -135,9 +117,8 @@ const MyEmployee = () => {
                     value={formik.values.search}
                     placeholder="найти"
                     size="medium"
-                    sx={{width: '700px', backgroundColor: '#F2F4F5'}}
+                    sx={{width: isMobile?'90%':'700px', backgroundColor: '#F2F4F5'}}
                     onKeyDown={handleSearch}
-
                     InputProps={{
                         endAdornment: <InputAdornment position="end"><IconButton onClick={()=>{setSearchedName(formik.values.search)}}
                                                                                  color="primary" sx={{ p: '10px' }} aria-label="directions">

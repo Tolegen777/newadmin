@@ -1,5 +1,15 @@
 import React from "react";
-import {Box, Button, Dialog, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    TextField,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomAlert from "../alert/CustomAlert";
 import CloseIcon from "@mui/icons-material/Close";
@@ -21,6 +31,8 @@ type PropsType = {
 
 const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,formik,submitAddingEmail,buttonText,isAlert}) => {
 
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     return(
         <Dialog
             open={isWindowOpen}
@@ -29,17 +41,21 @@ const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSu
             {isError && isAlert &&<CustomAlert title="Ошибка" status="error"
                                              message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
 
-            <DialogTitle id="alert-dialog-title" sx={{}}>
+            <DialogTitle id="alert-dialog-title">
                 <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={closeWindow}/>
 
             </DialogTitle>
 
-            <DialogContent sx={{width: '500px', textAlign: 'center'}}>
+            <DialogContent style={isMobile?{
+                width: '300px',
+                textAlign: 'center'
+            }:{
+                width: '500px',
+                textAlign: 'center'
+            }}>
                 <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>Напишите электронную почту</Typography>
                 <form>
-
                     <TextField
-
                         name="email"
                         type="email"
                         label="email"
@@ -48,7 +64,7 @@ const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSu
                         size="small"
                         onChange={formik.handleChange}
                         value={formik.values.email}
-                        sx={{width: 300, height: 70}}
+                        sx={{width: 250, height: 70}}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
 

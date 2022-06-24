@@ -1,5 +1,15 @@
 import React from "react";
-import {Box, Button, Dialog, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    TextField,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomAlert from "../alert/CustomAlert";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,7 +28,8 @@ type PropsType = {
 }
 
 const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,submitRemovingEmail,isAlert}) => {
-
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     return(
         <Dialog
             open={isWindowOpen}
@@ -32,7 +43,13 @@ const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,is
 
             </DialogTitle>
 
-            <DialogContent sx={{width: '500px', textAlign: 'center'}}>
+            <DialogContent style={isMobile?{
+                width: '300px',
+                textAlign: 'center'
+            }:{
+                width: '500px',
+                textAlign: 'center'
+            }}>
                 <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>Вы точно хотите удалить сотрудника ?</Typography>
                 <form>
 

@@ -25,18 +25,15 @@ const AllOrderTypes = () => {
         console.log(allOrders)
         console.log("allOrders")
     }
-    let style = {
-        backgroundColor: 'red'
-    }
 
     const navigate = useNavigate()
 
 
     return (
         <>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} sx={{mb:"40px"}}>
                 {error && <div>Произошла ошибка!</div>}
-                <Table sx={{minWidth: 650}} aria-label="simple table">
+                <Table sx={{minWidth: 650,}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <StyledTableCell align="center">Номер заказа</StyledTableCell>
@@ -54,7 +51,6 @@ const AllOrderTypes = () => {
                             sx={{cursor:"pointer", border:"2px solid #EBEBEB", borderRadius:"50px", marginBottom:"50px",
                                 '&:hover': {
                                     backgroundColor: "#EBEBEB",
-
                                 },
                             }}
                             >

@@ -86,6 +86,12 @@ export interface IProductQuery {
     limit?: number
     block?: boolean
     confirm?: boolean
+    orderByDate?:string,
+    orderByPrice?:string
+    orderByDateDESC?:boolean,
+    orderByDateASC?:boolean,
+    orderByPriceDESC?:boolean,
+    orderByPriceASC?:boolean
 }
 
 export interface IProductSpecs {

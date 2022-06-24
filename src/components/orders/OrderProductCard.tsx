@@ -1,6 +1,5 @@
 import React from 'react'
 import {Grid, Paper, Typography} from '@mui/material'
-import {useNavigate} from 'react-router-dom'
 
 type Props = {
     id?: number | string
@@ -17,10 +16,9 @@ const OrderProductCard: React.FC<Props> = ({id, image, productCount, price, name
         <Paper
             variant="outlined"
             sx={{borderRadius: '10px', marginTop: '15px', padding: '10px'}}
-
         >
             <Grid container spacing={1}>
-                <Grid item sm={3} xs={3} lg={3}>
+                <Grid item sm={4} xs={5} lg={4}>
                     <img
                         src={`https://file.adu24.com/${image}`}
                         alt=""
@@ -32,9 +30,7 @@ const OrderProductCard: React.FC<Props> = ({id, image, productCount, price, name
                     <Typography sx={{color: '#999999'}}>Название: {name}</Typography>
                     <Typography sx={{color: '#999999'}}>Количество: {productCount}</Typography>
                     <Typography sx={{color: '#999999'}}>Сумма: {price}</Typography>
-
                 </Grid>
-
             </Grid>
         </Paper>
     )

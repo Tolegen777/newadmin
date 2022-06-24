@@ -21,7 +21,6 @@ function App() {
 
   return (
       <>
-          {isMobile?<div style={{marginLeft:"5px", marginTop:"10px"}}>Сайт недоступен на мобильных устройствах</div>:
               <Routes>
                   <Route path={`/auth/*`} element={<AuthPage />} />
                   <Route path={`/app/*`} element={isAuth ? <AdminPage /> : <Navigate to="/auth" />} />
@@ -29,7 +28,7 @@ function App() {
                       path="*"
                       element={<Navigate to='/app' />}
                   />
-              </Routes>}
+              </Routes>
       </>
 
 

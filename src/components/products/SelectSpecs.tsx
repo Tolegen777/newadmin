@@ -217,7 +217,6 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
     return (
         <>
             {specs && specs?.map((spec, ind) => {
-
                 return <>
                         <StyledSubHeader>{spec?.title}</StyledSubHeader>
                         <Select
@@ -226,13 +225,10 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
                             displayEmpty
 
                         >
-
                             {!productId&&<MenuItem value={""} onClick={() => handleAddSpec(spec.id, null, spec.title, "")}>
                                 <em>Вариант не выбран</em>
                             </MenuItem>}
                             {spec?.values?.map((specValue) => {
-
-
                                 return <MenuItem key={specValue.id}
                                                  value={specValue.value === Array.from(mapState.values()).filter(v=>v===specValue.value)[0] ? specValue.value : "not"}
                                                  onClick={() => handleAddSpec(spec.id, specValue.id, spec.title, specValue.value)}>{specValue.value}

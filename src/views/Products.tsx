@@ -1,4 +1,4 @@
-import {Box, Paper, Typography} from '@mui/material';
+import {Box, Paper, Typography, useMediaQuery, useTheme} from '@mui/material';
 import React, {Suspense} from 'react';
 import {Navigate, Route, Routes} from 'react-router';
 import CreateProduct from '../components/products/CreateProduct';
@@ -7,10 +7,12 @@ const ProductsTable = React.lazy(() => import('../components/products/ProductsTa
 const AddEditProduct = React.lazy(() => import('../components/products/CreateProduct'));
 
 const ProductsView = () => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
         <Box>
-            <Typography style={{fontSize: "42px", fontWeight: 500}}>Мои товары</Typography>
+            <Typography style={{fontWeight: 500}} fontSize={isMobile?"30px":"42px"}>Мои товары</Typography>
             <Suspense fallback={<div>Загрузка...</div>}>
                 <Paper sx={{padding: '15px'}}>
                     <Routes>

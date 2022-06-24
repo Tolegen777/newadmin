@@ -25,26 +25,51 @@ interface Props {
     filters: IProductQuery
     handleChange: (val: any) => void
     handleSubmit: () => void
+    setFieldValue(name: string, bool: boolean): void
 }
 
-const Filters: FC<Props> = ({filters, handleChange, handleSubmit}) => {
+// const mobileTextField
+
+const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}) => {
     const dispatch = useDispatch();
-    const {categories} = useTypedSelector(state => state.product)
-    const {search, categoryId, almostFree, bestseller, priceFrom, priceTo, block, confirm} = filters;
+    const {search,priceFrom, priceTo,orderByDate,orderByPrice} = filters;
 
     React.useEffect(() => {
         dispatch(fetchCategories());
     }, [])
+    const handleFilterSubmit = () => {
+        if (orderByDate==="orderByDateDESC"){
+            setFieldValue('orderByDateDESC',true)
+            setFieldValue("orderByDateASC",false)
+        }
+        if (orderByDate==="orderByDateASC"){
+            setFieldValue('orderByDateDESC',false)
+            setFieldValue("orderByDateASC",true)
+        }
+        if (orderByPrice==="orderByPriceDESC"){
+            setFieldValue('orderByPriceDESC',true)
+            setFieldValue("orderByPriceASC",false)
+        }
+        if (orderByPrice==="orderByPriceASC"){
+            setFieldValue('orderByPriceDESC',false)
+            setFieldValue("orderByPriceASC",true)
+        }
+
+        handleSubmit()
+    }
+
+
+
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={10}>
+            <Grid item xs={12} lg={10}>
                 <Grid container spacing={1} alignItems="center">
-                    <Grid item>
+                    <Grid item alignItems="center" lg={5} xs={12} sm={12} md={12}>
                         <TextField
                             variant="outlined"
                             size="small"
-                            sx={{width: '400px'}}
+                            fullWidth
                             placeholder="Поиск по Артикул, название товара..."
                             name="search"
                             value={search}
@@ -58,124 +83,51 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit}) => {
                             }}
                         />
                     </Grid>
-          {/*          <Grid item xs>*/}
-          {/*  <FormControl fullWidth size='small'>*/}
-          {/*    <InputLabel id="categoryLabel">Категория</InputLabel>*/}
-          {/*    <Select*/}
-          {/*      labelId="categoryLabel"*/}
-          {/*      id="demo-simple-select"*/}
-          {/*      value={categoryId}*/}
-          {/*      label="Категория"*/}
-          {/*      onChange={handleChange}*/}
-          {/*    >*/}
-          {/*      {categories.map((category) => (*/}
-          {/*        <MenuItem value={category.id}>{category.name}</MenuItem>*/}
-          {/*      ))}*/}
-          {/*    </Select>*/}
-          {/*  </FormControl>*/}
-          {/*</Grid>*/}
-                    <Grid item>
-                        <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                            <Typography>Цена:</Typography>
-                            <TextField
-                                variant="outlined"
-                                size="small"
-                                sx={{width: '100px'}}
-                                placeholder="С"
-                                name="priceFrom"
-                                value={priceFrom}
-                                onChange={handleChange}
-                            />
-                            <TextField
-                                variant="outlined"
-                                size="small"
-                                sx={{width: '100px'}}
-                                placeholder="По"
-                                name="priceTo"
-                                value={priceTo}
-                                onChange={handleChange}
-                            />
-                        </Stack>
-                    </Grid>
-                    {/*<Grid item xs>*/}
-                    {/*    <Stack direction={'row'} alignItems={'center'} spacing={2}>*/}
-                    {/*        <FormControlLabel*/}
-                    {/*            label="Бестселлеры"*/}
-                    {/*            style={{margin: '4px'}}*/}
-                    {/*            onChange={handleChange}*/}
-                    {/*            control={*/}
-                    {/*                <Field type="checkbox" name="bestseller"/>*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*        <FormControlLabel*/}
-                    {/*            label="Заблокированные"*/}
-                    {/*            style={{margin: '4px'}}*/}
-                    {/*            control={*/}
-                    {/*                <Field type="checkbox" name="block"/>*/}
-                    {/*            }*/}
-                    {/*        />*/}
-
-                    {/*       Фильтр временно закоменчил*/}
-                    {/*        <FormControlLabel*/}
-                    {/*            style={{margin: '4px'}}*/}
-                    {/*            label="Подтвержденные"*/}
-                    {/*            control={*/}
-                    {/*                <Field type="checkbox" name="confirm"/>*/}
-                    {/*            }*/}
-                    {/*        />*/}
-                    {/*    </Stack>*/}
-                    {/*</Grid>*/}
-
                     <Grid item xs>
-                        <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                            <FormControl sx={{width: "100px"}}>
-                                <InputLabel id="demo-simple-select-label">Agыцыцe</InputLabel>
+                        <Stack direction={'row'} alignItems={'center'} >
+                            <FormControl sx={{margin:"10px"}}>
+                                <InputLabel id="demo-simple-select-label">Дата создания</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={10}
+                                    value={orderByDate}
                                     label="Дата создания"
                                     onChange={handleChange}
+                                    name={"orderByDate"}
                                 >
-                                    <MenuItem value={10}>Сначала новые</MenuItem>
-                                    <MenuItem value={20}>Сначала старые</MenuItem>
+                                    <MenuItem value={"orderByDateASC"}>Сначала новые</MenuItem>
+                                    <MenuItem value={"orderByDateDESC"}>Сначала старые</MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormControlLabel
-                                label="Заблокированные"
-                                style={{margin: '4px'}}
-                                control={
-                                    <Field type="checkbox" name="block"/>
-                                }
-                            />
-                            <FormControlLabel
-                                style={{margin: '4px'}}
-                                label="Подтвержденные"
-                                control={
-                                    <Field type="checkbox" name="confirm"/>
-                                }
-                            />
-                            <FormControlLabel
-                                style={{margin: '4px'}}
-                                label="Подтвержденные"
-                                control={
-                                    <Field type="checkbox" name="confirm"/>
-                                }
-                            />
+                            <FormControl sx={{margin:"10px"}}>
+                                <InputLabel id="demo-simple-select-label2">Цена</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label2"
+                                    value={orderByPrice}
+                                    label="Цена"
+                                    onChange={handleChange}
+                                    name={"orderByPrice"}
+                                >
+                                    <MenuItem value={"orderByPriceASC"}>Сначала дешевые</MenuItem>
+                                    <MenuItem value={"orderByPriceDESC"}>Сначала дорогие</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Stack>
+
                     </Grid>
 
                 </Grid>
             </Grid>
-            <Grid item xs={2}>
+            <Stack sx={{justifyContent:"center", margin:"0 auto"}}
+            >
                 <Button
                     variant="outlined"
                     color="primary"
-                    onClick={handleSubmit}
+                    onClick={handleFilterSubmit}
+
                 >
                     Поиск
                 </Button>
-            </Grid>
+            </Stack>
         </Grid>
     )
 }

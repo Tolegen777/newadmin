@@ -41,13 +41,11 @@ interface IShopProfile {
 
 
 const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
-
     const {user} = useTypedSelector(state => state.auth)
     const dispatch = useDispatch()
-
     const initialValues: IShopProfile = {
         id: user ? user?.shops[0].id : null,
-        logo: user ? user?.shops[0].logo :'',
+        logo: user ? user?.shops[0].logo : '',
         name: user ? user?.shops[0].name : '',
         bin_iin: user ? user?.shops[0].bin_iin : '',
         legalAddress: user ? user?.shops[0].legalAddress : '',
@@ -56,7 +54,6 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
         shop_type: user ? user?.shops[0].shop_type : '',
         createdLogo: []
     }
-
     const validationSchema = yup.object().shape({
         name: yup
             .string(),
@@ -64,23 +61,19 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
             .number(),
         instagram: yup
             .string(),
-
     });
 
     const handleUpdateProfileOnClick = () => {
-
         //Здесь он диспатчит полученные данные для обновления
         let obj = {
             id: formik.values.id,
             image: formik.values.createdLogo.length > 0 ? values.createdLogo[0] : null,
             phone: formik.values.phone,
             instagram: formik.values.instagram
-
         }
         dispatch(updateShopAvatar(obj))
 
     }
-
     const formik = useFormik({
             initialValues: initialValues,
             validationSchema: validationSchema,
@@ -88,8 +81,7 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
             }
         }
     )
-    const {values, setFieldValue, setValues, handleChange, handleSubmit} = formik;
-
+    const {values, setFieldValue, handleChange} = formik;
     const handleAddImage2 = (event: Event) => {
         const input = event.target as HTMLInputElement;
         if (!input.files?.length) {
@@ -142,7 +134,7 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                             // <Paper elevation={0} sx={{ height: "100px", width: "100px", border: '1px dashed #999999', display: 'flex', alignItems: 'center', textAlign: 'center', color: '#999999' }}>
                             //   Нет лого магазина
                             // </Paper>
-                            <Box sx={{marginBottom:"32px", marginTop:"15px"}}>
+                            <Box sx={{marginBottom: "32px", marginTop: "15px"}}>
                                 {values.createdLogo.length === 0 ?
                                     <ImageInput title="Добавить логотип" handleChange={handleAddImage2} height="100px"
                                                 width="100px"/> :
@@ -155,7 +147,6 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                                                 }}
                                             />
                                         </Grid>)}
-
                             </Box>
                         }
                         <TableBody>
@@ -175,21 +166,19 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                                 <TableCell>Номер телефона</TableCell>
                                 <TableCell>
                                     <TextField value={values.phone} onChange={handleChange} variant={"standard"}
-                                               sx={{color:"red", fontSize:"100px"}}
+                                               sx={{color: "red", fontSize: "100px"}}
                                                InputProps={{
                                                    disableUnderline: true,
                                                    endAdornment: <InputAdornment position={"end"}>
                                                        <EditIcon/>
                                                    </InputAdornment>,
-                                                   style:{fontSize:"14px"}
+                                                   style: {fontSize: "14px"}
 
                                                }}
                                                name="phone"
                                                fullWidth
-
                                     />
                                 </TableCell>
-
                             </TableRow>
                             <TableRow>
                                 <TableCell>Instagram</TableCell>
@@ -200,7 +189,7 @@ const ShopInfo: React.FC<Props> = ({handleUpdateProfile, isLoading}) => {
                                                    endAdornment: <InputAdornment position={"end"}>
                                                        <EditIcon/>
                                                    </InputAdornment>,
-                                                   style:{fontSize:"14px"}
+                                                   style: {fontSize: "14px"}
 
                                                }}
                                                name="instagram"

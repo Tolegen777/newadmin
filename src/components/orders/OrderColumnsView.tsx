@@ -1,34 +1,30 @@
 import React from 'react'
-import {Grid} from '@mui/material';
+import {Grid, useMediaQuery, useTheme} from '@mui/material';
 import ColumnTitle from './ColumnTitle';
 import OrderCard from './OrderCard';
 import {useGetOrdersQuery} from '../../store/rtk-api/baseEndpoints';
-import {useDispatch} from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import {useTypedSelector} from "../../store";
 
 const OrderColumnsView: React.FC = () => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const {shop} = useTypedSelector(state => state.auth)
-    let shopId = 0
-    if (shop) {
-        shopId = shop.id
-    }
-
-    const {data: orders, isLoading, error, refetch } = useGetOrdersQuery(shopId)
-
+    const {data: orders, isLoading, error, refetch} = useGetOrdersQuery(shop && shop.id)
     React.useEffect(() => {
         refetch();
     }, [])
 
     return (
-        <Grid container spacing={5}>
-            {error && <div>то то пошло не так!</div>}
+        <Grid container spacing={isMobile ? 2 : 5}>
+            {error && <div>Что то пошло не так!</div>}
             <Grid item sm={4} xs={4} lg={4}>
                 {isLoading && <CircularProgress/>}
                 {orders && <ColumnTitle title="Новые" amount={orders.payment.length}/>}
                 {orders &&
                     orders?.payment.map((order) =>
-                        <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice} createdAt={order.createdAt}/>
+                        <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice}
+                                   createdAt={order.createdAt}/>
                     )
                 }
             </Grid>
@@ -36,7 +32,8 @@ const OrderColumnsView: React.FC = () => {
                 {orders && <ColumnTitle color="primary" title="Доставлено" amount={orders.success.length}/>}
                 {orders &&
                     orders?.success.map((order) =>
-                        <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice} createdAt={order.createdAt}/>
+                        <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice}
+                                   createdAt={order.createdAt}/>
                     )
                 }
             </Grid>
@@ -45,7 +42,8 @@ const OrderColumnsView: React.FC = () => {
 
                 {orders &&
                     orders?.cancelled.map((order) =>
-                        <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice} createdAt={order.createdAt}/>
+                        <OrderCard key={order.id} id={order.id} totalPrice={order.totalPrice}
+                                   createdAt={order.createdAt}/>
                     )
                 }
             </Grid>
