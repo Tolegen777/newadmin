@@ -40,12 +40,12 @@ const StyledTextField = styled(TextField)(({theme}) => ({
 }));
 
 const mobileListItem = {
-    display:"block",
-    fontWeight:"bold"
+    display: "block",
+    fontWeight: "bold"
 }
 const desktopListItem = {
-    display:"flex",
-    fontWeight:"bold"
+    display: "flex",
+    fontWeight: "bold"
 }
 
 const StyledSubHeader = styled(Typography)(({theme}) => ({
@@ -328,7 +328,8 @@ const CreateProduct: React.FC = () => {
 
             <form>
                 {productId ? <>
-                        <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Изменить товар</Typography>
+                        <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Изменить
+                            товар</Typography>
                         <StyledSubHeader>Фотография на карточке</StyledSubHeader>
                         <Typography variant="caption" color="gray">Выбранная фотография будет отображаться на карточке
                             товара</Typography>
@@ -357,7 +358,7 @@ const CreateProduct: React.FC = () => {
                                         </Grid>
                                     )
                                 })}
-                                <Grid container direction={"column"} sx={{marginLeft:"10px"}}>
+                                <Grid container direction={"column"} sx={{marginLeft: "10px"}}>
                                     <Grid><Typography variant="caption" color="gray">Другие фотографий</Typography></Grid>
                                     <Grid item xs={1.3} lg={1.3}>
                                         <ImageInput title="Добавить фотографий" handleChange={handleAddImage3}
@@ -366,7 +367,8 @@ const CreateProduct: React.FC = () => {
                                     </Grid>
                                     <Grid container direction={"row"}>
                                         {productId && photos.length > 0 && photos.map((photo, ind) => (
-                                            <Grid item xs={3} lg={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                            <Grid item xs={3} lg={1} key={ind}
+                                                  sx={{marginRight: "10px", marginTop: "10px"}}>
                                                 <ImageContainer
                                                     image={`${$imageApi}/${photo.image}`}
                                                     handleChange={() => {
@@ -377,7 +379,8 @@ const CreateProduct: React.FC = () => {
                                         ))
                                         }
                                         {formik.values.images && formik.values.images?.length > 0 && formik.values.images.map((photo, ind) => (
-                                            <Grid item xs={3} lg={1} key={ind} sx={{marginRight: "10px", marginTop: "10px"}}>
+                                            <Grid item xs={3} lg={1} key={ind}
+                                                  sx={{marginRight: "10px", marginTop: "10px"}}>
                                                 <ImageContainer
                                                     image={URL.createObjectURL(photo)}
                                                     handleChange={() => {
@@ -399,7 +402,8 @@ const CreateProduct: React.FC = () => {
 
                     </> :
                     <>
-                        <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Создать товар</Typography>
+                        <Typography sx={{fontSize: "20px", marginTop: '20px', marginBottom: '25px'}}>Создать
+                            товар</Typography>
                         <StyledSubHeader>Фотография<span style={{color: "red"}}> *</span></StyledSubHeader>
 
                         <Typography variant="caption" color="gray">Первая фотография будет отображаться на карточке
@@ -467,10 +471,10 @@ const CreateProduct: React.FC = () => {
                     <Grid item sm={6} xs={6} lg={6}>
 
                         <StyledSubHeader>Категория<span style={{color: "red"}}> *</span></StyledSubHeader>
-                        <ListItem sx={isMobile?mobileListItem:desktopListItem}>Выбранная категория:
+                        <ListItem sx={isMobile ? mobileListItem : desktopListItem}>Выбранная категория:
                             <Chip label={categoryName} variant="filled" sx={{marginLeft: '4px'}}/>
                         </ListItem>
-                        {!productId&&<SelectCategory handleSetCategory={handleSetCategory}/>}
+                        {!productId && <SelectCategory handleSetCategory={handleSetCategory}/>}
 
                         <StyledSubHeader>Цена, ₸</StyledSubHeader>
                         <div style={{borderLeft: '1px solid #8A3FFC', marginTop: '15px', paddingLeft: '10px'}}>
@@ -517,12 +521,12 @@ const CreateProduct: React.FC = () => {
                     color="primary"
                     size="large"
                     onClick={() => handleSubmit()}
-                    sx={{mt: '15px', mb:"20px"}}
+                    sx={{mt: '15px', mb: "20px"}}
                     disabled={isProductAdding}
                 >
                     Сохранить
                 </Button>
-                <div style={{height:"15px"}}></div>
+                <div style={{height: "15px"}}></div>
             </form>
             {isAlert && <CustomAlert title="Ошибка" status="error"
                                      message='Произошла ошибка,перепроверьте заполняемые данные!'/>}

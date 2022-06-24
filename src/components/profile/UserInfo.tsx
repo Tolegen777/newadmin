@@ -1,19 +1,6 @@
-import {
-    Box,
-    Button,
-    Grid,
-    Paper,
-    Skeleton,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Typography, useMediaQuery,
-    useTheme
-} from '@mui/material';
+import {Grid, Paper, Table, TableBody, TableCell, TableRow, Typography, useMediaQuery, useTheme} from '@mui/material';
 import React from 'react';
 import {IUser} from '../../types/IProfile';
-import ImageInput from '../image-input/ImageInput';
 
 type Props = {
     profile: IUser,
@@ -36,7 +23,7 @@ const UserInfo: React.FC<Props> = ({profile, avatar, isLoading, onChange, onDele
                             <img src={URL.createObjectURL(avatar)} width="132px" height="100px"/>
                             :
                             <>
-                                {!isMobile&&<Paper elevation={0} sx={{
+                                {!isMobile && <Paper elevation={0} sx={{
                                     height: "132px",
                                     width: "100px",
                                     display: 'flex',

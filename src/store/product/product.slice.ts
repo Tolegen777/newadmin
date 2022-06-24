@@ -1,14 +1,6 @@
-import {ActionsEnum} from "../enum";
 import {IProductResponse, ISpec} from "../../types/IProduct";
 import {createSlice} from "@reduxjs/toolkit";
-import {
-    createProduct,
-    fetchCategories,
-    fetchOneProduct,
-    fetchProducts,
-    fetchSpecs,
-    updateProduct
-} from "./product.action";
+import {createProduct, fetchCategories, fetchProducts, fetchSpecs, updateProduct} from "./product.action";
 import {ICategory} from "../../types/ICategory";
 
 interface InitState {
@@ -17,22 +9,22 @@ interface InitState {
     specs: ISpec[]
     error: unknown
     error2?: unknown
-    error3?:unknown
+    error3?: unknown
     isLoading: boolean
     payload?: any
-    payload2?:any
+    payload2?: any
 }
 
 const initialState: InitState = {
     isLoading: false,
     error: null,
     error2: null,
-    error3:null,
+    error3: null,
     products: {count: 0, products: []},
     categories: [],
     specs: [],
     payload: null,
-    payload2:null
+    payload2: null
 
 }
 const productSlice = createSlice({
@@ -44,8 +36,8 @@ const productSlice = createSlice({
         },
         clearError: (state) => {
 
-            state.error2=null
-            state.error3=null
+            state.error2 = null
+            state.error3 = null
         },
     },
     initialState,

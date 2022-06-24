@@ -1,30 +1,15 @@
-import {
-    Button,
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    Grid,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    NativeSelect,
-    Select,
-    Stack,
-    TextField,
-    Typography
-} from '@mui/material'
+import {Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField} from '@mui/material'
 import React, {FC} from 'react'
-import {Field, useFormik} from 'formik';
 import SearchIcon from '@mui/icons-material/Search';
 import {useDispatch} from 'react-redux';
 import {fetchCategories} from '../../store/product/product.action';
-import {useTypedSelector} from '../../store';
 import {IProductQuery} from '../../types/IProduct';
 
 interface Props {
     filters: IProductQuery
     handleChange: (val: any) => void
     handleSubmit: () => void
+
     setFieldValue(name: string, bool: boolean): void
 }
 
@@ -32,33 +17,31 @@ interface Props {
 
 const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}) => {
     const dispatch = useDispatch();
-    const {search,priceFrom, priceTo,orderByDate,orderByPrice} = filters;
+    const {search, priceFrom, priceTo, orderByDate, orderByPrice} = filters;
 
     React.useEffect(() => {
         dispatch(fetchCategories());
     }, [])
     const handleFilterSubmit = () => {
-        if (orderByDate==="orderByDateDESC"){
-            setFieldValue('orderByDateDESC',true)
-            setFieldValue("orderByDateASC",false)
+        if (orderByDate === "orderByDateDESC") {
+            setFieldValue('orderByDateDESC', true)
+            setFieldValue("orderByDateASC", false)
         }
-        if (orderByDate==="orderByDateASC"){
-            setFieldValue('orderByDateDESC',false)
-            setFieldValue("orderByDateASC",true)
+        if (orderByDate === "orderByDateASC") {
+            setFieldValue('orderByDateDESC', false)
+            setFieldValue("orderByDateASC", true)
         }
-        if (orderByPrice==="orderByPriceDESC"){
-            setFieldValue('orderByPriceDESC',true)
-            setFieldValue("orderByPriceASC",false)
+        if (orderByPrice === "orderByPriceDESC") {
+            setFieldValue('orderByPriceDESC', true)
+            setFieldValue("orderByPriceASC", false)
         }
-        if (orderByPrice==="orderByPriceASC"){
-            setFieldValue('orderByPriceDESC',false)
-            setFieldValue("orderByPriceASC",true)
+        if (orderByPrice === "orderByPriceASC") {
+            setFieldValue('orderByPriceDESC', false)
+            setFieldValue("orderByPriceASC", true)
         }
 
         handleSubmit()
     }
-
-
 
 
     return (
@@ -84,8 +67,8 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}
                         />
                     </Grid>
                     <Grid item xs>
-                        <Stack direction={'row'} alignItems={'center'} >
-                            <FormControl sx={{margin:"10px"}}>
+                        <Stack direction={'row'} alignItems={'center'}>
+                            <FormControl sx={{margin: "10px"}}>
                                 <InputLabel id="demo-simple-select-label">Дата создания</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -98,7 +81,7 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}
                                     <MenuItem value={"orderByDateDESC"}>Сначала старые</MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormControl sx={{margin:"10px"}}>
+                            <FormControl sx={{margin: "10px"}}>
                                 <InputLabel id="demo-simple-select-label2">Цена</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label2"
@@ -117,7 +100,7 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}
 
                 </Grid>
             </Grid>
-            <Stack sx={{justifyContent:"center", margin:"0 auto"}}
+            <Stack sx={{justifyContent: "center", margin: "0 auto"}}
             >
                 <Button
                     variant="outlined"

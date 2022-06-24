@@ -1,14 +1,10 @@
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import SettingsIcon from '@mui/icons-material/Settings';
 import {SvgIconTypeMap} from '@mui/material';
 import {OverridableComponent} from '@mui/material/OverridableComponent';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
-import GroupIcon from '@mui/icons-material/Group';
-import MessageIcon from '@mui/icons-material/Message';
 import EngineeringRoundedIcon from '@mui/icons-material/EngineeringRounded';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import {useSelector} from "react-redux";
 
 type RouteType = {
     name: string;
@@ -32,8 +28,6 @@ export enum MyRoutes {
 }
 
 export const privateRoute = []
-
-
 
 
 export const menuRoutes: RouteType[] = [

@@ -1,11 +1,10 @@
 import {styled} from '@mui/material/styles';
 import {MenuItem, Select, Typography} from '@mui/material';
-import React, {MutableRefObject, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useGetSpecsQuery} from '../../store/rtk-api/baseEndpoints';
 import {ProductService} from "../../service/product/product.service";
 import {IProductSpecs} from "../../types/IProduct";
 import {useParams} from "react-router";
-import {IUpdateSpecArr, IUpdateSpecs} from "../../types/types";
 import {useUpdateSpecsMutation} from "../../store/rtk-api/updateSpecs-rtk/updateSpecs-rtk";
 import {useRemoveSpecsMutation} from "../../store/rtk-api/removeSpecs-rtk/removeSpecs-rtk";
 import {useAddSpecsMutation} from "../../store/rtk-api/addSpecs-rtk/addSpecs-rtk";
@@ -22,7 +21,7 @@ type Props = {
     setFieldValue(name: string, arr: Array<number>): void
     handleSetSpecs(arr: Array<string>): void
     // handleUpdateSpecs:MutableRefObject<null>
-    handleUpdateSpecs:any
+    handleUpdateSpecs: any
 
 }
 const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs, handleUpdateSpecs}) => {
@@ -92,7 +91,6 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
     }
 
 
-
     React.useEffect(() => {
         async function fetch() {
             if (productId) {
@@ -122,44 +120,43 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
     }
 
 
-    useEffect(()=>{
-        if (productSpecs.length>0){
-            productSpecs.map(p=>{
-               productInitMapState.set(p.title.title,p.value)
+    useEffect(() => {
+        if (productSpecs.length > 0) {
+            productSpecs.map(p => {
+                productInitMapState.set(p.title.title, p.value)
             })
         }
-    },[productSpecs])
-
+    }, [productSpecs])
 
 
     //////////
     const handleUpdateSpecsOnClick = () => {
 
-        let array:Array<String> = []
-        let array2:Array<String> = []
+        let array: Array<String> = []
+        let array2: Array<String> = []
 
 
-        if (specs&&productId){
-            specs.map((s,ind)=>{
-                Array.from(mapState.keys()).map(k=>{
-                    if (s.title===k){
-                        s.values.map(v=>{
-                            if (v.value===mapState.get(k)){
-                                if (productInitMapState.size===0||productInitMapState.get(k)===''||!Array.from(productInitMapState.keys()).includes(k)){
+        if (specs && productId) {
+            specs.map((s, ind) => {
+                Array.from(mapState.keys()).map(k => {
+                    if (s.title === k) {
+                        s.values.map(v => {
+                            if (v.value === mapState.get(k)) {
+                                if (productInitMapState.size === 0 || productInitMapState.get(k) === '' || !Array.from(productInitMapState.keys()).includes(k)) {
                                     array2.push(String(v.id))
-                                } else if(productInitMapState.size>0&&productInitMapState.get(k)!==''&&productInitMapState.get(k)!==mapState.get(k)) {
+                                } else if (productInitMapState.size > 0 && productInitMapState.get(k) !== '' && productInitMapState.get(k) !== mapState.get(k)) {
 
-                                    mapNewUpdate.set(k,v.id)
+                                    mapNewUpdate.set(k, v.id)
                                 }
 
-                            } else if (v.value===productInitMapState.get(k)&&mapState.get(k)===''){
+                            } else if (v.value === productInitMapState.get(k) && mapState.get(k) === '') {
                                 //removing array
                                 array.push(String(v.id))
                             }
                         })
-                        productSpecs.length>0&&productSpecs.map(p=>{
-                            if (p.title.title===k){
-                                mapOldUpdate.set(k,p.id)
+                        productSpecs.length > 0 && productSpecs.map(p => {
+                            if (p.title.title === k) {
+                                mapOldUpdate.set(k, p.id)
                             }
 
                         })
@@ -171,15 +168,13 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
         }
 
 
+        Array.from(mapNewUpdate.keys()).map((m, index) => {
 
-        Array.from(mapNewUpdate.keys()).map((m,index)=>{
-
-            updateArr.push({oldSpecId:mapOldUpdate.get(m),
-                    newSpecId:mapNewUpdate.get(m)
+            updateArr.push({
+                oldSpecId: mapOldUpdate.get(m),
+                newSpecId: mapNewUpdate.get(m)
             })
         })
-
-
 
 
         ///// removing spec(do not remove this comment!)
@@ -190,25 +185,23 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
         //     })
         // }
 
-        if (array2.length!==0){
+        if (array2.length !== 0) {
             addSpecs({
-                productId:Number(productId),
-                specs:array2.join(',')
+                productId: Number(productId),
+                specs: array2.join(',')
             })
         }
 
-        if (updateArr.length>0) {
+        if (updateArr.length > 0) {
             updateProductSpecs({
-                productId:Number(productId),
-                specs:updateArr
+                productId: Number(productId),
+                specs: updateArr
             })
         }
     }
 
 
-
-
-    useEffect(()=>{
+    useEffect(() => {
 
         // @ts-ignore
         handleUpdateSpecs.current = handleUpdateSpecsOnClick
@@ -217,20 +210,21 @@ const SelectSpecs: React.FC<Props> = ({categoryId, setFieldValue, handleSetSpecs
     return (
         <>
             {specs && specs?.map((spec, ind) => {
-                return <>
+                    return <>
                         <StyledSubHeader>{spec?.title}</StyledSubHeader>
                         <Select
                             sx={{width: "150px"}}
-                            value={spec && mapState.size > 0 && Array.from(mapState.keys()).filter(v=>v===spec.title)[0] === spec.title ? mapState.get(Array.from(mapState.keys()).filter(v=>v===spec.title)[0]) : "n"}
+                            value={spec && mapState.size > 0 && Array.from(mapState.keys()).filter(v => v === spec.title)[0] === spec.title ? mapState.get(Array.from(mapState.keys()).filter(v => v === spec.title)[0]) : "n"}
                             displayEmpty
 
                         >
-                            {!productId&&<MenuItem value={""} onClick={() => handleAddSpec(spec.id, null, spec.title, "")}>
-                                <em>Вариант не выбран</em>
-                            </MenuItem>}
+                            {!productId &&
+                                <MenuItem value={""} onClick={() => handleAddSpec(spec.id, null, spec.title, "")}>
+                                    <em>Вариант не выбран</em>
+                                </MenuItem>}
                             {spec?.values?.map((specValue) => {
                                 return <MenuItem key={specValue.id}
-                                                 value={specValue.value === Array.from(mapState.values()).filter(v=>v===specValue.value)[0] ? specValue.value : "not"}
+                                                 value={specValue.value === Array.from(mapState.values()).filter(v => v === specValue.value)[0] ? specValue.value : "not"}
                                                  onClick={() => handleAddSpec(spec.id, specValue.id, spec.title, specValue.value)}>{specValue.value}
                                 </MenuItem>
 

@@ -1,5 +1,5 @@
 import {baseApi} from "../baseApi";
-import { IUpdateSpecs} from "../../../types/types";
+import {IUpdateSpecs} from "../../../types/types";
 
 const endpoints = baseApi.injectEndpoints({
     endpoints: (builder) => ({

@@ -10,7 +10,7 @@ const endpoints = baseApi.injectEndpoints({
             }),
             providesTags: ['categories']
         }),
-        getOrders: builder.query<IOrdersResponse, number|null>({
+        getOrders: builder.query<IOrdersResponse, number | null>({
             query: (shopId) => ({
                 url: `/order/shop/${shopId}`
             }),

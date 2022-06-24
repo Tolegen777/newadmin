@@ -7,21 +7,21 @@ type PropsType = {
     title: string,
     message: string,
     status: 'success' | 'info' | 'warning' | 'error',
-    isLink?:boolean
+    isLink?: boolean
 }
 
-const CustomAlert: React.FC<PropsType> = ({message, status, title,isLink=false}) => {
+const CustomAlert: React.FC<PropsType> = ({message, status, title, isLink = false}) => {
 
     const linkStyle = {
-        textDecoration:"underline",
-        cursor:"pointer"
+        textDecoration: "underline",
+        cursor: "pointer"
     }
     const navigate = useNavigate()
 
     return (
         <Alert severity={status}>
             <AlertTitle>{title}</AlertTitle>
-            <div style={isLink?linkStyle:{}} onClick={()=>navigate('notifications')}>
+            <div style={isLink ? linkStyle : {}} onClick={() => navigate('notifications')}>
                 <strong>{message}</strong>
             </div>
 

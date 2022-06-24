@@ -9,7 +9,7 @@ const endpoints = baseApi.injectEndpoints({
                 method: 'GET',
 
             }),
-             providesTags:['getShop']
+            providesTags: ['getShop']
         })
     })
 })

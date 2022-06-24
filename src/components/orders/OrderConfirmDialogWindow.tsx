@@ -54,9 +54,9 @@ const OrderConfirmDialogWindow: React.FC<PropsType> = ({
             handleCancelOrder()
         }
 
-        setTimeout(()=>{
+        setTimeout(() => {
             navigate('/app/orders')
-        },2000)
+        }, 2000)
     }
 
 
@@ -65,7 +65,7 @@ const OrderConfirmDialogWindow: React.FC<PropsType> = ({
             open={isWindowOpen}
 
         >
-            {(isLoading||isLoading2) && <CircularProgress/>}
+            {(isLoading || isLoading2) && <CircularProgress/>}
             {(isError || isError2) && <CustomAlert title="Ошибка" status="error"
                                                    message="Возникла неизвестная ошибка!"/>}
             {isSuccess && <CustomAlert title="Успешно" status="success" message="Заказ отправлен на доставку!"/>}
@@ -75,10 +75,10 @@ const OrderConfirmDialogWindow: React.FC<PropsType> = ({
                     <CloseIcon onClick={handleClickClose} sx={{float: 'right', cursor: 'pointer'}}/>
                 </DialogTitle>
 
-                <DialogContent style={isMobile?{
+                <DialogContent style={isMobile ? {
                     width: '300px',
                     textAlign: 'center'
-                }:{
+                } : {
                     width: '500px',
                     textAlign: 'center'
                 }}>

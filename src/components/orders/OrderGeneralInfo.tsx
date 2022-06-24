@@ -1,15 +1,9 @@
-import {Box, Button, Grid, Typography} from '@mui/material'
-import React, {useState} from 'react'
-import {useParams} from "react-router";
-import OrderProductCard from "./OrderProductCard";
-import {IBasketUser, IOneOrder, IOrdersResponse} from "../../types/types";
-import OrderConfirmDialogWindow from "./OrderConfirmDialogWindow";
-import {useGetBasketUserDataQuery} from "../../store/rtk-api/baseEndpoints";
-import CircularProgress from "@mui/material/CircularProgress";
-import {useLocation} from "react-router-dom";
+import {Box, Grid, Typography} from '@mui/material'
+import React from 'react'
+import {IBasketUser, IOneOrder} from "../../types/types";
 
 const style = {
-    fontWeight:"bold"
+    fontWeight: "bold"
 }
 type PropsType = {
     oneOrderData: IOneOrder
@@ -26,7 +20,7 @@ const OrderGeneralInfo: React.FC<PropsType> = ({oneOrderData, basketUserData}) =
                 <Grid item sx={style}>#{oneOrderData.id}</Grid>
             </Grid>
             <Grid container spacing={5}>
-                <Grid item sm={3} xs={4} lg={2} >Заказчик:</Grid>
+                <Grid item sm={3} xs={4} lg={2}>Заказчик:</Grid>
                 <Grid item sx={style}>
                     {basketUserData && basketUserData.firstName} {basketUserData && basketUserData.lastName}</Grid>
             </Grid>
@@ -41,7 +35,8 @@ const OrderGeneralInfo: React.FC<PropsType> = ({oneOrderData, basketUserData}) =
             </Grid>
             <Grid container spacing={5}>
                 <Grid item sm={3} xs={4} lg={2}>Дата заказа:</Grid>
-                <Grid item sx={style}>{oneOrderData && oneOrderData.createdAt.slice(0, 10).split('-').reverse().join('-')}</Grid>
+                <Grid item
+                      sx={style}>{oneOrderData && oneOrderData.createdAt.slice(0, 10).split('-').reverse().join('-')}</Grid>
 
             </Grid>
         </Box>

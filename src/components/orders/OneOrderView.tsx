@@ -15,8 +15,16 @@ import {useTypedSelector} from "../../store";
 const OneOrderView = () => {
     const {shop} = useTypedSelector(state => state.auth)
     const {data: orders, isLoading, error} = useGetOrdersQuery(shop && shop.id)
-    const [createDelivery, {isLoading: isCreating, error: isCreatingError, isSuccess:isCreatingSuccess}] = useCreateDeliveryMutation()
-    const [deleteDelivery, {isLoading: isDeleting, error: isDeletingError, isSuccess:isDeletingSuccess}] = useCancelOrderMutation()
+    const [createDelivery, {
+        isLoading: isCreating,
+        error: isCreatingError,
+        isSuccess: isCreatingSuccess
+    }] = useCreateDeliveryMutation()
+    const [deleteDelivery, {
+        isLoading: isDeleting,
+        error: isDeletingError,
+        isSuccess: isDeletingSuccess
+    }] = useCancelOrderMutation()
     const navigate = useNavigate();
     const params = useParams();
     let paramsId = undefined
@@ -53,8 +61,8 @@ const OneOrderView = () => {
                 <OrderProductsBlock orders={orders}
                                     handleCreate={handleCreate} handleCancelOrder={handleCancelOrder}
                                     oneOrderData={oneOrderData}
-                isError={isCreatingError} isLoading={isCreating} isSuccess={isCreatingSuccess}
-                isError2={isDeletingError} isLoading2={isDeleting} isSuccess2={isDeletingSuccess}
+                                    isError={isCreatingError} isLoading={isCreating} isSuccess={isCreatingSuccess}
+                                    isError2={isDeletingError} isLoading2={isDeleting} isSuccess2={isDeletingSuccess}
                 />
             </Box>
         </Paper>

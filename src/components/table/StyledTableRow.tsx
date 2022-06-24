@@ -1,7 +1,7 @@
-import { TableRow } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import {TableRow} from '@mui/material';
+import {styled} from '@mui/material/styles';
 
-export default styled(TableRow)(({ theme }) => ({
-  background: 'transparent',
-  borderTopColor: '#AAAAAA'
+export default styled(TableRow)(({theme}) => ({
+    background: 'transparent',
+    borderTopColor: '#AAAAAA'
 }));

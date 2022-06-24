@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import { getEnvApi } from "../../api";
+import {getEnvApi} from "../../api";
 
 export const baseQuery = fetchBaseQuery({
     baseUrl: getEnvApi(),

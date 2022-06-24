@@ -30,9 +30,13 @@ const MyEmployee = () => {
     const [open, setOpen] = useState(true);
     const [isWindowOpen, setWindowOpen] = useState(false)
     const [addSeller, {isLoading, isError: addSellingError, isSuccess}] = useAddSellerMutation()
-    const [removeSeller,{isLoading:isRemoveSellerLoading,isError:isRemoveSellerError,isSuccess:isRemoveSuccess}] = useRemoveSellerMutation()
+    const [removeSeller, {
+        isLoading: isRemoveSellerLoading,
+        isError: isRemoveSellerError,
+        isSuccess: isRemoveSuccess
+    }] = useRemoveSellerMutation()
     const data = useTypedSelector(state => state.auth)
-    const [searchedName,setSearchedName] = useState('')
+    const [searchedName, setSearchedName] = useState('')
     const [isRemoveWindowOpen, setRemoveWindowOpen] = useState(false)
     const [isAlert, setAlert] = useState(false)
     const [removeSellerEmail, setRemoveSellerEmail] = useState('')
@@ -45,7 +49,7 @@ const MyEmployee = () => {
         setWindowOpen(true)
     }
     const closeWindow = () => {
-        formik.values.email=''
+        formik.values.email = ''
         setWindowOpen(false)
         setRemoveWindowOpen(false)
         setAlert(false)
@@ -54,7 +58,7 @@ const MyEmployee = () => {
         formik.handleSubmit()
     }
     const submitRemovingEmail = () => {
-        if (data && data.user && data.shop&&removeSellerEmail){
+        if (data && data.user && data.shop && removeSellerEmail) {
             handleRemoveSeller(removeSellerEmail, data?.shop.id, data?.user.email)
         }
     }
@@ -66,10 +70,10 @@ const MyEmployee = () => {
 
     const handleRemoveSeller = (email: string, shopId: number, ownerEmail: string) => {
         removeSeller({email, shopId, ownerEmail})
-            setAlert(true)
+        setAlert(true)
     }
 
-    const handleRemoveWindowOpen = (email:string) => {
+    const handleRemoveWindowOpen = (email: string) => {
         setRemoveWindowOpen(true)
         setRemoveSellerEmail(email)
     }
@@ -80,7 +84,7 @@ const MyEmployee = () => {
 
 
     const handleSearch = (e: KeyboardEvent<HTMLImageElement>) => {
-        if (e.key==="Enter"){
+        if (e.key === "Enter") {
             setSearchedName(formik.values.search)
         }
     };
@@ -96,12 +100,12 @@ const MyEmployee = () => {
     const formik = useFormik({
         initialValues: {
             email: '',
-            search:''
+            search: ''
         },
         validationSchema: validationSchema,
         onSubmit: values => {
             if (data && data.user && data.shop) {
-                if (isWindowOpen){
+                if (isWindowOpen) {
                     handleAddSeller(values.email, data?.shop.id, data?.user.email)
                 }
             }
@@ -117,11 +121,14 @@ const MyEmployee = () => {
                     value={formik.values.search}
                     placeholder="найти"
                     size="medium"
-                    sx={{width: isMobile?'90%':'700px', backgroundColor: '#F2F4F5'}}
+                    sx={{width: isMobile ? '90%' : '700px', backgroundColor: '#F2F4F5'}}
                     onKeyDown={handleSearch}
                     InputProps={{
-                        endAdornment: <InputAdornment position="end"><IconButton onClick={()=>{setSearchedName(formik.values.search)}}
-                                                                                 color="primary" sx={{ p: '10px' }} aria-label="directions">
+                        endAdornment: <InputAdornment position="end"><IconButton onClick={() => {
+                            setSearchedName(formik.values.search)
+                        }}
+                                                                                 color="primary" sx={{p: '10px'}}
+                                                                                 aria-label="directions">
                             <SearchIcon/>
                         </IconButton></InputAdornment>
                     }}
@@ -188,21 +195,23 @@ const MyEmployee = () => {
                     </Button>
                 </Grid>
             </Grid>
-            <EmployeesInfoList role={role} searchedName = {searchedName} handleRemoveWindowOpen={handleRemoveWindowOpen} />
-            {isWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isLoading} isSuccess={isSuccess} isWindowOpen={isWindowOpen}
-                                             isError={addSellingError} formik={formik} submitAddingEmail={submitAddingEmail} buttonText="добавить" isAlert={isAlert}/>
+            <EmployeesInfoList role={role} searchedName={searchedName} handleRemoveWindowOpen={handleRemoveWindowOpen}/>
+            {isWindowOpen && <UserRoleWindow closeWindow={closeWindow} isLoading={isLoading} isSuccess={isSuccess}
+                                             isWindowOpen={isWindowOpen}
+                                             isError={addSellingError} formik={formik}
+                                             submitAddingEmail={submitAddingEmail} buttonText="добавить"
+                                             isAlert={isAlert}/>
             }
-            {isRemoveWindowOpen && <RoleRemoveWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading} isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
-                                                   isError={isRemoveSellerError} submitRemovingEmail={submitRemovingEmail}  isAlert={isAlert}/>
+            {isRemoveWindowOpen && <RoleRemoveWindow closeWindow={closeWindow} isLoading={isRemoveSellerLoading}
+                                                     isSuccess={isRemoveSuccess} isWindowOpen={isRemoveWindowOpen}
+                                                     isError={isRemoveSellerError}
+                                                     submitRemovingEmail={submitRemovingEmail} isAlert={isAlert}/>
             }
 
         </Paper>
 
     );
 };
-
-
-
 
 
 export default MyEmployee;

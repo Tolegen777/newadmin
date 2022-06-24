@@ -9,7 +9,7 @@ const endpoints = baseApi.injectEndpoints({
                 method: 'POST',
                 body: {...sellingData}
             }),
-             invalidatesTags:['getShop']
+            invalidatesTags: ['getShop']
         })
     })
 })

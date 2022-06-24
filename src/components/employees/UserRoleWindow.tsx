@@ -15,41 +15,51 @@ import CustomAlert from "../alert/CustomAlert";
 import CloseIcon from "@mui/icons-material/Close";
 
 type PropsType = {
-    isWindowOpen:boolean,
-    isLoading:boolean,
-    isError:boolean,
-    isSuccess:boolean,
-    closeWindow():void,
-    formik:any,
-    submitAddingEmail():void,
-    buttonText:string,
-    isAlert:boolean
-
+    isWindowOpen: boolean,
+    isLoading: boolean,
+    isError: boolean,
+    isSuccess: boolean,
+    closeWindow(): void,
+    formik: any,
+    submitAddingEmail(): void,
+    buttonText: string,
+    isAlert: boolean
 
 
 }
 
-const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,formik,submitAddingEmail,buttonText,isAlert}) => {
+const UserRoleWindow: React.FC<PropsType> = ({
+                                                 isWindowOpen,
+                                                 isLoading,
+                                                 isError,
+                                                 isSuccess,
+                                                 closeWindow,
+                                                 formik,
+                                                 submitAddingEmail,
+                                                 buttonText,
+                                                 isAlert
+                                             }) => {
 
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    return(
+    return (
         <Dialog
             open={isWindowOpen}
         >
             {isLoading && <CircularProgress/>}
-            {isError && isAlert &&<CustomAlert title="Ошибка" status="error"
-                                             message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
+            {isError && isAlert && <CustomAlert title="Ошибка" status="error"
+                                                message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess &&
+            <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
 
             <DialogTitle id="alert-dialog-title">
                 <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={closeWindow}/>
 
             </DialogTitle>
 
-            <DialogContent style={isMobile?{
+            <DialogContent style={isMobile ? {
                 width: '300px',
                 textAlign: 'center'
-            }:{
+            } : {
                 width: '500px',
                 textAlign: 'center'
             }}>
@@ -77,7 +87,7 @@ const UserRoleWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSu
                         <Button variant="contained"
                                 color="primary"
                                 size="large"
-                                sx={{width: 100, height: 30, marginTop: 1, textTransform:'lowercase'}}
+                                sx={{width: 100, height: 30, marginTop: 1, textTransform: 'lowercase'}}
                                 onClick={submitAddingEmail}
                         >
                             {buttonText}

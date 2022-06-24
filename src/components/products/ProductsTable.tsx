@@ -14,7 +14,6 @@ import Filters from './Filters';
 import CustomAlert from "../alert/CustomAlert";
 import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
 import RemoveProductWindow from "./RemoveProductWindow";
-import {string} from "yup";
 
 
 const mapping = {
@@ -31,11 +30,6 @@ const ProductsTable: React.FC = () => {
     const dispatch = useDispatch();
 
     const {products, isLoading} = useTypedSelector(state => state.product);
-
-    // React.useEffect(() => {
-    //     console.log(products)
-    // }, [products])
-
     const [removeProduct, {
         isLoading: deleteLoading,
         isError: deletingProductError,
@@ -55,12 +49,12 @@ const ProductsTable: React.FC = () => {
             priceTo: '',
             block: false,
             confirm: true,
-            orderByDate:'orderByDateASC',
-            orderByPrice:'orderByPriceASC',
-            orderByDateDESC:false,
-            orderByDateASC:true,
-            orderByPriceDESC:false,
-            orderByPriceASC:true
+            orderByDate: 'orderByDateASC',
+            orderByPrice: 'orderByPriceASC',
+            orderByDateDESC: false,
+            orderByDateASC: true,
+            orderByPriceDESC: false,
+            orderByPriceASC: true
 
 
         },
@@ -77,7 +71,7 @@ const ProductsTable: React.FC = () => {
     const [isOpen, setOpen] = useState(false)
     const [deletingId, setDeletingId] = useState<number>()
 
-    const handleWindowOpen = (id:number) => {
+    const handleWindowOpen = (id: number) => {
         setOpen(true)
         setDeletingId(id)
     }
@@ -113,7 +107,6 @@ const ProductsTable: React.FC = () => {
     }, [page, rowsPerPage])
 
 
-
     return (
         <>
             <TableContainer>
@@ -129,7 +122,7 @@ const ProductsTable: React.FC = () => {
                         filters={values}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
-                        setFieldValue = {setFieldValue}
+                        setFieldValue={setFieldValue}
                     />
                 </FormikProvider>
                 <Table>
@@ -160,13 +153,18 @@ const ProductsTable: React.FC = () => {
                                         <StyledTableCell><Chip label={`${row.discount}%`}/></StyledTableCell>
                                         <StyledTableCell>
                                             <Button variant='outlined' color='primary'
-                                                    sx={{borderWidth: '2px', fontWeight: 600, width:"120px", marginRight:"5px"}}
+                                                    sx={{
+                                                        borderWidth: '2px',
+                                                        fontWeight: 600,
+                                                        width: "120px",
+                                                        marginRight: "5px"
+                                                    }}
                                                     onClick={() => navigate(`/app/products/one/${row.id}`)}>
                                                 Подробнее
                                             </Button>
 
                                             <Button variant='contained' color='error'
-                                                    sx={{borderWidth: '2px', fontWeight: 600, width:"120px"}}
+                                                    sx={{borderWidth: '2px', fontWeight: 600, width: "120px"}}
                                                     onClick={() => handleWindowOpen(row.id)}>
                                                 Удалить
                                             </Button>
@@ -185,12 +183,13 @@ const ProductsTable: React.FC = () => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 labelRowsPerPage="Товаров на одной странице:"
-                sx={{marginBottom:"10px"}}
+                sx={{marginBottom: "10px"}}
             />
-            {isOpen&&deletingId&&<RemoveProductWindow
+            {isOpen && deletingId && <RemoveProductWindow
                 isWindowOpen={isOpen} closeWindow={closeWindow}
-                isLoading={deleteLoading} isError={deletingProductError} isSuccess={isSuccess} handleDeleteProduct={handleDeleteProduct}
-            id={deletingId}/>}
+                isLoading={deleteLoading} isError={deletingProductError} isSuccess={isSuccess}
+                handleDeleteProduct={handleDeleteProduct}
+                id={deletingId}/>}
         </>
     )
 }

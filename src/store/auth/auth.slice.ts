@@ -1,8 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../../types/IProfile";
-import { IShop } from "../../types/IShop";
-import { ActionsEnum } from "../enum";
-import {fetchUser, login, logout, updateShopAvatar} from "./auth.action";
+import {createSlice} from "@reduxjs/toolkit";
+import {IUser} from "../../types/IProfile";
+import {IShop} from "../../types/IShop";
+import {login, logout, updateShopAvatar} from "./auth.action";
 
 interface IInitState {
     isAuth: boolean;
@@ -22,22 +21,20 @@ const initialState: IInitState = {
 
 const authReducer = createSlice({
     name: 'auth',
-    reducers: {
-
-    },
+    reducers: {},
     initialState,
     extraReducers: builder => {
         builder
             .addCase(login.pending, ((state) => {
                 state.isLoading = true
             }))
-            .addCase(login.fulfilled, ((state, { payload }) => {
+            .addCase(login.fulfilled, ((state, {payload}) => {
                 state.isLoading = false
                 state.isAuth = true
                 state.user = payload.user
                 state.shop = payload.shop
             }))
-            .addCase(login.rejected, ((state, { error }) => {
+            .addCase(login.rejected, ((state, {error}) => {
                 state.isLoading = false
                 state.error = error
             }))
@@ -54,7 +51,7 @@ const authReducer = createSlice({
                 state.isLoading = true
                 state.error = ''
             }))
-            .addCase(updateShopAvatar.fulfilled, ((state, { payload }) => {
+            .addCase(updateShopAvatar.fulfilled, ((state, {payload}) => {
                 state.isLoading = false
                 // if (state?.shop?.logo&&payload.logo){
                 //      state.shop.logo = payload.logo
@@ -63,20 +60,20 @@ const authReducer = createSlice({
                 // } else if (state?.shop?.instagram&&payload.instagram){
                 //     state.shop.instagram = payload.instagram
                 // }
-                if (state?.user?.shops[0].logo&&payload.logo){
+                if (state?.user?.shops[0].logo && payload.logo) {
                     state.user.shops[0].logo = payload.logo
                 }
-                if (state?.user?.shops[0].phone&&payload.phone){
+                if (state?.user?.shops[0].phone && payload.phone) {
                     state.user.shops[0].phone = payload.phone
                 }
-                if (state?.user?.shops[0].logo&&payload.instagram){
+                if (state?.user?.shops[0].logo && payload.instagram) {
                     state.user.shops[0].instagram = payload.instagram
                 }
 
                 state.error = ''
 
             }))
-            .addCase(updateShopAvatar.rejected, ((state, { error }) => {
+            .addCase(updateShopAvatar.rejected, ((state, {error}) => {
                 state.isLoading = false
                 state.error = error
             }))

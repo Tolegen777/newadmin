@@ -12,13 +12,39 @@ export const fetchProducts = createAsyncThunk<IProductResponse, IProductQuery>(
             console.log(query)
             console.log("query")
 
-            const {search, shopId, confirm, priceFrom, priceTo, categoryId, limit, page, orderByDateDESC,orderByDateASC, orderByPriceDESC, orderByPriceASC} = query;
+            const {
+                search,
+                shopId,
+                confirm,
+                priceFrom,
+                priceTo,
+                categoryId,
+                limit,
+                page,
+                orderByDateDESC,
+                orderByDateASC,
+                orderByPriceDESC,
+                orderByPriceASC
+            } = query;
 
-            const filteredQuery = {search, shopId, confirm, priceFrom, priceTo, categoryId, limit, page, orderByDateDESC,orderByDateASC, orderByPriceDESC, orderByPriceASC};
+            const filteredQuery = {
+                search,
+                shopId,
+                confirm,
+                priceFrom,
+                priceTo,
+                categoryId,
+                limit,
+                page,
+                orderByDateDESC,
+                orderByDateASC,
+                orderByPriceDESC,
+                orderByPriceASC
+            };
             let obj = {}
-            if (Object.values(filteredQuery).length>0){
-                Object.keys(filteredQuery).forEach((key,ind)=>{
-                    if (Object.values(filteredQuery)[ind]!==false&&Object.values(filteredQuery)[ind]!==""){
+            if (Object.values(filteredQuery).length > 0) {
+                Object.keys(filteredQuery).forEach((key, ind) => {
+                    if (Object.values(filteredQuery)[ind] !== false && Object.values(filteredQuery)[ind] !== "") {
                         // @ts-ignore
                         obj[key] = Object.values(filteredQuery)[ind]
                     }

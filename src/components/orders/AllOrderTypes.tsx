@@ -21,7 +21,7 @@ const AllOrderTypes = () => {
     }
 
     const {data: allOrders, isLoading, error} = useGetAllShopOrderQuery(shopId)
-    if (allOrders){
+    if (allOrders) {
         console.log(allOrders)
         console.log("allOrders")
     }
@@ -31,7 +31,7 @@ const AllOrderTypes = () => {
 
     return (
         <>
-            <TableContainer component={Paper} sx={{mb:"40px"}}>
+            <TableContainer component={Paper} sx={{mb: "40px"}}>
                 {error && <div>Произошла ошибка!</div>}
                 <Table sx={{minWidth: 650,}} aria-label="simple table">
                     <TableHead>
@@ -47,12 +47,18 @@ const AllOrderTypes = () => {
                     {isLoading && <CircularProgress/>}
                     <TableBody>
                         {allOrders && allOrders.map(order => {
-                            return <TableRow key={order.id} onClick={()=>{navigate(`one/${order.id}`,{state:true})}}
-                            sx={{cursor:"pointer", border:"2px solid #EBEBEB", borderRadius:"50px", marginBottom:"50px",
-                                '&:hover': {
-                                    backgroundColor: "#EBEBEB",
-                                },
+                            return <TableRow key={order.id} onClick={() => {
+                                navigate(`one/${order.id}`, {state: true})
                             }}
+                                             sx={{
+                                                 cursor: "pointer",
+                                                 border: "2px solid #EBEBEB",
+                                                 borderRadius: "50px",
+                                                 marginBottom: "50px",
+                                                 '&:hover': {
+                                                     backgroundColor: "#EBEBEB",
+                                                 },
+                                             }}
                             >
                                 <TableCell align="center"><Typography
                                     sx={{fontWeight: 600}}>#{order.id}</Typography></TableCell>
@@ -63,22 +69,23 @@ const AllOrderTypes = () => {
                                 {/*<TableCell align="center">{order.orderNo}</TableCell>*/}
                                 {order.status === "PAYMENT" &&
                                     <TableCell align="center"
-                                               sx={{color: "#2196f3",fontWeight:"400px"}}>ОПЛАЧЕН</TableCell>}
+                                               sx={{color: "#2196f3", fontWeight: "400px"}}>ОПЛАЧЕН</TableCell>}
                                 {order.status === "CREATED" &&
                                     <TableCell align="center"
-                                               sx={{color: "#80a4be", fontWeight:"400px"}}>СОЗДАН</TableCell>}
+                                               sx={{color: "#80a4be", fontWeight: "400px"}}>СОЗДАН</TableCell>}
                                 {order.status === "SUCCESS" &&
                                     <TableCell align="center"
-                                               sx={{color: "#4caf50", fontWeight:"400px"}}>УСПЕШНО ВЫПОЛНЕН</TableCell>}
+                                               sx={{color: "#4caf50", fontWeight: "400px"}}>УСПЕШНО
+                                        ВЫПОЛНЕН</TableCell>}
                                 {order.status === "CANCELED" &&
                                     <TableCell align="center"
-                                               sx={{color: "#F08080", fontWeight:"400px"}}>ОТМЕНЕН</TableCell>}
+                                               sx={{color: "#F08080", fontWeight: "400px"}}>ОТМЕНЕН</TableCell>}
                                 {order.status === "ERROR" &&
                                     <TableCell align="center"
-                                               sx={{color: "#B22222", fontWeight:"400px"}}>ОШИБКА</TableCell>}
+                                               sx={{color: "#B22222", fontWeight: "400px"}}>ОШИБКА</TableCell>}
                                 {order.status === "DELIVERY" &&
                                     <TableCell align="center"
-                                               sx={{color: "#468234", fontWeight:"400px"}}>НА ДОСТАВКЕ</TableCell>}
+                                               sx={{color: "#468234", fontWeight: "400px"}}>НА ДОСТАВКЕ</TableCell>}
 
 
                             </TableRow>

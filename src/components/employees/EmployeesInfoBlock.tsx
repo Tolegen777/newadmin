@@ -7,15 +7,13 @@ import {IAdminRole} from "../../types/types";
 
 type PropsType = {
     user: IAdminRole,
-    roleName:string,
-    handleRemoveWindowOpen(email:string):void,
-
-
+    roleName: string,
+    handleRemoveWindowOpen(email: string): void,
 }
 
-const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName,handleRemoveWindowOpen}) => {
+const EmployeesInfoBlock: React.FC<PropsType> = ({user, roleName, handleRemoveWindowOpen}) => {
 
-    return  <TableRow key={user.id}>
+    return <TableRow key={user.id}>
         <TableCell> {user.avatar ? <img
             src={`https://file.adu24.com/${user.avatar}`}
             alt=""
@@ -30,10 +28,11 @@ const EmployeesInfoBlock:React.FC<PropsType> = ({user,roleName,handleRemoveWindo
         <TableCell align="right">{user.email}</TableCell>
         <TableCell align="right">{user.phone}</TableCell>
         {
-            roleName==="Администратор"&&<TableCell align="right"><MoreHorizIcon fontSize="large" cursor={"pointer"} onClick={()=>{handleRemoveWindowOpen(user.email)}}/></TableCell>
+            roleName === "Администратор" &&
+            <TableCell align="right"><MoreHorizIcon fontSize="large" cursor={"pointer"} onClick={() => {
+                handleRemoveWindowOpen(user.email)
+            }}/></TableCell>
         }
-
-
     </TableRow>
 
 }

@@ -5,7 +5,6 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    TextField,
     Typography,
     useMediaQuery,
     useTheme
@@ -15,38 +14,46 @@ import CustomAlert from "../alert/CustomAlert";
 import CloseIcon from "@mui/icons-material/Close";
 
 type PropsType = {
-    isWindowOpen:boolean,
-    isLoading:boolean,
-    isError:boolean,
-    isSuccess:boolean,
-    closeWindow():void,
-    submitRemovingEmail():void,
-    isAlert:boolean
-
+    isWindowOpen: boolean,
+    isLoading: boolean,
+    isError: boolean,
+    isSuccess: boolean,
+    closeWindow(): void,
+    submitRemovingEmail(): void,
+    isAlert: boolean
 
 
 }
 
-const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,isSuccess,closeWindow,submitRemovingEmail,isAlert}) => {
+const RoleRemoveWindow: React.FC<PropsType> = ({
+                                                   isWindowOpen,
+                                                   isLoading,
+                                                   isError,
+                                                   isSuccess,
+                                                   closeWindow,
+                                                   submitRemovingEmail,
+                                                   isAlert
+                                               }) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    return(
+    return (
         <Dialog
             open={isWindowOpen}
         >
             {isLoading && <CircularProgress/>}
-            {isError && isAlert &&<CustomAlert title="Ошибка" status="error"
-                                             message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess && <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
+            {isError && isAlert && <CustomAlert title="Ошибка" status="error"
+                                                message="Возникла неизвестная ошибка перепроверьте email!"/>}{isAlert && isSuccess &&
+            <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
 
             <DialogTitle id="alert-dialog-title" sx={{}}>
                 <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={closeWindow}/>
 
             </DialogTitle>
 
-            <DialogContent style={isMobile?{
+            <DialogContent style={isMobile ? {
                 width: '300px',
                 textAlign: 'center'
-            }:{
+            } : {
                 width: '500px',
                 textAlign: 'center'
             }}>
@@ -59,7 +66,7 @@ const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,is
                         <Button variant="contained"
                                 color="primary"
                                 size="large"
-                                sx={{width: 100, height: 30, marginTop: 1, textTransform:'lowercase'}}
+                                sx={{width: 100, height: 30, marginTop: 1, textTransform: 'lowercase'}}
                                 onClick={submitRemovingEmail}
                         >
                             Удалить
@@ -67,7 +74,13 @@ const RoleRemoveWindow:React.FC<PropsType> = ({isWindowOpen,isLoading,isError,is
                         <Button variant="contained"
                                 color="inherit"
                                 size="large"
-                                sx={{width: 100, height: 30, marginTop: 1, textTransform:'lowercase', marginLeft:"10px"}}
+                                sx={{
+                                    width: 100,
+                                    height: 30,
+                                    marginTop: 1,
+                                    textTransform: 'lowercase',
+                                    marginLeft: "10px"
+                                }}
                                 onClick={closeWindow}
                         >
                             Отмена

@@ -11,8 +11,6 @@ import {SelectChangeEvent} from '@mui/material/Select';
 import {DialogContentText, ListItemIcon, ListItemText} from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {useTypedSelector} from '../../store';
-import {useDispatch} from 'react-redux';
-import {useNavigate} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 
 type PropsType = {
@@ -26,7 +24,6 @@ const SelectCategory: React.FC<PropsType> = (props) => {
     const [age, setAge] = React.useState<number | string>('');
     const [categoryId, setCategoryId] = React.useState<number | string>('')
     const [secondCategoryId, setSecondCategoryId] = React.useState<number | string>('')
-    const [categoryValue, setCategoryValue] = React.useState<string>('')
 
     const handleChange = (event: SelectChangeEvent<typeof age>) => {
         setAge(Number(event.target.value) || '');
@@ -89,7 +86,7 @@ const SelectCategory: React.FC<PropsType> = (props) => {
 
     useEffect(() => {
         scrollToBottom()
-    }, [categoryId,secondCategoryId])
+    }, [categoryId, secondCategoryId])
 
     return (
         <div>

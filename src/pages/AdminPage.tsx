@@ -23,11 +23,11 @@ const AdminPage: React.FC = () => {
     const {data, error, isLoading} = useGetNotificationsQuery(15)
     const dispatch = useDispatch();
 
-    useEffect(()=>{
+    useEffect(() => {
         if (data && data.data && data.data.notifications) {
             dispatch(setPrevNotifications(data.data.notifications))
         }
-    },[data])
+    }, [data])
 
 
     useEffect(() => {
@@ -35,9 +35,9 @@ const AdminPage: React.FC = () => {
 
         socket.onAny((eventName, ...args) => {
             dispatch(getNotification(args[0]))
-                if (window.location.pathname!=="/app/notifications") {
-                    dispatch(unReadNotification())
-                }
+            if (window.location.pathname !== "/app/notifications") {
+                dispatch(unReadNotification())
+            }
         });
         return () => {
             socket.disconnect()
@@ -45,14 +45,15 @@ const AdminPage: React.FC = () => {
     }, [])
 
     return (
-        <Box sx={{display: 'flex', backgroundColor: '#F2F4F5',
+        <Box sx={{
+            display: 'flex', backgroundColor: '#F2F4F5',
             // minHeight: '100vh'
         }}>
             <CssBaseline/>
             <Sidebar/>
             <Box
                 component="main"
-                sx={{flexGrow: 1, p: 3, width: {sm: `calc(100% - ${240}px)`}, overflow:"hidden", }}
+                sx={{flexGrow: 1, p: 3, width: {sm: `calc(100% - ${240}px)`}, overflow: "hidden",}}
             >
                 <Routes>
                     <Route path={"profile"} element={<ProfileView/>}/>
