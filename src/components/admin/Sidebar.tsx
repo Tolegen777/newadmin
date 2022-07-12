@@ -90,7 +90,7 @@ export default function ResponsiveDrawer() {
             <Drawer
                 variant="permanent"
                 sx={{
-                    display: {xs: 'none', sm: 'none', lg: 'block'},
+                    display: {xs: 'none', sm: 'block', lg: 'block', md:'block'},
                     '& .MuiDrawer-paper': {boxSizing: 'border-box', width: drawerWidth},
                 }}
                 open

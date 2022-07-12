@@ -5,6 +5,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import EngineeringRoundedIcon from '@mui/icons-material/EngineeringRounded';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 
 type RouteType = {
     name: string;
@@ -24,7 +25,9 @@ export enum MyRoutes {
     POSTS = "/app/posts",
     SETTINGS = "/app/settings",
     NOTIFICATIONS = "/app/notifications",
-    EMPLOYEES = "/app/employees"
+    EMPLOYEES = "/app/employees",
+    SERVICES = "/app/services"
+
 }
 
 export const privateRoute = []
@@ -37,6 +40,7 @@ export const menuRoutes: RouteType[] = [
     {name: "Мои заказы", path: MyRoutes.ORDERS, icon: FactCheckIcon},
     {name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: ChatBubbleIcon},
     {name: "Сотрудники", path: MyRoutes.EMPLOYEES, icon: EngineeringRoundedIcon},
+    {name: "Услуги", path: MyRoutes.SERVICES, icon: DesignServicesIcon},
 ]
 
 export const publicRoute = []

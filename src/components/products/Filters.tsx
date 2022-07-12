@@ -1,21 +1,45 @@
-import {Button, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField} from '@mui/material'
+import {
+    Box,
+    Button,
+    FormControl,
+    Grid,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField, Typography, useMediaQuery, useTheme
+} from '@mui/material'
 import React, {FC} from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import {useDispatch} from 'react-redux';
 import {fetchCategories} from '../../store/product/product.action';
 import {IProductQuery} from '../../types/IProduct';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
+interface Component {
+    value: "products" | "services"
+}
 
 interface Props {
-    filters: IProductQuery
+    component: Component["value"]
+    filters: IProductQuery | any
     handleChange: (val: any) => void
     handleSubmit: () => void
 
     setFieldValue(name: string, bool: boolean): void
 }
 
+// const mobileCategory = {
+//     width: "210px",
+//     height: "40px",
+// }
+
 // const mobileTextField
 
-const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}) => {
+const Filters: FC<Props> = ({component, filters, handleChange, handleSubmit, setFieldValue}) => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const dispatch = useDispatch();
     const {search, priceFrom, priceTo, orderByDate, orderByPrice} = filters;
 
@@ -53,7 +77,7 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}
                             variant="outlined"
                             size="small"
                             fullWidth
-                            placeholder="Поиск по Артикул, название товара..."
+                            placeholder={component==="products"?"Поиск по Артикул, название товара...":"Название услуг"}
                             name="search"
                             value={search}
                             onChange={handleChange}
@@ -68,7 +92,26 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}
                     </Grid>
                     <Grid item xs>
                         <Stack direction={'row'} alignItems={'center'}>
-                            <FormControl sx={{margin: "10px"}}>
+                            {component === "services" && <FormControl sx={{margin: "10px"}}>
+                                <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",
+                                    padding:"5px",
+                                    border: "1px solid #C3C3C3",
+                                    borderRadius: "10px",
+                                    color: "#C3C3C3",
+                                    fontWeight: 400,
+                                    fontSize: "16px",
+                                    lineHeight: "19px",
+                                    width:isMobile?"120px":"210px",
+                                    height:isMobile?"50px":"40px",
+                                    cursor:"pointer"
+
+                                }}>
+                                    <Typography>Все категорий</Typography>
+                                    <ChevronRightIcon/>
+                                </Box>
+                            </FormControl>
+                            }
+                            {component === "products" && <FormControl sx={{margin: "10px"}}>
                                 <InputLabel id="demo-simple-select-label">Дата создания</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
@@ -80,7 +123,7 @@ const Filters: FC<Props> = ({filters, handleChange, handleSubmit, setFieldValue}
                                     <MenuItem value={"orderByDateASC"}>Сначала новые</MenuItem>
                                     <MenuItem value={"orderByDateDESC"}>Сначала старые</MenuItem>
                                 </Select>
-                            </FormControl>
+                            </FormControl>}
                             <FormControl sx={{margin: "10px"}}>
                                 <InputLabel id="demo-simple-select-label2">Цена</InputLabel>
                                 <Select

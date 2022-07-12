@@ -80,7 +80,7 @@ const ProductsTable: React.FC = () => {
         setOpen(false)
     }
 
-    const [isSuccessfulDeleting, setSuccessfullDeleting] = useState(false)
+    const [isSuccessfulDeleting, setSuccessfulDeleting] = useState(false)
     const handleDeleteProduct = (id: number) => {
         removeProduct(id).then(() => {
             dispatch(fetchProducts({...values, limit: rowsPerPage, page: page + 1}));
@@ -98,7 +98,7 @@ const ProductsTable: React.FC = () => {
 
     React.useEffect(() => {
         if (deletingProductError) {
-            setSuccessfullDeleting(true)
+            setSuccessfulDeleting(true)
         }
     }, [deletingProductError])
 
@@ -119,6 +119,7 @@ const ProductsTable: React.FC = () => {
                 </div>
                 <FormikProvider value={formik}>
                     <Filters
+                        component={"products"}
                         filters={values}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}

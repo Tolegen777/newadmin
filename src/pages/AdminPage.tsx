@@ -17,6 +17,7 @@ import {
 import {useDispatch} from "react-redux";
 import {useGetNotificationsQuery} from "../store/rtk-api/sendNotification-rtk/sendnotification-rtk";
 import MobileBottomBar from "../components/admin/MobileBottomBar";
+import ServicesView from "../views/Services";
 
 
 const AdminPage: React.FC = () => {
@@ -61,13 +62,14 @@ const AdminPage: React.FC = () => {
                     <Route path={"orders/*"} element={<OrdersView/>}/>
                     <Route path={"employees"} element={<Employees/>}/>
                     <Route path={"/notifications"} element={<Notifications/>}/>
+                    <Route path={"services/*"} element={<ServicesView/>}/>
                     <Route
                         path="//*"
                         element={<Navigate to="/app/profile"/>}
                     />
                 </Routes>
             </Box>
-            <Hidden mdUp>
+            <Hidden smUp>
                 <MobileBottomBar/>
             </Hidden>
 
