@@ -4,13 +4,9 @@ RUN apk update && apk add git
 
 WORKDIR /app
 
-
-ENV PORT 4200
-EXPOSE $PORT
-
 COPY package.json ./
 COPY package-lock.json ./
-
+RUN npm install
 RUN npm build
 
 COPY . ./
