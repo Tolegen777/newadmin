@@ -10,10 +10,10 @@ import {IProductQuery} from '../../types/IProduct';
 import StyledTableCell from '../table/StyledTableCell';
 import StyledTableRow from '../table/StyledTableRow';
 import TableLoadingMockup from '../table/TableLoadingMockup';
-import Filters from './Filters';
 import CustomAlert from "../alert/CustomAlert";
 import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
 import RemoveProductWindow from "./RemoveProductWindow";
+import Filters from "../common/Filters";
 
 
 const mapping = {

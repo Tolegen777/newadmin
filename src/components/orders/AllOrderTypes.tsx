@@ -21,14 +21,7 @@ const AllOrderTypes = () => {
     }
 
     const {data: allOrders, isLoading, error} = useGetAllShopOrderQuery(shopId)
-    if (allOrders) {
-        console.log(allOrders)
-        console.log("allOrders")
-    }
-
     const navigate = useNavigate()
-
-
     return (
         <>
             <TableContainer component={Paper} sx={{mb: "40px"}}>

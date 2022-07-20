@@ -4,8 +4,8 @@ import {FormikProvider, useFormik} from 'formik';
 import React from 'react';
 import {useNavigate} from 'react-router';
 import {IProductQuery} from '../../types/IProduct';
-import Filters from "../products/Filters";
 import ServiceTable from "./ServiceTable";
+import Filters from "../common/Filters";
 
 
 const ServicePage: React.FC = () => {
@@ -25,16 +25,9 @@ const ServicePage: React.FC = () => {
         }
     })
     const {values, handleSubmit, handleChange, setFieldValue} = formik;
-
     return (
         <>
             <TableContainer>
-                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
-                    <Typography style={{fontSize: "20px", marginBottom: '25px'}}>Услуги</Typography>
-
-                    <Button variant="contained" startIcon={<AddIcon/>}
-                            onClick={() => navigate('/app/services/one/new')}>Добавить услугу</Button>
-                </div>
                 <FormikProvider value={formik}>
                     <Filters
                         component={"services"}
@@ -51,4 +44,4 @@ const ServicePage: React.FC = () => {
     )
 }
 
-export default ServicePage;
+export default React.memo(ServicePage);

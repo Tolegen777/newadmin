@@ -9,9 +9,6 @@ export const fetchProducts = createAsyncThunk<IProductResponse, IProductQuery>(
     async function (query, {getState, rejectWithValue}) {
         try {
             const {auth} = getState() as RootState;
-            console.log(query)
-            console.log("query")
-
             const {
                 search,
                 shopId,

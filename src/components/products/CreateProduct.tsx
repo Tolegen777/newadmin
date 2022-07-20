@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {useFormik} from 'formik';
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigate, useParams} from 'react-router';
 import {$imageApi} from '../../api';
@@ -201,8 +201,8 @@ const CreateProduct: React.FC = () => {
         setFieldValue('subs', images);
     }
 
-    const handleAddImage2 = (event: Event) => {
-        const input = event.target as HTMLInputElement;
+    const handleAddImage2 = (event: ChangeEvent<HTMLInputElement>) => {
+        const input = event.target;
         if (!input.files?.length) {
             return;
         }

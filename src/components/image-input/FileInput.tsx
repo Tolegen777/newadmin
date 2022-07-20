@@ -2,38 +2,45 @@ import React from 'react';
 import {Button} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
-const FileInput: React.FC = () => {
+interface Props {
+    width?:string,
+    height?:string,
+    handleChange(value:any):void,
+    disabled?:boolean
+}
+
+const FileInput: React.FC<Props> = ({width="120px", height="120px", handleChange, disabled}) => {
     return (
         <>
             <Button
                 component="label"
                 variant={"outlined"}
                 color={"inherit"}
-
-
                 sx={{
-                    height: "120px",
-                    width: "120px",
+                    height: height,
+                    width: width,
                     marginRight: "10px",
                     background: "#EFF3F9",
                     color: "#999999",
                     borderRadius: "10px",
+                    border:"none",
                     "&:hover": {
-                        background: "#817e7e",
-                        color: "#ffffff"
+                        border:"1px solid #999999"
                     }
                 }}
+                disabled={disabled}
             >
 
                 <AddIcon
                     sx={{
-                        fontSize: "50px"
+                        fontSize: "40px"
                     }}
                 />
                 <input
                     type="file"
                     hidden
                     accept="image/png, image/gif, image/jpeg"
+                    onChange={handleChange}
                 />
             </Button>
         </>
