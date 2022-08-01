@@ -1,75 +1,87 @@
-import React, {useState} from 'react';
-import {Button, Chip, Table, TableBody, TableHead} from "@mui/material";
+import React, {useEffect} from 'react';
+import {Chip, Table, TableBody, TableHead, TablePagination} from "@mui/material";
 import StyledTableRow from "../table/StyledTableRow";
 import StyledTableCell from "../table/StyledTableCell";
 import TableLoadingMockup from "../table/TableLoadingMockup";
 import {useNavigate} from "react-router-dom";
+import SelectingButtons from "../common/SelectingButtons";
+import {useDeleteServiceMutation, useGetServicesQuery} from "../../store/rtk-api/service-rtk/service_rtk";
+import RemoveWindow from "../common/RemoveWindow";
+import {clearFilterData, setFilterData} from "../../store/service/service.slice";
+import {useDispatch} from "react-redux";
+import {useTypedSelector} from "../../store";
+import CustomAlert from "../alert/CustomAlert";
 
 const mapping = {
     'id': 'Артикул',
     'image': 'Фото',
     'title': 'Название',
-    // 'smallDesc': 'Описание',
     'price': 'Цена',
     'discount': 'Скидка',
 }
-const items = [
-    {
-        id: 1,
-        image: 'as',
-        title: 'service',
-        price: 10000,
-        discount: 10,
-    },
-    {
-        id: 2,
-        image: 'as',
-        title: 'service',
-        price: 10000,
-        discount: 10,
-    },
-    {
-        id: 3,
-        image: 'as',
-        title: 'service',
-        price: 10000,
-        discount: 10,
+
+const ServiceTable: React.FC = () => {
+    const {isClear, ...filterData} = useTypedSelector(state => state.service)
+    const shopId = useTypedSelector(state => state.auth.user?.shops[0].id)
+    //debugger
+    if (shopId) {
+        debugger
     }
-]
-
-const activeBtn = {
-    width: "160px",
-    height: "40px",
-    border: "2px solid #8A3FFC",
-    borderRadius: "10px",
-    fontWeight: "600",
-    fontSize: "14px",
-    lineHeight: "17px",
-    textTransform: "capitalize",
-    marginRight: "5px"
-}
-const inactiveBtn = {
-    width: "112px",
-    height: "40px",
-    border: "1px solid #C3C3C3",
-    borderRadius: "10px",
-    fontWeight: "400",
-    fontSize: "18px",
-    lineHeight: "22px",
-    letterSpacing: "-0.333333px",
-    color: "#C3C3C3",
-    textTransform: "capitalize"
-}
-
-const ServiceTable:React.FC = () =>{
-    const isLoading = false
+    const {data, isLoading, isError} = useGetServicesQuery(filterData, {
+        skip: filterData.shopId === null
+    })
+    const [deleteService, {
+        isLoading: deleteLoading,
+        isError: deleteError,
+        isSuccess: deleteSuccess,
+        error: deleteErrorMessage
+    }] = useDeleteServiceMutation()
+    const dispatch = useDispatch()
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [isOpen, setOpen] = React.useState(false);
+    const [deletingId, setDeletingId] = React.useState<number | null>(null);
     const navigate = useNavigate()
-    const [itemQueue, setItemQueue] = useState<number|null>(null)
+    const [page, setPage] = React.useState(0);
+    const handleWindowOpen = (id: number) => {
+        setOpen(true)
+        setDeletingId(id)
+    }
+    const closeWindow = () => {
+        setOpen(false)
+    }
+    // Pagination actions
+    const handleChangePage = (event: unknown, newPage: number) => {
+        debugger
+        setPage(newPage);
+    };
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        debugger
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
+    useEffect(() => {
+        debugger
+        if (shopId) {
+            dispatch(setFilterData({page, limit: rowsPerPage, shopId}))
+        }
+
+    }, [page, rowsPerPage, shopId])
+
+    useEffect(() => {
+        return () => {
+            if (!isClear) {
+                debugger
+                dispatch(clearFilterData())
+            }
+        }
+    }, [isClear])
+    console.log(page)
 
     return (
         <>
+            {isError && <CustomAlert title={'Ошибка'} status={"error"} message={'Что то пошло не так'}/>}
+
             <Table>
                 <TableHead>
                     <StyledTableRow>
@@ -85,104 +97,49 @@ const ServiceTable:React.FC = () =>{
                     {isLoading ?
                         <TableLoadingMockup cellCount={6} rowCount={rowsPerPage}/>
                         :
-                        items
-                            .map((row,ind) => (
-                                <StyledTableRow key={row.id}>
-                                    <StyledTableCell>{row.id}</StyledTableCell>
+                        data?.services
+                            .map((service, ind) => (
+                                <StyledTableRow key={service.id}>
+                                    <StyledTableCell>{service.id}</StyledTableCell>
                                     <StyledTableCell><img style={{borderRadius: '5px'}}
-                                                          src={`https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.euractiv.com%2Fwp-content%2Fuploads%2Fsites%2F2%2F2022%2F03%2Fright-to-repair.jpg&imgrefurl=https%3A%2F%2Fwww.euractiv.com%2Fsection%2Fdigital%2Fnews%2Fmeps-try-to-gain-first-mover-advantage-on-right-to-repair%2F&tbnid=G9X8dAlkrQRCwM&vet=12ahUKEwi7kIjrwfP4AhXYEXcKHasICcwQMygCegUIARC7AQ..i&docid=rmCR2jUruc2yXM&w=2508&h=1672&q=repair&ved=2ahUKEwi7kIjrwfP4AhXYEXcKHasICcwQMygCegUIARC7AQ`}
+                                                          src={service.avatar ? `https://file.adu24.com/${service.avatar}` : ''}
                                                           height="50px"
-                                                          alt="product-image"/></StyledTableCell>
-                                    <StyledTableCell>{row.title}</StyledTableCell>
-                                    <StyledTableCell><Chip label={`${row.price} KZT`} variant="outlined"
+                                    /></StyledTableCell>
+                                    <StyledTableCell>{service.title}</StyledTableCell>
+                                    <StyledTableCell><Chip label={`${service.price} KZT`} variant="outlined"
                                                            color="info"/></StyledTableCell>
-                                    <StyledTableCell><Chip label={`${row.discount}%`}/></StyledTableCell>
+                                    <StyledTableCell><Chip label={`${service.discount}%`}/></StyledTableCell>
                                     <StyledTableCell>
-                                        <Button variant='outlined' color='primary'
-                                                // value={ind}
-                                                sx={itemQueue !== row.id? {
-                                                    cursor:"pointer",
-                                                    width: "160px",
-                                                    height: "40px",
-                                                    border: "2px solid #8A3FFC",
-                                                    borderRadius: "10px",
-                                                    fontWeight: "600",
-                                                    fontSize: "14px",
-                                                    lineHeight: "17px",
-                                                    textTransform: "capitalize",
-                                                    marginRight: "5px",
-                                                    transitionDelay: "0.2s",
-                                                    "&:hover":{
-                                                        cursor:"pointer",
-                                                        border: "2px solid #8A3FFC",
-                                                    }
-                                                } : {
-                                                    width: "112px",
-                                                    height: "40px",
-                                                    border: "2px solid #C3C3C3",
-                                                    borderRadius: "10px",
-                                                    fontWeight: "400",
-                                                    fontSize: "14px",
-                                                    lineHeight: "17px",
-                                                    letterSpacing: "-0.333333px",
-                                                    color: "#C3C3C3",
-                                                    textTransform: "capitalize",
-                                                    transitionDelay: "0.2s",
-                                                    marginRight: "5px",
-                                                }}
-                                                onMouseEnter={() => {
-                                                    setItemQueue(null)
-                                                }}
-                                                onMouseOut={() => {
-                                                    setItemQueue(null)
-                                                }}
-                                                onClick={() => navigate('/app/services/one/new')}>
-                                            Подробнее
-                                        </Button>
-
-                                        <Button variant='outlined'
-                                                sx={itemQueue===row.id ? {
-                                                    width: "160px",
-                                                    height: "40px",
-                                                    border: "2px solid #8A3FFC",
-                                                    borderRadius: "10px",
-                                                    fontWeight: "600",
-                                                    fontSize: "14px",
-                                                    lineHeight: "17px",
-                                                    textTransform: "capitalize",
-                                                    // marginRight: "5px",
-                                                    transitionDelay: "0.2s",
-                                                    "&:hover":{
-                                                        border: "2px solid #8A3FFC",
-                                                    }
-                                                } : {
-                                                    width: "112px",
-                                                    height: "40px",
-                                                    border: "2px solid #C3C3C3",
-                                                    borderRadius: "10px",
-                                                    fontWeight: "400",
-                                                    fontSize: "14px",
-                                                    lineHeight: "17px",
-                                                    letterSpacing: "-0.333333px",
-                                                    color: "#C3C3C3",
-                                                    textTransform: "capitalize",
-                                                    transitionDelay: "0.2s"
-                                                }}
-                                                onMouseEnter={() => {
-                                                    setItemQueue(row.id)
-                                                }}
-                                                onMouseOut={() => {
-                                                    setItemQueue(null)
-                                                }}
-                                                onClick={() => {
-                                                }}>
-                                            Удалить
-                                        </Button>
+                                        <SelectingButtons id={service.id} firstBtnName={"Подробнее"}
+                                                          secondBtnName={"Удалить"}
+                                                          firstAction={() => navigate(`/app/services/one/${service.id}`)}
+                                                          secondAction={() => {
+                                                              handleWindowOpen(service.id)
+                                                          }}/>
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))}
                 </TableBody>
             </Table>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={data?.count || 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                labelRowsPerPage="Товаров на одной странице:"
+                sx={{marginBottom: "10px"}}
+            />
+            {isOpen && deletingId && <RemoveWindow
+                isWindowOpen={isOpen} closeWindow={closeWindow}
+                isLoading={deleteLoading} isError={deleteError} isSuccess={deleteSuccess}
+                handleDelete={deleteService}
+                id={deletingId}
+                titleQuestion={"Вы точно хотите удалить услугу?"}
+                errorMessage={deleteErrorMessage}
+            />}
         </>
     )
 

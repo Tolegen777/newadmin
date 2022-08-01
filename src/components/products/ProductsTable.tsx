@@ -12,8 +12,9 @@ import StyledTableRow from '../table/StyledTableRow';
 import TableLoadingMockup from '../table/TableLoadingMockup';
 import CustomAlert from "../alert/CustomAlert";
 import {useRemoveProductMutation} from "../../store/rtk-api/removeProduct-rtk/removeProduct-rtk";
-import RemoveProductWindow from "./RemoveProductWindow";
 import Filters from "../common/Filters";
+import RemoveWindow from "../common/RemoveWindow";
+import SelectingButtons from "../common/SelectingButtons";
 
 
 const mapping = {
@@ -33,7 +34,8 @@ const ProductsTable: React.FC = () => {
     const [removeProduct, {
         isLoading: deleteLoading,
         isError: deletingProductError,
-        isSuccess
+        isSuccess,
+        error: deleteError
     }] = useRemoveProductMutation()
 
     // Filter states
@@ -153,22 +155,26 @@ const ProductsTable: React.FC = () => {
                                                                color="info"/></StyledTableCell>
                                         <StyledTableCell><Chip label={`${row.discount}%`}/></StyledTableCell>
                                         <StyledTableCell>
-                                            <Button variant='outlined' color='primary'
-                                                    sx={{
-                                                        borderWidth: '2px',
-                                                        fontWeight: 600,
-                                                        width: "120px",
-                                                        marginRight: "5px"
-                                                    }}
-                                                    onClick={() => navigate(`/app/products/one/${row.id}`)}>
-                                                Подробнее
-                                            </Button>
+                                            {/*<Button variant='outlined' color='primary'*/}
+                                            {/*        sx={{*/}
+                                            {/*            borderWidth: '2px',*/}
+                                            {/*            fontWeight: 600,*/}
+                                            {/*            width: "120px",*/}
+                                            {/*            marginRight: "5px"*/}
+                                            {/*        }}*/}
+                                            {/*        onClick={() => navigate(`/app/products/one/${row.id}`)}>*/}
+                                            {/*    Подробнее*/}
+                                            {/*</Button>*/}
 
-                                            <Button variant='contained' color='error'
-                                                    sx={{borderWidth: '2px', fontWeight: 600, width: "120px"}}
-                                                    onClick={() => handleWindowOpen(row.id)}>
-                                                Удалить
-                                            </Button>
+                                            {/*<Button variant='contained' color='error'*/}
+                                            {/*        sx={{borderWidth: '2px', fontWeight: 600, width: "120px"}}*/}
+                                            {/*        onClick={() => handleWindowOpen(row.id)}>*/}
+                                            {/*    Удалить*/}
+                                            {/*</Button>*/}
+                                            <SelectingButtons id={row.id} firstBtnName={"Подробнее"}
+                                                              secondBtnName={"Удалить"}
+                                                              firstAction={() => navigate(`/app/products/one/${row.id}`)}
+                                                              secondAction={() => handleWindowOpen(row.id)}/>
                                         </StyledTableCell>
                                     </StyledTableRow>
                                 ))}
@@ -186,11 +192,14 @@ const ProductsTable: React.FC = () => {
                 labelRowsPerPage="Товаров на одной странице:"
                 sx={{marginBottom: "10px"}}
             />
-            {isOpen && deletingId && <RemoveProductWindow
+            {isOpen && deletingId && <RemoveWindow
                 isWindowOpen={isOpen} closeWindow={closeWindow}
                 isLoading={deleteLoading} isError={deletingProductError} isSuccess={isSuccess}
-                handleDeleteProduct={handleDeleteProduct}
-                id={deletingId}/>}
+                handleDelete={handleDeleteProduct}
+                id={deletingId}
+                titleQuestion={"Вы точно хотите удалить продукт?"}
+                errorMessage={deleteError}
+            />}
         </>
     )
 }

@@ -18,11 +18,17 @@ import {useDispatch} from "react-redux";
 import {useGetNotificationsQuery} from "../store/rtk-api/sendNotification-rtk/sendnotification-rtk";
 import MobileBottomBar from "../components/admin/MobileBottomBar";
 import ServicesView from "../views/Services";
+import {useTypedSelector} from "../store";
 
 
 const AdminPage: React.FC = () => {
     const {data, error, isLoading} = useGetNotificationsQuery(15)
     const dispatch = useDispatch();
+    const {shop} = useTypedSelector(state=>state.auth)
+    if (shop){
+        console.log(shop.shop_type)
+        console.log("shop")
+    }
 
     useEffect(() => {
         if (data && data.data && data.data.notifications) {
@@ -44,6 +50,7 @@ const AdminPage: React.FC = () => {
             socket.disconnect()
         }
     }, [])
+
 
     return (
         <Box sx={{

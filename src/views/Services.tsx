@@ -1,8 +1,7 @@
-import {Box, Button, Paper, Tab, Tabs, Typography, useMediaQuery, useTheme} from '@mui/material';
+import {Box, Paper, Tab, Tabs, Typography, useMediaQuery, useTheme} from '@mui/material';
 import React, {Suspense} from 'react';
 import {Navigate, Route, Routes} from 'react-router';
 import CreateService from "../components/services/CreateService";
-import AddIcon from "@mui/icons-material/Add";
 import {useLocation, useNavigate} from "react-router-dom";
 import {AddButton} from "../components/common/Buttons";
 
@@ -40,7 +39,7 @@ const ServicesView = () => {
                         <Route path="list" element={<ServiceTable/>}/>
                         <Route path="one">
                             <Route path="new" element={<CreateService/>}/>
-                            {/*<Route path=":serviceId" element={<CreateProduct/>}/>*/}
+                            <Route path=":serviceId" element={<CreateService/>}/>
                         </Route>
                         <Route
                             path="*"

@@ -4,7 +4,7 @@ import {AlertTitle} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 type PropsType = {
-    title: string,
+    title?: string,
     message: string,
     status: 'success' | 'info' | 'warning' | 'error',
     isLink?: boolean
@@ -20,7 +20,7 @@ const CustomAlert: React.FC<PropsType> = ({message, status, title, isLink = fals
 
     return (
         <Alert severity={status}>
-            <AlertTitle>{title}</AlertTitle>
+            {title && <AlertTitle>{title}</AlertTitle>}
             <div style={isLink ? linkStyle : {}} onClick={() => navigate('notifications')}>
                 <strong>{message}</strong>
             </div>

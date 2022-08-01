@@ -5,7 +5,6 @@ import React from 'react';
 import {useTypedSelector} from './store/index'
 import {useDispatch} from 'react-redux';
 import {refresh} from './store/auth/auth.action';
-import {useMediaQuery, useTheme} from "@mui/material";
 
 function App() {
     const {isAuth} = useTypedSelector(state => state.auth);

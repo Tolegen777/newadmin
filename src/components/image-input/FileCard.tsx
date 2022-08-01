@@ -22,7 +22,7 @@ const useStyles = makeStyles({
             left: "0",
             border: "1px solid #999999",
             borderRadius: "10px",
-            filter: "brightness(0.8)",
+            filter: "brightness(0.95)",
         },
         "&>:nth-child(2)": {
             position: "absolute",
@@ -52,9 +52,9 @@ const StyledBox = styled(Box,)(({theme}) => ({
 
 type Props = {
     image: any,
-    handleChange: (input: any) => void,
+    handleChange?: (input: any) => void,
     handleDelete?: () => void,
-    count: number
+    count?: number
 }
 
 const FileCard: React.FC<Props> = ({image, handleChange, handleDelete, count}) => {
@@ -74,7 +74,7 @@ const FileCard: React.FC<Props> = ({image, handleChange, handleDelete, count}) =
                         onChange={handleChange}
                     />
                 </IconButton>
-                <StyledBox>{count}</StyledBox>
+                {count&&<StyledBox>{count}</StyledBox>}
                 {handleDelete && <Button variant="outlined" size="small" onClick={handleDelete}>Удалить</Button>}
             </>
 

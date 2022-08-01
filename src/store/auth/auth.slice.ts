@@ -16,7 +16,7 @@ const initialState: IInitState = {
     error: null,
     user: null,
     shop: null,
-    isAuth: true
+    isAuth: false
 }
 
 const authReducer = createSlice({

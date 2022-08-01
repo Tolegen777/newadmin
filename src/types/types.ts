@@ -1,5 +1,6 @@
 import {IProduct} from "./IProduct";
 import {IUser} from "./IProfile";
+import {string} from "yup";
 
 
 export interface IClientsResponse {
@@ -102,20 +103,20 @@ export interface IBasketUser {
 }
 
 export interface IAddSeller {
-    shopId:number,
-    email:string,
-    ownerEmail:string
+    shopId: number,
+    email: string,
+    ownerEmail: string
 }
 
 export interface IAddSeller {
-    shopId:number,
-    email:string,
-    ownerEmail:string
+    shopId: number,
+    email: string,
+    ownerEmail: string
 }
 
 export interface IUpdateSpecs {
-    productId:number,
-    specs:string
+    productId: number,
+    specs: string
 }
 
 
@@ -146,23 +147,23 @@ export interface IOwner {
 }
 
 export interface ISendNotification {
-    userId:number,
-    message:string,
-    read?:boolean
+    userId: number,
+    message: string,
+    read?: boolean
 
 }
 
 export interface IGetNotification {
-    count:string | null,
-    data:{
-        notifications:ISendNotification[]
+    count: string | null,
+    data: {
+        notifications: ISendNotification[]
     }
 
 
 }
 
 export interface IUpdateSpecArr {
-    productId:number,
+    productId: number,
     specs: ISpecArr[]
 
 }
@@ -172,3 +173,15 @@ export interface ISpecArr {
     newSpecId: number
 }
 
+export interface Name {
+    _text: string;
+}
+
+export interface IGetCities {
+    name: Name[]
+}
+
+export interface IItems {
+    value: string | number | undefined
+    name:string
+}

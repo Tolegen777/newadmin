@@ -1,49 +1,57 @@
-import React, {useEffect} from "react";
+import React, {useState} from "react";
 import {Box, Button, Dialog, DialogContent, DialogTitle, Typography, useMediaQuery, useTheme} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import CustomAlert from "../alert/CustomAlert";
 import CloseIcon from "@mui/icons-material/Close";
 
 type PropsType = {
+    titleQuestion: string,
     isWindowOpen: boolean,
     isLoading: boolean,
     isError: boolean,
     isSuccess: boolean,
     closeWindow(): void,
-    handleDeleteProduct(id: number): void,
-    id: number
+    handleDelete(id: number): void,
+    id: number | null,
+    errorMessage: any
 }
 
 
-const RemoveProductWindow: React.FC<PropsType> = ({
-                                                      isWindowOpen,
-                                                      isLoading,
-                                                      isError,
-                                                      isSuccess,
-                                                      closeWindow,
-                                                      handleDeleteProduct,
-                                                      id
-                                                  }) => {
+const RemoveWindow: React.FC<PropsType> = ({
+                                               titleQuestion,
+                                               isWindowOpen,
+                                               isLoading,
+                                               isError,
+                                               isSuccess,
+                                               closeWindow,
+                                               handleDelete,
+                                               id,
+                                               errorMessage
+                                           }) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-    useEffect(() => {
-
-    })
+    const [itemId, setItemId] = useState<number | null>(null)
+    const handleClose = () => {
+        setItemId(null)
+        closeWindow()
+    }
+    const handleDeleteFunction = () => {
+        if (id) {
+            handleDelete(id)
+        }
+        setItemId(id)
+    }
     return (
         <Dialog
             open={isWindowOpen}
             sx={{overflow: "hidden"}}
         >
             {isLoading && <CircularProgress/>}
-            {isError && <CustomAlert title="Ошибка" status="error"
-                                     message="Возникла неизвестная ошибка!"/>}{isSuccess &&
-            <CustomAlert title="Успешно" status="success" message="Операция успешно выполнено"/>}
-
+            {isError && itemId && <CustomAlert title="Ошибка" status="error" message={"Что то пошло не так"}/>}
+            {isSuccess && itemId && <CustomAlert title="Успех" status="success" message="Операция успешно выполнено"/>}
             <DialogTitle id="alert-dialog-title">
-                <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={closeWindow}/>
+                <CloseIcon sx={{float: 'right', cursor: 'pointer'}} onClick={handleClose}/>
             </DialogTitle>
-
             <DialogContent style={isMobile ? {
                 width: '300px',
                 textAlign: 'center'
@@ -51,19 +59,14 @@ const RemoveProductWindow: React.FC<PropsType> = ({
                 width: '500px',
                 textAlign: 'center'
             }}>
-                <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>Вы точно хотите удалить продукт?</Typography>
+                <Typography sx={{marginBottom: 3, fontWeight: 'bold'}}>{titleQuestion}</Typography>
                 <form>
-
                     <Box sx={{textAlign: 'center', marginBottom: '50px'}}>
-
-
                         <Button variant="contained"
                                 color="primary"
                                 size="large"
                                 sx={{width: 100, height: 30, marginTop: 1, textTransform: 'lowercase'}}
-                                onClick={() => {
-                                    handleDeleteProduct(id)
-                                }}
+                                onClick={handleDeleteFunction}
                         >
                             Удалить
                         </Button>
@@ -83,13 +86,9 @@ const RemoveProductWindow: React.FC<PropsType> = ({
                         </Button>
                     </Box>
                 </form>
-
-
             </DialogContent>
-
-
         </Dialog>
     )
 }
 
-export default RemoveProductWindow
+export default RemoveWindow

@@ -102,3 +102,13 @@ export interface IProductSpecs {
         title:string
     }
 }
+
+export interface IServiceQuery {
+    categoryId?: string
+    search?: string
+    page?: number
+    limit?: number
+    orderByPrice?:string
+    orderByPriceDESC?:boolean,
+    orderByPriceASC?:boolean
+}

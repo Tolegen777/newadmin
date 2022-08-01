@@ -34,13 +34,15 @@ export const privateRoute = []
 
 
 export const menuRoutes: RouteType[] = [
+
     {name: "Профиль", path: MyRoutes.PROFILE, icon: PersonRoundedIcon},
     // { name: "Главная", path: MyRoutes.ORDERS, icon: ArticleIcon },
     {name: "Мои товары", path: MyRoutes.PRODUCTS, icon: InventoryIcon},
     {name: "Мои заказы", path: MyRoutes.ORDERS, icon: FactCheckIcon},
+    {name: "Услуги", path: MyRoutes.SERVICES, icon: DesignServicesIcon},
     {name: "Уведомления", path: MyRoutes.NOTIFICATIONS, icon: ChatBubbleIcon},
     {name: "Сотрудники", path: MyRoutes.EMPLOYEES, icon: EngineeringRoundedIcon},
-    {name: "Услуги", path: MyRoutes.SERVICES, icon: DesignServicesIcon},
+    // {name: "Услуги", path: MyRoutes.SERVICES, icon: DesignServicesIcon},
 ]
 
 export const publicRoute = []

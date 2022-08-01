@@ -1,40 +1,37 @@
 import * as yup from "yup";
-import {styled} from "@mui/material/styles";
-import {Typography} from "@mui/material";
-
-const StyledHeader = styled(Typography)(({theme}) => ({
-    fontWeight: "600",
-    fontSize: "18px",
-    lineHeight: "22px",
-    letterSpacing: "-0.333333px",
-    margin: "10px 0"
-}))
 
 export const validationSchema = yup.object().shape({
     title: yup
         .string()
-        .required('Название услуги обязательное поле'),
+        .required('Это обязательное поле'),
+    discount: yup
+        .number()
+        .typeError('Это поле должно быть числом')
+        .positive('Напишите положительные числа')
+        .max(100, "Максимум может быть установлен до 100%")
+        .min(0, "Минимум может быть установлен до 0%"),
+    city: yup
+        .string()
+        .required('Это обязательное поле'),
+    email: yup
+        .string()
+        .email("Напишите правильный адрес электронной почты")
+        .required('Это обязательное поле'),
     phone: yup
+        .number()
+        .required('Это обязательное поле')
+        .typeError('Это поле должно быть числом')
+        .positive('Напишите положительные числа'),
+    contactPerson: yup
         .string()
-        .required('Номер телефона обязательное поле'),
-    // discount: yup
-    //     .number()
-    //     .max(100, "Максимум может быть установлен до 100%")
-    //     .min(0, "Минимум может быть установлен до 0%"),
-    place: yup
-        .string()
-        .required('Местоположение обязательное поле'),
-});
-
-export const initialValues: any = {
-    photos: [] as File[],
-    title: '',
-    description: '',
-    place: 1,
-    contactName: '',
-    email: '',
-    phone: '',
-    category: 1,
-    price: '',
-    discount: '',
-}
+        .required('Это обязательное поле'),
+    price: yup
+        .number()
+        .typeError('Это поле должно быть числом')
+        .positive('Напишите положительные числа'),
+    categoryId: yup
+        .number()
+        .required('Выберите категорию для услуги')
+        .typeError('Выберите категорию для услуги')
+        .positive('Выберите категорию для услуги'),
+})

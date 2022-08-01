@@ -1,12 +1,15 @@
 import {IBasketUser, ICategory, IOneOrder, IOrdersResponse, ISpec} from "../../types/types";
-import {baseApi} from "../../store/rtk-api/baseApi";
+import {baseApi} from "./baseApi";
 import {StatusOfOrder} from "../enum";
 
 const endpoints = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getCategories: builder.query<ICategory[], string>({
-            query: () => ({
-                url: `/category`
+        getCategories: builder.query<ICategory[], 'service' | 'product'>({
+            query: (type) => ({
+                url: `/category`,
+                params:{
+                    type
+                }
             }),
             providesTags: ['categories']
         }),

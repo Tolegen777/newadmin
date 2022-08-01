@@ -4,11 +4,12 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import {Paper} from "@mui/material";
 import {NavLink, useLocation} from "react-router-dom";
 import {menuRoutes} from "../../route";
+import {useTypedSelector} from "../../store";
 
 export default function MobileBottomBar() {
     let mySet = new Set();
     const location = useLocation();
-
+    const {shop} = useTypedSelector(state=>state.auth)
     return (
         <Paper
             sx={{
@@ -26,7 +27,9 @@ export default function MobileBottomBar() {
             >
                 {menuRoutes.map((route, index) => {
                     if (route.name === "Сотрудники" && !mySet.has("ADMIN")) return false
-                    else {
+                    if (route.name==='Услуги'&&shop?.shop_type!=='service') return false
+                    if (route.name==='Мои товары'&&shop?.shop_type!=='seller') return false
+                    if (route.name==='Мои заказы'&&shop?.shop_type!=='seller') return false
                         return <NavLink
                             to={route.path}
                             key={index}
@@ -55,7 +58,7 @@ export default function MobileBottomBar() {
                             >
                             </BottomNavigationAction>
                         </NavLink>
-                    }
+
                 })}
             </BottomNavigation>
         </Paper>

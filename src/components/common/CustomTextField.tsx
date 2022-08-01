@@ -1,41 +1,48 @@
-import {TextField, Typography} from '@mui/material'
+import {TextField} from '@mui/material'
 import React, {FC} from 'react'
-import {styled} from "@mui/material/styles";
+import {makeStyles} from "@mui/styles";
 
 
 interface Props {
     formik: any,
     field: string,
-    placeholder?:string,
-    fullWidth?:boolean,
-    rows?:number,
-    multiline?:boolean,
-    style?:any
+    placeholder?: string,
+    fullWidth?: boolean,
+    rows?: number,
+    multiline?: boolean,
+    style?: any,
+    required?: boolean,
+    type?: string
 
 }
-
-const StyledTextField = styled(TextField,)(({theme}) => ({
-    background: "#EFF3F9",
-    borderRadius: "5px",
-    input: {
-        color: "#5e5d5d",
-        "&::placeholder": {
-            color: "#C3C3C3"
-        },
-    },
-}))
 
 const CustomTextField: FC<Props> = ({
                                         formik,
                                         field,
                                         placeholder,
-    fullWidth,
-    rows,
+                                        fullWidth,
+                                        rows,
                                         multiline,
-    style
+                                        style, required, type = 'text'
                                     }) => {
+
+    const useStyles = makeStyles(() => ({
+        textField: {
+            background: "#EFF3F9",
+            borderRadius: "5px",
+            color: "#5e5d5d",
+            input: {
+                "&::placeholder": {
+                    color: "#5e5d5d"
+                },
+            },
+        },
+
+    }));
+    const classes = useStyles();
+
     return <>
-        <StyledTextField
+        <TextField
             id={field}
             name={field}
             //label={field}
@@ -49,8 +56,14 @@ const CustomTextField: FC<Props> = ({
             placeholder={placeholder}
             rows={rows}
             multiline={multiline}
+            InputProps={{
+                className: classes.textField
+            }}
+            required={required}
+            type={type}
+
         >
-        </StyledTextField>
+        </TextField>
     </>
 
 }

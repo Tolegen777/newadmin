@@ -12,7 +12,7 @@ import {useTypedSelector} from "../../store";
 const drawerWidth = 240;
 
 export default function ResponsiveDrawer() {
-
+    const {shop} = useTypedSelector(state=>state.auth)
     const {user} = useTypedSelector(state => state.auth)
     let mySet = new Set();
     const isNotification = useTypedSelector(state => state.websocketNotification.isNotification)
@@ -34,8 +34,11 @@ export default function ResponsiveDrawer() {
             <Divider/>
             <List style={{textAlign: 'center'}}>
                 {menuRoutes.map((route, index) => {
+                    if (route.name==='Услуги'&&shop?.shop_type!=='service') return false
+                    if (route.name==='Мои товары'&&shop?.shop_type!=='seller') return false
+                    if (route.name==='Мои заказы'&&shop?.shop_type!=='seller') return false
                     if (route.name === "Сотрудники" && !mySet.has("ADMIN")) return false
-                    else return <NavLink
+                    return <NavLink
                         to={route.path}
                         key={index}
                         style={{
