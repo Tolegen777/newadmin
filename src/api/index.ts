@@ -5,7 +5,9 @@ import { fetchUser } from "../store/auth/auth.action";
 
 export const $imageApi = 'https://adu24file.ams3.digitaloceanspaces.com';
 
-export const DEV_API = 'https://dev.adu24.com/';
+export const DEV_API = 'http://165.232.126.79/';
+// export const DEV_API = 'https://dev.adu24.com/';
+
 export const PROD_API = 'https://api.adu24.com/';
 const env = process.env.NODE_ENV;
 
