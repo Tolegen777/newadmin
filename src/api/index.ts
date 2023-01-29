@@ -1,7 +1,5 @@
 import axios from "axios";
 import {AuthService} from "../service/auth/auth.service";
-import { store } from "../store";
-import { fetchUser } from "../store/auth/auth.action";
 
 export const $imageApi = 'https://adu24file.ams3.digitaloceanspaces.com';
 
